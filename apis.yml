@@ -148,6 +148,8 @@ common:
     url: https://kalshi.com/developer-agreement
   - type: LinkedIn
     url: https://www.linkedin.com/company/kalshi/
+  - type: LLMsTxt
+    url: https://docs.kalshi.com/llms.txt
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
