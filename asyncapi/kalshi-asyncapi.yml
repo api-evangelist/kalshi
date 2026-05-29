@@ -1,0 +1,781 @@
+asyncapi: '2.6.0'
+info:
+  title: Kalshi WebSocket Streaming API
+  version: '2.0.0'
+  description: >-
+    Real-time WebSocket streaming feed for the Kalshi CFTC-regulated event
+    contracts exchange. Publishes orderbook updates, public trades, market
+    tickers, user orders, user fills, market positions, market and event
+    lifecycle notifications, RFQ communications, and order group updates. All
+    subscriptions are multiplexed over a single authenticated WebSocket
+    connection using JSON command frames (cmd: subscribe / unsubscribe /
+    update_subscription). Authenticated channels (fill, user_orders,
+    market_positions, communications, order_group_updates) require API key
+    authentication during the WebSocket handshake.
+  contact:
+    name: Kalshi
+    url: https://docs.kalshi.com/api-reference
+  license:
+    name: Kalshi Developer Agreement
+    url: https://kalshi.com/developer-agreement
+servers:
+  production:
+    url: external-api-ws.kalshi.com
+    protocol: wss
+    description: Production Kalshi WebSocket endpoint.
+    security:
+      - apiKey: []
+defaultContentType: application/json
+channels:
+  /:
+    description: >-
+      Single multiplexed WebSocket endpoint. Clients send subscribe /
+      unsubscribe / update_subscription commands and receive channel messages
+      and acknowledgements over the same connection.
+    publish:
+      operationId: sendClientCommand
+      summary: Send a command frame (subscribe, unsubscribe, update_subscription).
+      message:
+        oneOf:
+          - $ref: '#/components/messages/SubscribeCommand'
+          - $ref: '#/components/messages/UnsubscribeCommand'
+          - $ref: '#/components/messages/UpdateSubscriptionCommand'
+    subscribe:
+      operationId: receiveServerMessage
+      summary: Receive channel messages and control replies from Kalshi.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/SubscribedAck'
+          - $ref: '#/components/messages/ErrorMessage'
+          - $ref: '#/components/messages/OrderbookSnapshot'
+          - $ref: '#/components/messages/OrderbookDelta'
+          - $ref: '#/components/messages/Ticker'
+          - $ref: '#/components/messages/Trade'
+          - $ref: '#/components/messages/Fill'
+          - $ref: '#/components/messages/UserOrder'
+          - $ref: '#/components/messages/MarketPosition'
+          - $ref: '#/components/messages/MarketLifecycleV2'
+          - $ref: '#/components/messages/EventLifecycle'
+          - $ref: '#/components/messages/EventFeeUpdate'
+          - $ref: '#/components/messages/MultivariateMarketLifecycle'
+          - $ref: '#/components/messages/MultivariateLookup'
+          - $ref: '#/components/messages/Communications'
+          - $ref: '#/components/messages/OrderGroupUpdates'
+components:
+  securitySchemes:
+    apiKey:
+      type: httpApiKey
+      name: KALSHI-ACCESS-KEY
+      in: header
+      description: >-
+        API key authentication is performed during the WebSocket handshake.
+        Authenticated channels (fill, user_orders, market_positions,
+        communications, order_group_updates) require a valid Kalshi API key
+        with Ed25519 request signatures as described in the REST API reference.
+  messages:
+    SubscribeCommand:
+      name: SubscribeCommand
+      title: Subscribe Command
+      summary: Subscribe to one or more channels.
+      payload:
+        type: object
+        required: [id, cmd, params]
+        properties:
+          id:
+            type: integer
+            description: Client-assigned command id, starting at 1.
+          cmd:
+            type: string
+            enum: [subscribe]
+          params:
+            type: object
+            required: [channels]
+            properties:
+              channels:
+                type: array
+                description: >-
+                  Channels to subscribe to. Supported channels:
+                  orderbook_delta, ticker, trade, fill, user_orders,
+                  market_positions, market_lifecycle_v2, event_lifecycle,
+                  multivariate_market_lifecycle, multivariate, communications,
+                  order_group_updates.
+                items:
+                  type: string
+                  enum:
+                    - orderbook_delta
+                    - ticker
+                    - trade
+                    - fill
+                    - user_orders
+                    - market_positions
+                    - market_lifecycle_v2
+                    - event_lifecycle
+                    - multivariate_market_lifecycle
+                    - multivariate
+                    - communications
+                    - order_group_updates
+              market_ticker:
+                type: string
+              market_tickers:
+                type: array
+                items:
+                  type: string
+              send_initial_snapshot:
+                type: boolean
+                description: Request initial snapshot on the ticker channel.
+              use_yes_price:
+                type: boolean
+                description: Use yes-side pricing format for orderbook_delta.
+              shard_factor:
+                type: integer
+                minimum: 1
+                maximum: 100
+                description: Shard fanout factor for communications channel.
+              shard_key:
+                type: integer
+                description: Shard key (0 <= shard_key < shard_factor).
+    UnsubscribeCommand:
+      name: UnsubscribeCommand
+      title: Unsubscribe Command
+      payload:
+        type: object
+        required: [id, cmd, params]
+        properties:
+          id:
+            type: integer
+          cmd:
+            type: string
+            enum: [unsubscribe]
+          params:
+            type: object
+            required: [sids]
+            properties:
+              sids:
+                type: array
+                items:
+                  type: integer
+                description: Server-assigned subscription ids to unsubscribe.
+    UpdateSubscriptionCommand:
+      name: UpdateSubscriptionCommand
+      title: Update Subscription Command
+      summary: Add or remove markets from an existing subscription, or fetch a snapshot.
+      payload:
+        type: object
+        required: [id, cmd, params]
+        properties:
+          id:
+            type: integer
+          cmd:
+            type: string
+            enum: [update_subscription]
+          params:
+            type: object
+            required: [sid, action]
+            properties:
+              sid:
+                type: integer
+              action:
+                type: string
+                enum: [add_markets, delete_markets, get_snapshot]
+              market_tickers:
+                type: array
+                items:
+                  type: string
+    SubscribedAck:
+      name: SubscribedAck
+      title: Subscribed Acknowledgement
+      payload:
+        type: object
+        properties:
+          id:
+            type: integer
+          type:
+            type: string
+            enum: [subscribed]
+          msg:
+            type: object
+            properties:
+              channel:
+                type: string
+              sid:
+                type: integer
+    ErrorMessage:
+      name: ErrorMessage
+      title: Error
+      payload:
+        type: object
+        properties:
+          id:
+            type: integer
+          type:
+            type: string
+            enum: [error]
+          msg:
+            type: object
+            properties:
+              code:
+                type: integer
+              msg:
+                type: string
+    OrderbookSnapshot:
+      name: OrderbookSnapshot
+      title: Orderbook Snapshot
+      summary: Full orderbook snapshot for a market (orderbook_delta channel).
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [orderbook_snapshot]
+          sid:
+            type: integer
+          seq:
+            type: integer
+          msg:
+            type: object
+            properties:
+              market_ticker:
+                type: string
+              market_id:
+                type: string
+                format: uuid
+              yes_dollars_fp:
+                type: array
+                description: YES side price levels [price_in_dollars, contract_count_fp].
+                items:
+                  type: array
+              no_dollars_fp:
+                type: array
+                description: NO side price levels [price_in_dollars, contract_count_fp].
+                items:
+                  type: array
+    OrderbookDelta:
+      name: OrderbookDelta
+      title: Orderbook Delta
+      summary: Incremental orderbook update.
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [orderbook_delta]
+          sid:
+            type: integer
+          seq:
+            type: integer
+          msg:
+            type: object
+            properties:
+              market_ticker:
+                type: string
+              market_id:
+                type: string
+                format: uuid
+              price_dollars:
+                type: string
+              delta_fp:
+                type: string
+                description: Fixed-point contract delta (2 decimals).
+              side:
+                type: string
+                enum: [yes, no]
+              client_order_id:
+                type: string
+              subaccount:
+                type: integer
+              ts_ms:
+                type: integer
+    Ticker:
+      name: Ticker
+      title: Market Ticker
+      summary: Market price, volume, and open interest update.
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [ticker]
+          sid:
+            type: integer
+          msg:
+            type: object
+            properties:
+              market_ticker:
+                type: string
+              market_id:
+                type: string
+                format: uuid
+              price_dollars:
+                type: string
+              yes_bid_dollars:
+                type: string
+              yes_ask_dollars:
+                type: string
+              volume_fp:
+                type: string
+              open_interest_fp:
+                type: string
+              dollar_volume:
+                type: integer
+              dollar_open_interest:
+                type: integer
+              yes_bid_size_fp:
+                type: string
+              yes_ask_size_fp:
+                type: string
+              last_trade_size_fp:
+                type: string
+              ts_ms:
+                type: integer
+    Trade:
+      name: Trade
+      title: Public Trade
+      summary: Public trade execution notification.
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [trade]
+          sid:
+            type: integer
+          msg:
+            type: object
+            properties:
+              trade_id:
+                type: string
+                format: uuid
+              market_ticker:
+                type: string
+              yes_price_dollars:
+                type: string
+              no_price_dollars:
+                type: string
+              count_fp:
+                type: string
+              taker_side:
+                type: string
+                enum: [yes, no]
+              taker_outcome_side:
+                type: string
+                enum: [yes, no]
+              taker_book_side:
+                type: string
+                enum: [bid, ask]
+              ts_ms:
+                type: integer
+              ts:
+                type: integer
+                description: Deprecated, seconds.
+    Fill:
+      name: Fill
+      title: User Fill
+      summary: Notification of a fill on one of your orders (authenticated).
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [fill]
+          sid:
+            type: integer
+          msg:
+            type: object
+            properties:
+              trade_id:
+                type: string
+                format: uuid
+              order_id:
+                type: string
+                format: uuid
+              market_ticker:
+                type: string
+              is_taker:
+                type: boolean
+              side:
+                type: string
+                enum: [yes, no]
+              yes_price_dollars:
+                type: string
+              count_fp:
+                type: string
+              fee_cost:
+                type: string
+              action:
+                type: string
+                enum: [buy, sell]
+              ts_ms:
+                type: integer
+              post_position_fp:
+                type: string
+              purchased_side:
+                type: string
+                enum: [yes, no]
+              outcome_side:
+                type: string
+                enum: [yes, no]
+              book_side:
+                type: string
+                enum: [bid, ask]
+              client_order_id:
+                type: string
+              subaccount:
+                type: integer
+    UserOrder:
+      name: UserOrder
+      title: User Order
+      summary: Real-time order created/updated notification (authenticated).
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [user_order]
+          sid:
+            type: integer
+          msg:
+            type: object
+            properties:
+              order_id:
+                type: string
+                format: uuid
+              ticker:
+                type: string
+              status:
+                type: string
+                enum: [resting, canceled, executed]
+              side:
+                type: string
+                enum: [yes, no]
+              outcome_side:
+                type: string
+                enum: [yes, no]
+              yes_price_dollars:
+                type: string
+              fill_count_fp:
+                type: string
+              remaining_count_fp:
+                type: string
+              created_ts_ms:
+                type: integer
+    MarketPosition:
+      name: MarketPosition
+      title: Market Position
+      summary: Real-time per-market position update (authenticated).
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [market_position]
+          sid:
+            type: integer
+          msg:
+            type: object
+            properties:
+              user_id:
+                type: string
+              market_ticker:
+                type: string
+              position_fp:
+                type: string
+              position_cost_dollars:
+                type: string
+              realized_pnl_dollars:
+                type: string
+              fees_paid_dollars:
+                type: string
+              position_fee_cost_dollars:
+                type: string
+              volume_fp:
+                type: string
+              subaccount:
+                type: integer
+    MarketLifecycleV2:
+      name: MarketLifecycleV2
+      title: Market Lifecycle v2
+      summary: Market state transitions and lifecycle events.
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [market_lifecycle_v2]
+          sid:
+            type: integer
+          msg:
+            type: object
+            required: [event_type, market_ticker]
+            properties:
+              event_type:
+                type: string
+                enum:
+                  - created
+                  - activated
+                  - deactivated
+                  - close_date_updated
+                  - determined
+                  - settled
+                  - price_level_structure_updated
+                  - metadata_updated
+              market_ticker:
+                type: string
+              open_ts:
+                type: integer
+              close_ts:
+                type: integer
+              determination_ts:
+                type: integer
+              settled_ts:
+                type: integer
+              result:
+                type: string
+              settlement_value:
+                type: string
+              is_deactivated:
+                type: boolean
+              price_level_structure:
+                type: string
+                enum: [linear_cent, deci_cent, tapered_deci_cent]
+              floor_strike:
+                type: string
+              yes_sub_title:
+                type: string
+              additional_metadata:
+                type: object
+    EventLifecycle:
+      name: EventLifecycle
+      title: Event Lifecycle
+      summary: Event creation notification.
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [event_lifecycle]
+          sid:
+            type: integer
+          msg:
+            type: object
+            required: [event_ticker, title, subtitle, collateral_return_type, series_ticker]
+            properties:
+              event_ticker:
+                type: string
+              title:
+                type: string
+              subtitle:
+                type: string
+              collateral_return_type:
+                type: string
+                enum: [MECNET, DIRECNET, '']
+              series_ticker:
+                type: string
+              strike_date:
+                type: string
+              strike_period:
+                type: string
+    EventFeeUpdate:
+      name: EventFeeUpdate
+      title: Event Fee Update
+      summary: Event-level fee override updates.
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [event_fee_update]
+          sid:
+            type: integer
+          msg:
+            type: object
+            properties:
+              event_ticker:
+                type: string
+              fee_type_override:
+                type: string
+                enum: [quadratic, quadratic_with_maker_fees, flat]
+                nullable: true
+              fee_multiplier_override:
+                type: string
+                nullable: true
+    MultivariateMarketLifecycle:
+      name: MultivariateMarketLifecycle
+      title: Multivariate Market Lifecycle
+      summary: Lifecycle notifications for multivariate markets.
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [multivariate_market_lifecycle]
+          sid:
+            type: integer
+          msg:
+            type: object
+            required: [event_type, market_ticker]
+            properties:
+              event_type:
+                type: string
+                enum:
+                  - created
+                  - activated
+                  - deactivated
+                  - close_date_updated
+                  - determined
+                  - settled
+                  - price_level_structure_updated
+                  - metadata_updated
+              market_ticker:
+                type: string
+              open_ts:
+                type: integer
+              close_ts:
+                type: integer
+              result:
+                type: string
+              determination_ts:
+                type: integer
+              settlement_value:
+                type: string
+              settled_ts:
+                type: integer
+              is_deactivated:
+                type: boolean
+              price_level_structure:
+                type: string
+                enum: [linear_cent, deci_cent, tapered_deci_cent]
+              floor_strike:
+                type: string
+              yes_sub_title:
+                type: string
+    MultivariateLookup:
+      name: MultivariateLookup
+      title: Multivariate Lookup (Deprecated)
+      summary: >-
+        Legacy multivariate lookup notification. Deprecated - predates RFQs and
+        should not be used for new integrations.
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [multivariate_lookup]
+          sid:
+            type: integer
+          msg:
+            type: object
+            properties:
+              collection_ticker:
+                type: string
+              event_ticker:
+                type: string
+              market_ticker:
+                type: string
+              selected_markets:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    event_ticker:
+                      type: string
+                    market_ticker:
+                      type: string
+                    side:
+                      type: string
+                      enum: [yes, no]
+    Communications:
+      name: Communications
+      title: Communications (RFQ / Quotes)
+      summary: >-
+        Real-time RFQ (Request for Quote) and quote lifecycle events
+        (authenticated). Message types: RFQCreated, RFQDeleted, QuoteCreated,
+        QuoteAccepted, QuoteExecuted.
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - rfq_created
+              - rfq_deleted
+              - quote_created
+              - quote_accepted
+              - quote_executed
+          sid:
+            type: integer
+          msg:
+            type: object
+            properties:
+              id:
+                type: string
+              quote_id:
+                type: string
+              rfq_id:
+                type: string
+              order_id:
+                type: string
+              client_order_id:
+                type: string
+              creator_id:
+                type: string
+              quote_creator_id:
+                type: string
+              rfq_creator_id:
+                type: string
+              market_ticker:
+                type: string
+              event_ticker:
+                type: string
+              mve_collection_ticker:
+                type: string
+              mve_selected_legs:
+                type: array
+                items:
+                  type: object
+              contracts_fp:
+                type: string
+              target_cost_dollars:
+                type: string
+              rfq_target_cost_dollars:
+                type: string
+              yes_bid_dollars:
+                type: string
+              no_bid_dollars:
+                type: string
+              accepted_side:
+                type: string
+                enum: [yes, no]
+              contracts_accepted_fp:
+                type: string
+              created_ts:
+                type: integer
+              deleted_ts:
+                type: integer
+              executed_ts:
+                type: integer
+    OrderGroupUpdates:
+      name: OrderGroupUpdates
+      title: Order Group Updates
+      summary: Lifecycle and limit-tracking updates for order groups (authenticated).
+      payload:
+        type: object
+        properties:
+          type:
+            type: string
+            enum: [order_group_updates]
+          sid:
+            type: integer
+          seq:
+            type: integer
+          msg:
+            type: object
+            properties:
+              event_type:
+                type: string
+                enum: [created, triggered, reset, deleted, limit_updated]
+              order_group_id:
+                type: string
+              contracts_limit_fp:
+                type: string
+              ts_ms:
+                type: integer

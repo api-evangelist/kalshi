@@ -19,7 +19,7 @@ tags:
   - Trading
   - Markets
 created: '2026-05-23'
-modified: '2026-05-23'
+modified: '2026-05-29'
 specificationVersion: '0.19'
 apis:
   - aid: kalshi:trade-api
@@ -90,6 +90,8 @@ apis:
         url: https://docs.kalshi.com/api-reference
       - type: AsyncAPI
         url: https://docs.kalshi.com/asyncapi.yaml
+      - type: AsyncAPI
+        url: https://raw.githubusercontent.com/api-evangelist/kalshi/refs/heads/main/asyncapi/kalshi-asyncapi.yml
   - aid: kalshi:openapi
     name: Kalshi OpenAPI Specification
     description: >-
