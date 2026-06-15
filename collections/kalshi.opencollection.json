@@ -1,0 +1,3254 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "exchange",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Exchange Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/exchange/status"
+          },
+          "docs": " Endpoint for getting the exchange status."
+        },
+        {
+          "info": {
+            "name": "Get Exchange Announcements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/exchange/announcements"
+          },
+          "docs": " Endpoint for getting all exchange-wide announcements."
+        },
+        {
+          "info": {
+            "name": "Get Series Fee Changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/series/fee_changes",
+            "params": [
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "show_historical",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Series Fee Changes"
+        },
+        {
+          "info": {
+            "name": "Get Exchange Schedule",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/exchange/schedule"
+          },
+          "docs": " Endpoint for getting the exchange schedule."
+        },
+        {
+          "info": {
+            "name": "Get User Data Timestamp",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/exchange/user_data_timestamp"
+          },
+          "docs": " There is typically a short delay before exchange events are reflected in the API endpoints. Whenever possible, combine API responses to PUT/POST/DELETE requests with websocket data to obtain the most accurate view of the exchange state. This endpoint provides an approximate indication of when the data from the following endpoints was last validated: GetBalance, GetOrder(s), GetFills, GetPositions"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "market",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Market Candlesticks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/series/:series_ticker/markets/:ticker/candlesticks",
+            "params": [
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "path",
+                "description": "Series ticker - the series that contains the target market"
+              },
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "path",
+                "description": "Market ticker - unique identifier for the specific market"
+              },
+              {
+                "name": "start_ts",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp (Unix timestamp). Candlesticks will include those ending on or after this time."
+              },
+              {
+                "name": "end_ts",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp (Unix timestamp). Candlesticks will include those ending on or before this time."
+              },
+              {
+                "name": "period_interval",
+                "value": "",
+                "type": "query",
+                "description": "Time period length of each candlestick in minutes. Valid values are 1 (1 minute), 60 (1 hour), or 1440 (1 day)."
+              },
+              {
+                "name": "include_latest_before_start",
+                "value": "",
+                "type": "query",
+                "description": "If true, prepends the latest candlestick available before the start_ts. This synthetic candlestick is created by:\n1. Finding the most recent real candlestick before start_ts\n2. Projecting it forward to the first period boundary (calculated as the next period interval after start_ts)\n3. Setting all OHLC prices to null, and `previous_price` to the close price from the real candlestick\n"
+              }
+            ]
+          },
+          "docs": "Time period length of each candlestick in minutes. Valid values: 1 (1 minute), 60 (1 hour), 1440 (1 day).\nCandlesticks for markets that settled before the historical cutoff are only available via `GET /historical/markets/{ticker}/candlesticks`. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.\n"
+        },
+        {
+          "info": {
+            "name": "Get Trades",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/markets/trades",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "min_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items after this Unix timestamp"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              }
+            ]
+          },
+          "docs": "Endpoint for getting all trades for all markets. A trade represents a completed transaction between two users on a specific market. Each trade includes the market ticker, price, quantity, and timestamp information. This endpoint returns a paginated response. Use the 'limit' parameter to control page size (1-1000, defaults to 100). The response includes a 'cursor' field - pass this value in the 'cursor' parameter of your next request to get the next page. An empty cursor indicates no more pages a"
+        },
+        {
+          "info": {
+            "name": "Get Market Orderbook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/markets/:ticker/orderbook",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "path",
+                "description": "Market ticker"
+              },
+              {
+                "name": "depth",
+                "value": "",
+                "type": "query",
+                "description": "Depth of the orderbook to retrieve (0 or negative means all levels, 1-100 for specific depth)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting the current order book for a specific market.  The order book shows all active bid orders for both yes and no sides of a binary market. It returns yes bids and no bids only (no asks are returned). This is because in binary markets, a bid for yes at price X is equivalent to an ask for no at price (100-X). For example, a yes bid at 7¢ is the same as a no ask at 93¢, with identical contract sizes.  Each side shows price levels with their corresponding quantities and order coun"
+        },
+        {
+          "info": {
+            "name": "Get Multiple Market Orderbooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/markets/orderbooks",
+            "params": [
+              {
+                "name": "tickers",
+                "value": "",
+                "type": "query",
+                "description": "List of market tickers to fetch orderbooks for"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for getting the current order books for multiple markets in a single request. The order book shows all active bid orders for both yes and no sides of a binary market. It returns yes bids and no bids only (no asks are returned). This is because in binary markets, a bid for yes at price X is equivalent to an ask for no at price (100-X). For example, a yes bid at 7¢ is the same as a no ask at 93¢, with identical contract sizes. Each side shows price levels with their corresponding quantiti"
+        },
+        {
+          "info": {
+            "name": "Get Series",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/series/:series_ticker",
+            "params": [
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "path",
+                "description": "The ticker of the series to retrieve"
+              },
+              {
+                "name": "include_volume",
+                "value": "",
+                "type": "query",
+                "description": "If true, includes the total volume traded across all events in this series."
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about a specific series by its ticker.  A series represents a template for recurring events that follow the same format and rules (e.g., \"Monthly Jobs Report\", \"Weekly Initial Jobless Claims\", \"Daily Weather in NYC\"). Series define the structure, settlement sources, and metadata that will be applied to each recurring event instance within that series."
+        },
+        {
+          "info": {
+            "name": "Get Series List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/series",
+            "params": [
+              {
+                "name": "category",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_product_metadata",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_volume",
+                "value": "",
+                "type": "query",
+                "description": "If true, includes the total volume traded across all events in each series."
+              },
+              {
+                "name": "min_updated_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter series with metadata updated after this Unix timestamp (in seconds). Use this to efficiently poll for changes."
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about multiple series with specified filters.  A series represents a template for recurring events that follow the same format and rules (e.g., \"Monthly Jobs Report\", \"Weekly Initial Jobless Claims\", \"Daily Weather in NYC\"). This endpoint allows you to browse and discover available series templates by category."
+        },
+        {
+          "info": {
+            "name": "Get Markets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/markets",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by series ticker"
+              },
+              {
+                "name": "min_created_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items that created after this Unix timestamp"
+              },
+              {
+                "name": "max_created_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items that created before this Unix timestamp"
+              },
+              {
+                "name": "min_updated_ts",
+                "value": "",
+                "type": "query",
+                "description": "Return markets with metadata updated later than this Unix timestamp. Tracks non-trading changes only. Incompatible with any other filters."
+              },
+              {
+                "name": "max_close_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items that close before this Unix timestamp"
+              },
+              {
+                "name": "min_close_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items that close after this Unix timestamp"
+              },
+              {
+                "name": "min_settled_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items that settled after this Unix timestamp"
+              },
+              {
+                "name": "max_settled_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items that settled before this Unix timestamp"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market status. Leave empty to return markets with any status."
+              },
+              {
+                "name": "tickers",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific market tickers. Comma-separated list of market tickers to retrieve."
+              },
+              {
+                "name": "mve_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by multivariate events (combos). 'only' returns only multivariate events, 'exclude' excludes multivariate events."
+              }
+            ]
+          },
+          "docs": "Filter by market status. Possible values: `unopened`, `open`, `closed`, `settled`. Leave empty to return markets with any status.\n - Only one `status` filter may be supplied at a time.\n - Timestamp filters will be mutually exclusive from other timestamp filters and certain status filters.\n\n | Compatible Timestamp Filters | Additional Status Filters| Extra Notes |\n |------------------------------|--------------------------|-------------|\n | min_created_ts, max_created_ts | `unopened`, `open`, *em"
+        },
+        {
+          "info": {
+            "name": "Get Market",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/markets/:ticker",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "path",
+                "description": "Market ticker"
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about a specific market by its ticker. A market represents a specific binary outcome within an event that users can trade on (e.g., \"Will candidate X win?\"). Markets have yes/no positions, current prices, volume, and settlement rules."
+        },
+        {
+          "info": {
+            "name": "Batch Get Market Candlesticks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/markets/candlesticks",
+            "params": [
+              {
+                "name": "market_tickers",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of market tickers (maximum 100)"
+              },
+              {
+                "name": "start_ts",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp in Unix seconds"
+              },
+              {
+                "name": "end_ts",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp in Unix seconds"
+              },
+              {
+                "name": "period_interval",
+                "value": "",
+                "type": "query",
+                "description": "Candlestick period interval in minutes"
+              },
+              {
+                "name": "include_latest_before_start",
+                "value": "",
+                "type": "query",
+                "description": "If true, prepends the latest candlestick available before the start_ts. This synthetic candlestick is created by:\n1. Finding the most recent real candlestick before start_ts\n2. Projecting it forward to the first period boundary (calculated as the next period interval after start_ts)\n3. Setting all OHLC prices to null, and `previous_price` to the close price from the real candlestick\n"
+              }
+            ]
+          },
+          "docs": "Endpoint for retrieving candlestick data for multiple markets.\n\n- Accepts up to 100 market tickers per request\n- Returns up to 10,000 candlesticks total across all markets\n- Returns candlesticks grouped by market_id\n- Optionally includes a synthetic initial candlestick for price continuity (see `include_latest_before_start` parameter)\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Event Candlesticks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/series/:series_ticker/events/:ticker/candlesticks",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "path",
+                "description": "The event ticker"
+              },
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "path",
+                "description": "The series ticker"
+              },
+              {
+                "name": "start_ts",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp for the range"
+              },
+              {
+                "name": "end_ts",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp for the range"
+              },
+              {
+                "name": "period_interval",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the length of each candlestick period, in minutes. Must be one minute, one hour, or one day."
+              }
+            ]
+          },
+          "docs": " End-point for returning aggregated data across all markets corresponding to an event."
+        },
+        {
+          "info": {
+            "name": "Get Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/events",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 200. Maximum value is 200."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "with_nested_markets",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify if nested markets should be included in the response. When true, each event will include a 'markets' field containing a list of Market objects associated with that event. Historical markets settled before the historical cutoff will not be included."
+              },
+              {
+                "name": "with_milestones",
+                "value": "",
+                "type": "query",
+                "description": "If true, includes related milestones as a field alongside events."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by event status. Possible values are 'unopened', 'open', 'closed', 'settled'. Leave empty to return events with any status."
+              },
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by series ticker"
+              },
+              {
+                "name": "min_close_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter events with at least one market with close timestamp greater than this Unix timestamp (in seconds)."
+              },
+              {
+                "name": "min_updated_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter events with metadata updated after this Unix timestamp (in seconds). Use this to efficiently poll for changes."
+              }
+            ]
+          },
+          "docs": "Get all events. This endpoint excludes multivariate events.\nTo retrieve multivariate events, use the GET /events/multivariate endpoint.\nAll events are accessible through this endpoint, even if their associated markets are older than the historical cutoff.\n"
+        },
+        {
+          "info": {
+            "name": "Get Multivariate Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/events/multivariate",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 200."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results."
+              },
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by series ticker"
+              },
+              {
+                "name": "collection_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter events by collection ticker. Returns only multivariate events belonging to the specified collection. Cannot be used together with series_ticker."
+              },
+              {
+                "name": "with_nested_markets",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify if nested markets should be included in the response. When true, each event will include a 'markets' field containing a list of Market objects associated with that event."
+              }
+            ]
+          },
+          "docs": "Retrieve multivariate (combo) events. These are dynamically created events from multivariate event collections. Supports filtering by series and collection ticker."
+        },
+        {
+          "info": {
+            "name": "Get Event",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/events/:event_ticker",
+            "params": [
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "path",
+                "description": "Event ticker"
+              },
+              {
+                "name": "with_nested_markets",
+                "value": "",
+                "type": "query",
+                "description": "If true, markets are included within the event object. If false (default), markets are returned as a separate top-level field in the response. Historical markets settled before the historical cutoff will not be included."
+              }
+            ]
+          },
+          "docs": "Endpoint for getting data about an event by its ticker. An event represents a real-world occurrence that can be traded on, such as an election, sports game, or economic indicator release.\nEvents contain one or more markets where users can place trades on different outcomes.\nAll events are accessible through this endpoint, even if their associated markets are older than the historical cutoff.\n"
+        },
+        {
+          "info": {
+            "name": "Get Event Metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/events/:event_ticker/metadata",
+            "params": [
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "path",
+                "description": "Event ticker"
+              }
+            ]
+          },
+          "docs": " Endpoint for getting metadata about an event by its ticker.  Returns only the metadata information for an event."
+        },
+        {
+          "info": {
+            "name": "Get Event Forecast Percentile History",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/series/:series_ticker/events/:ticker/forecast_percentile_history",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "path",
+                "description": "The event ticker"
+              },
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "path",
+                "description": "The series ticker"
+              },
+              {
+                "name": "percentiles",
+                "value": "",
+                "type": "query",
+                "description": "Array of percentile values to retrieve (0-9999, max 10 values)"
+              },
+              {
+                "name": "start_ts",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp for the range"
+              },
+              {
+                "name": "end_ts",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp for the range"
+              },
+              {
+                "name": "period_interval",
+                "value": "",
+                "type": "query",
+                "description": "Specifies the length of each forecast period, in minutes. 0 for 5-second intervals, or 1, 60, or 1440 for minute-based intervals."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for getting the historical raw and formatted forecast numbers for an event at specific percentiles."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event tickers to filter by, as a comma-separated list (maximum 10)."
+              },
+              {
+                "name": "min_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items after this Unix timestamp"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status. Possible values depend on the endpoint."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Restricts the response to orders that have a certain status: resting, canceled, or executed.\nOrders that have been canceled or fully executed before the historical cutoff are only available via `GET /historical/orders`. Resting orders will always be available through this endpoint. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.\n"
+        },
+        {
+          "info": {
+            "name": "Create Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for submitting orders in a market. Each user is limited to 200 000 open orders at a time."
+        },
+        {
+          "info": {
+            "name": "Get Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting a single order."
+        },
+        {
+          "info": {
+            "name": "Cancel Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for canceling orders. The value for the orderId should match the id field of the order you want to decrease. Commonly, DELETE-type endpoints return 204 status with no body content on success. But we can't completely delete the order, as it may be partially filled already. Instead, the DeleteOrder endpoint reduce the order completely, essentially zeroing the remaining resting contracts on it. The zeroed order is returned on the response payload as a form of validation for the client."
+        },
+        {
+          "info": {
+            "name": "Batch Create Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/batched",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for submitting a batch of orders. The maximum batch size scales with your tier's write budget — see [Rate Limits and Tiers](/getting_started/rate_limits)."
+        },
+        {
+          "info": {
+            "name": "Batch Cancel Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/batched",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for cancelling a batch of orders. The maximum batch size scales with your tier's write budget — see [Rate Limits and Tiers](/getting_started/rate_limits)."
+        },
+        {
+          "info": {
+            "name": "Amend Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id/amend",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for amending the max number of fillable contracts and/or price in an existing order. Max fillable contracts is `remaining_count` + `fill_count`."
+        },
+        {
+          "info": {
+            "name": "Decrease Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id/decrease",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for decreasing the number of contracts in an existing order. This is the only kind of edit available on order quantity. Cancelling an order is equivalent to decreasing an order amount to zero."
+        },
+        {
+          "info": {
+            "name": "Get Queue Positions for Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/queue_positions",
+            "params": [
+              {
+                "name": "market_tickers",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of market tickers to filter by"
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting queue positions for all resting orders. Queue position represents the number of contracts that need to be matched before an order receives a partial or full match, determined using price-time priority."
+        },
+        {
+          "info": {
+            "name": "Get Order Queue Position",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id/queue_position",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting an order's queue position in the order book. This represents the amount of orders that need to be matched before this order receives a partial or full match. Queue position is determined using a price-time priority."
+        },
+        {
+          "info": {
+            "name": "Create Order (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for submitting event-market orders using the V2 request/response shape (single-book `bid`/`ask` side and fixed-point dollar prices). The legacy `/portfolio/orders` endpoint will be deprecated no earlier than May 6, 2026 — clients should migrate to this path."
+        },
+        {
+          "info": {
+            "name": "Batch Create Orders (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/batched",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for submitting a batch of event-market orders using the V2 request/response shape. The maximum batch size scales with your tier's write budget — see [Rate Limits and Tiers](/getting_started/rate_limits)."
+        },
+        {
+          "info": {
+            "name": "Batch Cancel Orders (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/batched",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for cancelling a batch of event-market orders using the V2 response shape. The maximum batch size scales with your tier's write budget — see [Rate Limits and Tiers](/getting_started/rate_limits)."
+        },
+        {
+          "info": {
+            "name": "Cancel Order (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/:order_id",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for cancelling event-market orders using the V2 response shape. Returns `{order_id, client_order_id, reduced_by}` rather than a full order object."
+        },
+        {
+          "info": {
+            "name": "Amend Order (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/:order_id/amend",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for amending the price and/or max fillable count of an existing event-market order using the V2 request/response shape. The request `count` is the updated total/max fillable count, equal to already filled count plus desired resting remaining count. This behavior matches the v1 amend endpoints; only the request/response shape differs."
+        },
+        {
+          "info": {
+            "name": "Decrease Order (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/:order_id/decrease",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for decreasing the remaining count of an existing event-market order using the V2 request/response shape. Exactly one of `reduce_by` or `reduce_to` must be provided."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "order-groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Order Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups",
+            "params": [
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Retrieves all order groups for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Create Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Creates a new order group with a contracts limit measured over a rolling 15-second window. When the limit is hit, all orders in the group are cancelled and no new orders can be placed until reset."
+        },
+        {
+          "info": {
+            "name": "Get Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Retrieves details for a single order group including all order IDs and auto-cancel status."
+        },
+        {
+          "info": {
+            "name": "Delete Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Deletes an order group and cancels all orders within it. This permanently removes the group."
+        },
+        {
+          "info": {
+            "name": "Reset Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id/reset",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Resets the order group's matched contracts counter to zero, allowing new orders to be placed again after the limit was hit."
+        },
+        {
+          "info": {
+            "name": "Trigger Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id/trigger",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Triggers the order group, canceling all orders in the group and preventing new orders until the group is reset."
+        },
+        {
+          "info": {
+            "name": "Update Order Group Limit",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id/limit",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Updates the order group contracts limit (rolling 15-second window). If the updated limit would immediately trigger the group, all orders in the group are canceled and the group is triggered."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "portfolio",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/balance",
+            "params": [
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting the balance and portfolio value of a member. Both values are returned in cents."
+        },
+        {
+          "info": {
+            "name": "Create Subaccount",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/subaccounts",
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new subaccount for the authenticated user. This endpoint is currently only available to institutions and market makers. Subaccounts are numbered sequentially starting from 1. Maximum 32 subaccounts per user."
+        },
+        {
+          "info": {
+            "name": "Transfer Between Subaccounts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/subaccounts/transfer",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Transfers funds between the authenticated user's subaccounts. Use 0 for the primary account, or 1-32 for numbered subaccounts."
+        },
+        {
+          "info": {
+            "name": "Get All Subaccount Balances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/subaccounts/balances",
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Gets balances for all subaccounts including the primary account."
+        },
+        {
+          "info": {
+            "name": "Get Subaccount Transfers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/subaccounts/transfers",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Gets a paginated list of all transfers between subaccounts for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Get Subaccount Netting",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/subaccounts/netting",
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Gets the netting enabled settings for all subaccounts."
+        },
+        {
+          "info": {
+            "name": "Update Subaccount Netting",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/subaccounts/netting",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates the netting enabled setting for a specific subaccount. Use 0 for the primary account, or 1-32 for numbered subaccounts."
+        },
+        {
+          "info": {
+            "name": "Get Positions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/positions",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The Cursor represents a pointer to the next page of records in the pagination. Use the value returned from the previous response to get the next page."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 100."
+              },
+              {
+                "name": "count_filter",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the positions to those with any of following fields with non-zero values, as a comma separated list. The following values are accepted - position, total_traded"
+              },
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Restricts the positions to those with any of following fields with non-zero values, as a comma separated list. The following values are accepted: position, total_traded"
+        },
+        {
+          "info": {
+            "name": "Get Settlements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/settlements",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "min_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items after this Unix timestamp"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting the member's settlements historical track."
+        },
+        {
+          "info": {
+            "name": "Get Deposits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/deposits",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 500."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for getting the member's deposit history."
+        },
+        {
+          "info": {
+            "name": "Get Withdrawals",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/withdrawals",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 500."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for getting the member's withdrawal history."
+        },
+        {
+          "info": {
+            "name": "Get Total Resting Order Value",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/summary/total_resting_order_value",
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting the total value, in cents, of resting orders. This endpoint is only intended for use by FCM members (rare). Note: If you're uncertain about this endpoint, it likely does not apply to you."
+        },
+        {
+          "info": {
+            "name": "Get Fills",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/fills",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by order ID"
+              },
+              {
+                "name": "min_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items after this Unix timestamp"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for getting all fills for the member. A fill is when a trade you have is matched.\nFills that occurred before the historical cutoff are only available via `GET /historical/fills`. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "communications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Communications ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/id",
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting the communications ID of the logged-in user."
+        },
+        {
+          "info": {
+            "name": "Get RFQs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/rfqs",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "market_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 100."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter RFQs by status"
+              },
+              {
+                "name": "creator_user_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter RFQs by creator user ID"
+              },
+              {
+                "name": "user_filter",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting RFQs"
+        },
+        {
+          "info": {
+            "name": "Create RFQ",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/rfqs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for creating a new RFQ. You can have a maximum of 100 open RFQs at a time."
+        },
+        {
+          "info": {
+            "name": "Get RFQ",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/rfqs/:rfq_id",
+            "params": [
+              {
+                "name": "rfq_id",
+                "value": "",
+                "type": "path",
+                "description": "RFQ ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting a single RFQ by id"
+        },
+        {
+          "info": {
+            "name": "Delete RFQ",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/rfqs/:rfq_id",
+            "params": [
+              {
+                "name": "rfq_id",
+                "value": "",
+                "type": "path",
+                "description": "RFQ ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for deleting an RFQ by ID"
+        },
+        {
+          "info": {
+            "name": "Get Quotes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "market_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 500."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by status"
+              },
+              {
+                "name": "quote_creator_user_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by quote creator user ID"
+              },
+              {
+                "name": "user_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter for quotes created by the authenticated user."
+              },
+              {
+                "name": "rfq_user_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter for quotes responding to RFQs created by the authenticated user."
+              },
+              {
+                "name": "rfq_creator_user_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by RFQ creator user ID"
+              },
+              {
+                "name": "rfq_creator_subtrader_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by RFQ creator subtrader ID (FCM members only)"
+              },
+              {
+                "name": "rfq_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by RFQ ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting quotes"
+        },
+        {
+          "info": {
+            "name": "Create Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for creating a quote in response to an RFQ"
+        },
+        {
+          "info": {
+            "name": "Get Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes/:quote_id",
+            "params": [
+              {
+                "name": "quote_id",
+                "value": "",
+                "type": "path",
+                "description": "Quote ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting a particular quote"
+        },
+        {
+          "info": {
+            "name": "Delete Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes/:quote_id",
+            "params": [
+              {
+                "name": "quote_id",
+                "value": "",
+                "type": "path",
+                "description": "Quote ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for deleting a quote, which means it can no longer be accepted."
+        },
+        {
+          "info": {
+            "name": "Accept Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes/:quote_id/accept",
+            "params": [
+              {
+                "name": "quote_id",
+                "value": "",
+                "type": "path",
+                "description": "Quote ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for accepting a quote. This will require the quoter to confirm"
+        },
+        {
+          "info": {
+            "name": "Confirm Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes/:quote_id/confirm",
+            "params": [
+              {
+                "name": "quote_id",
+                "value": "",
+                "type": "path",
+                "description": "Quote ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for confirming a quote. This will start a timer for order execution"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "api-keys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get API Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/api_keys",
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for retrieving all API keys associated with the authenticated user.  API keys allow programmatic access to the platform without requiring username/password authentication. Each key has a unique identifier and name."
+        },
+        {
+          "info": {
+            "name": "Create API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/api_keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for creating a new API key with a user-provided public key.  This endpoint allows users with Premier or Market Maker API usage levels to create API keys by providing their own RSA public key. The platform will use this public key to verify signatures on API requests."
+        },
+        {
+          "info": {
+            "name": "Generate API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/api_keys/generate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for generating a new API key with an automatically created key pair.  This endpoint generates both a public and private RSA key pair. The public key is stored on the platform, while the private key is returned to the user and must be stored securely. The private key cannot be retrieved again."
+        },
+        {
+          "info": {
+            "name": "Delete API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/api_keys/:api_key",
+            "params": [
+              {
+                "name": "api_key",
+                "value": "",
+                "type": "path",
+                "description": "API key ID to delete"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for deleting an existing API key.  This endpoint permanently deletes an API key. Once deleted, the key can no longer be used for authentication. This action cannot be undone."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Account API Limits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/account/limits",
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint to retrieve the API tier limits associated with the authenticated user."
+        },
+        {
+          "info": {
+            "name": "List Non-Default Endpoint Costs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/account/endpoint_costs"
+          },
+          "docs": "Lists API v2 endpoints whose configured token cost differs from the default cost. Endpoints that use the default cost are omitted."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Tags for Series Categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/search/tags_by_categories"
+          },
+          "docs": "Retrieve tags organized by series categories.\n\nThis endpoint returns a mapping of series categories to their associated tags, which can be used for filtering and search functionality.\n"
+        },
+        {
+          "info": {
+            "name": "Get Filters for Sports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/search/filters_by_sport"
+          },
+          "docs": "Retrieve available filters organized by sport.\n\nThis endpoint returns filtering options available for each sport, including scopes and competitions. It also provides an ordered list of sports for display purposes.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "live-data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Live Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/live_data/milestone/:milestone_id",
+            "params": [
+              {
+                "name": "milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Milestone ID"
+              },
+              {
+                "name": "include_player_stats",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes player-level statistics in the live data response. Supported for Pro Football, Pro Basketball, and College Men's Basketball milestones that have player ID mappings configured. Has no effect for other sports or milestones without player mappings."
+              }
+            ]
+          },
+          "docs": "Get live data for a specific milestone."
+        },
+        {
+          "info": {
+            "name": "Get Live Data (with type)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/live_data/:type/milestone/:milestone_id",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Type of live data"
+              },
+              {
+                "name": "milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Milestone ID"
+              },
+              {
+                "name": "include_player_stats",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes player-level statistics in the live data response. Supported for Pro Football, Pro Basketball, and College Men's Basketball milestones that have player ID mappings configured. Has no effect for other sports or milestones without player mappings."
+              }
+            ]
+          },
+          "docs": "Get live data for a specific milestone. This is the legacy endpoint that requires a type path parameter. Prefer using `/live_data/milestone/{milestone_id}` instead."
+        },
+        {
+          "info": {
+            "name": "Get Multiple Live Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/live_data/batch",
+            "params": [
+              {
+                "name": "milestone_ids",
+                "value": "",
+                "type": "query",
+                "description": "Array of milestone IDs"
+              },
+              {
+                "name": "include_player_stats",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes player-level statistics in the live data response. Supported for Pro Football, Pro Basketball, and College Men's Basketball milestones that have player ID mappings configured. Has no effect for other sports or milestones without player mappings."
+              }
+            ]
+          },
+          "docs": "Get live data for multiple milestones"
+        },
+        {
+          "info": {
+            "name": "Get Game Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/live_data/milestone/:milestone_id/game_stats",
+            "params": [
+              {
+                "name": "milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Milestone ID"
+              }
+            ]
+          },
+          "docs": "Get play-by-play game statistics for a specific milestone. Supported sports: Pro Football, College Football, Pro Basketball, College Men's Basketball, College Women's Basketball, WNBA, Soccer, Pro Hockey, and Pro Baseball. Returns null for unsupported milestone types or milestones without a Sportradar ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "structured-targets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Structured Targets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/structured_targets",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific structured target IDs. Pass multiple IDs by repeating the parameter (e.g. `?ids=uuid1&ids=uuid2`)."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by structured target type"
+              },
+              {
+                "name": "competition",
+                "value": "",
+                "type": "query",
+                "description": "Filter by competition. Matches against the league, conference, division, or tour in the structured target details."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (min 1, max 2000, default 100)"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor"
+              }
+            ]
+          },
+          "docs": "Page size (min: 1, max: 2000)"
+        },
+        {
+          "info": {
+            "name": "Get Structured Target",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/structured_targets/:structured_target_id",
+            "params": [
+              {
+                "name": "structured_target_id",
+                "value": "",
+                "type": "path",
+                "description": "Structured target ID"
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about a specific structured target by its ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "milestone",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Milestone",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/milestones/:milestone_id",
+            "params": [
+              {
+                "name": "milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Milestone ID"
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about a specific milestone by its ID."
+        },
+        {
+          "info": {
+            "name": "Get Milestones",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/milestones",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of milestones to return per page"
+              },
+              {
+                "name": "minimum_start_date",
+                "value": "",
+                "type": "query",
+                "description": "Minimum start date to filter milestones. Format RFC3339 timestamp"
+              },
+              {
+                "name": "category",
+                "value": "",
+                "type": "query",
+                "description": "Filter by milestone category. E.g. Sports, Elections, Esports, Crypto."
+              },
+              {
+                "name": "competition",
+                "value": "",
+                "type": "query",
+                "description": "Filter by competition. E.g. Pro Football, Pro Basketball (M), Pro Baseball, Pro Hockey, College Football."
+              },
+              {
+                "name": "source_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter by source id"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by milestone type. E.g. football_game, basketball_game, soccer_tournament_multi_leg, baseball_game, hockey_match, political_race."
+              },
+              {
+                "name": "related_event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by related event ticker"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results"
+              },
+              {
+                "name": "min_updated_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter milestones with metadata updated after this Unix timestamp (in seconds). Use this to efficiently poll for changes."
+              }
+            ]
+          },
+          "docs": "Minimum start date to filter milestones. Format: RFC3339 timestamp"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "multivariate",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Multivariate Event Collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/multivariate_event_collections/:collection_ticker",
+            "params": [
+              {
+                "name": "collection_ticker",
+                "value": "",
+                "type": "path",
+                "description": "Collection ticker"
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about a multivariate event collection by its ticker."
+        },
+        {
+          "info": {
+            "name": "Create Market In Multivariate Event Collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/multivariate_event_collections/:collection_ticker",
+            "params": [
+              {
+                "name": "collection_ticker",
+                "value": "",
+                "type": "path",
+                "description": "Collection ticker"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for creating an individual market in a multivariate event collection. This endpoint must be hit at least once before trading or looking up a market. Users are limited to 5000 creations per week."
+        },
+        {
+          "info": {
+            "name": "Get Multivariate Event Collections",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/multivariate_event_collections",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Only return collections of a certain status. Can be unopened, open, or closed."
+              },
+              {
+                "name": "associated_event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Only return collections associated with a particular event ticker."
+              },
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Only return collections with a particular series ticker."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Specify the maximum number of results."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The Cursor represents a pointer to the next page of records in the pagination. This optional parameter, when filled, should be filled with the cursor string returned in a previous request to this end-point."
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about multivariate event collections."
+        },
+        {
+          "info": {
+            "name": "Get Multivariate Event Collection Lookup History",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/multivariate_event_collections/:collection_ticker/lookup",
+            "params": [
+              {
+                "name": "collection_ticker",
+                "value": "",
+                "type": "path",
+                "description": "Collection ticker"
+              },
+              {
+                "name": "lookback_seconds",
+                "value": "",
+                "type": "query",
+                "description": "Number of seconds to look back for lookup history. Must be one of 10, 60, 300, or 3600."
+              }
+            ]
+          },
+          "docs": "DEPRECATED: This endpoint predates RFQs and should not be used for new integrations. Endpoint for retrieving which markets in an event collection were recently looked up."
+        },
+        {
+          "info": {
+            "name": "Lookup Tickers For Market In Multivariate Event Collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/multivariate_event_collections/:collection_ticker/lookup",
+            "params": [
+              {
+                "name": "collection_ticker",
+                "value": "",
+                "type": "path",
+                "description": "Collection ticker"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "DEPRECATED: This endpoint predates RFQs and should not be used for new integrations. Endpoint for looking up an individual market in a multivariate event collection. If CreateMarketInMultivariateEventCollection has never been hit with that variable combination before, this will return a 404."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "incentive-programs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Incentives",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/incentive_programs",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Status filter. Can be \"all\", \"active\", \"upcoming\", \"closed\", or \"paid_out\". Default is \"all\"."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type filter. Can be \"all\", \"liquidity\", or \"volume\". Default is \"all\"."
+              },
+              {
+                "name": "incentive_description",
+                "value": "",
+                "type": "query",
+                "description": "Filter by exact incentive description."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 10000."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination"
+              }
+            ]
+          },
+          "docs": " List incentives with optional filters. Incentives are rewards programs for trading activity on specific markets."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "fcm",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get FCM Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/fcm/orders",
+            "params": [
+              {
+                "name": "subtrader_id",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to orders for a specific subtrader (FCM members only)"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "min_ts",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to orders after a timestamp, formatted as a Unix Timestamp"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to orders before a timestamp, formatted as a Unix Timestamp"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to orders that have a certain status"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 100"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for FCM members to get orders filtered by subtrader ID.\nThis endpoint requires FCM member access level and allows filtering orders by subtrader ID.\n"
+        },
+        {
+          "info": {
+            "name": "Get FCM Positions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/fcm/positions",
+            "params": [
+              {
+                "name": "subtrader_id",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to positions for a specific subtrader (FCM members only)"
+              },
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Ticker of desired positions"
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker of desired positions"
+              },
+              {
+                "name": "count_filter",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the positions to those with any of following fields with non-zero values, as a comma separated list"
+              },
+              {
+                "name": "settlement_status",
+                "value": "",
+                "type": "query",
+                "description": "Settlement status of the markets to return. Defaults to unsettled"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 100"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The Cursor represents a pointer to the next page of records in the pagination"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for FCM members to get market positions filtered by subtrader ID.\nThis endpoint requires FCM member access level and allows filtering positions by subtrader ID.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "historical",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Historical Cutoff Timestamps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/cutoff"
+          },
+          "docs": "Returns the cutoff timestamps that define the boundary between **live** and **historical** data.\n\n## Cutoff fields\n- `market_settled_ts` : Markets that **settled** before this timestamp, and their candlesticks, must be accessed via `GET /historical/markets` and `GET /historical/markets/{ticker}/candlesticks`.\n- `trades_created_ts` : Trades that were **filled** before this timestamp must be accessed via `GET /historical/fills`.\n- `orders_updated_ts` : Orders that were **canceled or fully executed"
+        },
+        {
+          "info": {
+            "name": "Get Historical Market Candlesticks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/markets/:ticker/candlesticks",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "path",
+                "description": "Market ticker - unique identifier for the specific market"
+              },
+              {
+                "name": "start_ts",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp (Unix timestamp). Candlesticks will include those ending on or after this time."
+              },
+              {
+                "name": "end_ts",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp (Unix timestamp). Candlesticks will include those ending on or before this time."
+              },
+              {
+                "name": "period_interval",
+                "value": "",
+                "type": "query",
+                "description": "Time period length of each candlestick in minutes. Valid values are 1 (1 minute), 60 (1 hour), or 1440 (1 day)."
+              }
+            ]
+          },
+          "docs": " Endpoint for fetching historical candlestick data for markets that have been archived from the live data set. Time period length of each candlestick in minutes. Valid values: 1 (1 minute), 60 (1 hour), 1440 (1 day)."
+        },
+        {
+          "info": {
+            "name": "Get Historical Fills",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/fills",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting all historical fills for the member. A fill is when a trade you have is matched."
+        },
+        {
+          "info": {
+            "name": "Get Historical Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/orders",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting orders that have been archived to the historical database."
+        },
+        {
+          "info": {
+            "name": "Get Historical Trades",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/trades",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "min_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items after this Unix timestamp"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              }
+            ]
+          },
+          "docs": " Endpoint for getting all historical trades for all markets. Trades that were filled before the historical cutoff are available via this endpoint. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details."
+        },
+        {
+          "info": {
+            "name": "Get Historical Markets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/markets",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "tickers",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific market tickers. Comma-separated list of market tickers to retrieve."
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by series ticker"
+              },
+              {
+                "name": "mve_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by multivariate events (combos). By default, MVE markets are included."
+              }
+            ]
+          },
+          "docs": "Endpoint for getting markets that have been archived to the historical database. Filters are mutually exclusive.\n"
+        },
+        {
+          "info": {
+            "name": "Get Historical Market",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/markets/:ticker",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "path",
+                "description": "Market ticker"
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about a specific market by its ticker from the historical database."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
