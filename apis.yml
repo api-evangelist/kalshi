@@ -140,7 +140,7 @@ common:
     url: https://kalshi.com/
   - type: Documentation
     url: https://docs.kalshi.com/
-  - type: API Reference
+  - type: APIReference
     url: https://docs.kalshi.com/api-reference
   - type: Help
     url: https://help.kalshi.com/
@@ -150,7 +150,7 @@ common:
     url: https://kalshi.com/developer-agreement
   - type: LinkedIn
     url: https://www.linkedin.com/company/kalshi/
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://docs.kalshi.com/llms.txt
 maintainers:
   - FN: Kin Lane
