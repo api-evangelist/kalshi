@@ -136,6 +136,10 @@ apis:
       - type: Repository
         url: https://github.com/Kalshi/kalshi-starter-code-python
 common:
+  - type: DomainSecurity
+    url: security/kalshi-domain-security.yml
+  - type: Authentication
+    url: authentication/kalshi-authentication.yml
   - type: Website
     url: https://kalshi.com/
   - type: Documentation

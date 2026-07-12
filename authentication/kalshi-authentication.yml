@@ -1,0 +1,30 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/kalshi-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+schemes:
+- name: kalshiAccessKey
+  type: apiKey
+  in: header
+  parameter: KALSHI-ACCESS-KEY
+  description: Your API key ID
+  sources:
+  - openapi/kalshi-openapi.yml
+- name: kalshiAccessSignature
+  type: apiKey
+  in: header
+  parameter: KALSHI-ACCESS-SIGNATURE
+  description: RSA-PSS signature of the request
+  sources:
+  - openapi/kalshi-openapi.yml
+- name: kalshiAccessTimestamp
+  type: apiKey
+  in: header
+  parameter: KALSHI-ACCESS-TIMESTAMP
+  description: Request timestamp in milliseconds
+  sources:
+  - openapi/kalshi-openapi.yml
