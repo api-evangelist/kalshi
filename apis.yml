@@ -136,6 +136,8 @@ apis:
       - type: Repository
         url: https://github.com/Kalshi/kalshi-starter-code-python
 common:
+  - type: AgenticAccess
+    url: agentic-access/kalshi-agentic-access.yml
   - type: DomainSecurity
     url: security/kalshi-domain-security.yml
   - type: Authentication
