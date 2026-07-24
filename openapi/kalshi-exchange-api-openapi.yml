@@ -1,0 +1,383 @@
+openapi: 3.0.0
+info:
+  title: Kalshi Trade API Manual Endpoints account exchange API
+  version: 3.19.0
+  description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
+servers:
+- url: https://external-api.kalshi.com/trade-api/v2
+  description: Production Trade API server
+- url: https://api.elections.kalshi.com/trade-api/v2
+  description: Production shared API server, also supported
+- url: https://external-api.demo.kalshi.co/trade-api/v2
+  description: Demo Trade API server
+- url: https://demo-api.kalshi.co/trade-api/v2
+  description: Demo shared API server, also supported
+tags:
+- name: exchange
+  description: Exchange status and information endpoints
+paths:
+  /exchange/status:
+    get:
+      operationId: GetExchangeStatus
+      summary: Get Exchange Status
+      description: ' Endpoint for getting the exchange status.'
+      tags:
+      - exchange
+      responses:
+        '200':
+          description: Exchange status retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeStatus'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeStatus'
+        '503':
+          description: Service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeStatus'
+        '504':
+          description: Gateway timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExchangeStatus'
+  /exchange/announcements:
+    get:
+      operationId: GetExchangeAnnouncements
+      summary: Get Exchange Announcements
+      description: ' Endpoint for getting all exchange-wide announcements.'
+      tags:
+      - exchange
+      responses:
+        '200':
+          description: Exchange announcements retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExchangeAnnouncementsResponse'
+        '500':
+          description: Internal server error
+  /series/fee_changes:
+    get:
+      operationId: GetSeriesFeeChanges
+      summary: Get Series Fee Changes
+      tags:
+      - exchange
+      parameters:
+      - name: series_ticker
+        in: query
+        required: false
+        schema:
+          type: string
+        x-go-type-skip-optional-pointer: true
+      - name: show_historical
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+        x-go-type-skip-optional-pointer: true
+      responses:
+        '200':
+          description: Series fee changes retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSeriesFeeChangesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /exchange/schedule:
+    get:
+      operationId: GetExchangeSchedule
+      summary: Get Exchange Schedule
+      description: ' Endpoint for getting the exchange schedule.'
+      tags:
+      - exchange
+      responses:
+        '200':
+          description: Exchange schedule retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExchangeScheduleResponse'
+        '500':
+          description: Internal server error
+  /exchange/user_data_timestamp:
+    get:
+      operationId: GetUserDataTimestamp
+      summary: Get User Data Timestamp
+      description: ' There is typically a short delay before exchange events are reflected in the API endpoints. Whenever possible, combine API responses to PUT/POST/DELETE requests with websocket data to obtain the most accurate view of the exchange state. This endpoint provides an approximate indication of when the data from the following endpoints was last validated: GetBalance, GetOrder(s), GetFills, GetPositions'
+      tags:
+      - exchange
+      responses:
+        '200':
+          description: User data timestamp retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserDataTimestampResponse'
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    GetSeriesFeeChangesResponse:
+      type: object
+      required:
+      - series_fee_change_arr
+      properties:
+        series_fee_change_arr:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeriesFeeChange'
+    WeeklySchedule:
+      type: object
+      required:
+      - start_time
+      - end_time
+      - monday
+      - tuesday
+      - wednesday
+      - thursday
+      - friday
+      - saturday
+      - sunday
+      properties:
+        start_time:
+          type: string
+          format: date-time
+          description: Start date and time for when this weekly schedule is effective.
+        end_time:
+          type: string
+          format: date-time
+          description: End date and time for when this weekly schedule is no longer effective.
+        monday:
+          type: array
+          description: Trading hours for Monday. May contain multiple sessions.
+          items:
+            $ref: '#/components/schemas/DailySchedule'
+        tuesday:
+          type: array
+          description: Trading hours for Tuesday. May contain multiple sessions.
+          items:
+            $ref: '#/components/schemas/DailySchedule'
+        wednesday:
+          type: array
+          description: Trading hours for Wednesday. May contain multiple sessions.
+          items:
+            $ref: '#/components/schemas/DailySchedule'
+        thursday:
+          type: array
+          description: Trading hours for Thursday. May contain multiple sessions.
+          items:
+            $ref: '#/components/schemas/DailySchedule'
+        friday:
+          type: array
+          description: Trading hours for Friday. May contain multiple sessions.
+          items:
+            $ref: '#/components/schemas/DailySchedule'
+        saturday:
+          type: array
+          description: Trading hours for Saturday. May contain multiple sessions.
+          items:
+            $ref: '#/components/schemas/DailySchedule'
+        sunday:
+          type: array
+          description: Trading hours for Sunday. May contain multiple sessions.
+          items:
+            $ref: '#/components/schemas/DailySchedule'
+    GetExchangeScheduleResponse:
+      type: object
+      required:
+      - schedule
+      properties:
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+    SeriesFeeChange:
+      type: object
+      required:
+      - id
+      - series_ticker
+      - fee_type
+      - fee_multiplier
+      - scheduled_ts
+      properties:
+        id:
+          type: string
+          description: Unique identifier for this fee change
+        series_ticker:
+          type: string
+          description: Series ticker this fee change applies to
+        fee_type:
+          type: string
+          enum:
+          - quadratic
+          - quadratic_with_maker_fees
+          - flat
+          description: New fee type for the series
+        fee_multiplier:
+          type: number
+          format: double
+          description: New fee multiplier for the series
+        scheduled_ts:
+          type: string
+          format: date-time
+          description: Timestamp when this fee change is scheduled to take effect
+    GetUserDataTimestampResponse:
+      type: object
+      required:
+      - as_of_time
+      properties:
+        as_of_time:
+          type: string
+          format: date-time
+          description: Timestamp when user data was last updated.
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
+    Schedule:
+      type: object
+      required:
+      - standard_hours
+      - maintenance_windows
+      properties:
+        standard_hours:
+          type: array
+          description: The standard operating hours of the exchange. All times are expressed in ET. Outside of these times trading will be unavailable.
+          items:
+            $ref: '#/components/schemas/WeeklySchedule'
+        maintenance_windows:
+          type: array
+          description: Scheduled maintenance windows, during which the exchange may be unavailable.
+          items:
+            $ref: '#/components/schemas/MaintenanceWindow'
+    MaintenanceWindow:
+      type: object
+      required:
+      - start_datetime
+      - end_datetime
+      properties:
+        start_datetime:
+          type: string
+          format: date-time
+          description: Start date and time of the maintenance window.
+        end_datetime:
+          type: string
+          format: date-time
+          description: End date and time of the maintenance window.
+    Announcement:
+      type: object
+      required:
+      - type
+      - message
+      - delivery_time
+      - status
+      properties:
+        type:
+          type: string
+          enum:
+          - info
+          - warning
+          - error
+          description: The type of the announcement.
+        message:
+          type: string
+          description: The message contained within the announcement.
+        delivery_time:
+          type: string
+          format: date-time
+          description: The time the announcement was delivered.
+        status:
+          type: string
+          enum:
+          - active
+          - inactive
+          description: The current status of this announcement.
+    DailySchedule:
+      type: object
+      required:
+      - open_time
+      - close_time
+      properties:
+        open_time:
+          type: string
+          description: Opening time in ET (Eastern Time) format HH:MM.
+        close_time:
+          type: string
+          description: Closing time in ET (Eastern Time) format HH:MM.
+    ExchangeStatus:
+      type: object
+      required:
+      - exchange_active
+      - trading_active
+      properties:
+        exchange_active:
+          type: boolean
+          description: False if the core Kalshi exchange is no longer taking any state changes at all. This includes but is not limited to trading, new users, and transfers. True unless we are under maintenance.
+        trading_active:
+          type: boolean
+          description: True if we are currently permitting trading on the exchange. This is true during trading hours and false outside exchange hours. Kalshi reserves the right to pause at any time in case issues are detected.
+        exchange_estimated_resume_time:
+          type: string
+          format: date-time
+          description: Estimated downtime for the current exchange maintenance window. However, this is not guaranteed and can be extended.
+          nullable: true
+    GetExchangeAnnouncementsResponse:
+      type: object
+      required:
+      - announcements
+      properties:
+        announcements:
+          type: array
+          description: A list of exchange-wide announcements.
+          items:
+            $ref: '#/components/schemas/Announcement'
+  responses:
+    BadRequestError:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    kalshiAccessKey:
+      type: apiKey
+      in: header
+      name: KALSHI-ACCESS-KEY
+      description: Your API key ID
+    kalshiAccessSignature:
+      type: apiKey
+      in: header
+      name: KALSHI-ACCESS-SIGNATURE
+      description: RSA-PSS signature of the request
+    kalshiAccessTimestamp:
+      type: apiKey
+      in: header
+      name: KALSHI-ACCESS-TIMESTAMP
+      description: Request timestamp in milliseconds

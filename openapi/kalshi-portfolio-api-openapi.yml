@@ -1,0 +1,1096 @@
+openapi: 3.0.0
+info:
+  title: Kalshi Trade API Manual Endpoints account portfolio API
+  version: 3.19.0
+  description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
+servers:
+- url: https://external-api.kalshi.com/trade-api/v2
+  description: Production Trade API server
+- url: https://api.elections.kalshi.com/trade-api/v2
+  description: Production shared API server, also supported
+- url: https://external-api.demo.kalshi.co/trade-api/v2
+  description: Demo Trade API server
+- url: https://demo-api.kalshi.co/trade-api/v2
+  description: Demo shared API server, also supported
+tags:
+- name: portfolio
+  description: Portfolio and balance information endpoints
+paths:
+  /portfolio/balance:
+    get:
+      operationId: GetBalance
+      summary: Get Balance
+      description: ' Endpoint for getting the balance and portfolio value of a member. Both values are returned in cents.'
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      parameters:
+      - $ref: '#/components/parameters/SubaccountQueryDefaultPrimary'
+      responses:
+        '200':
+          description: Balance retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBalanceResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/subaccounts:
+    post:
+      operationId: CreateSubaccount
+      summary: Create Subaccount
+      description: Creates a new subaccount for the authenticated user. This endpoint is currently only available to institutions and market makers. Subaccounts are numbered sequentially starting from 1. Maximum 32 subaccounts per user.
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      responses:
+        '201':
+          description: Subaccount created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSubaccountResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/subaccounts/transfer:
+    post:
+      operationId: ApplySubaccountTransfer
+      summary: Transfer Between Subaccounts
+      description: Transfers funds between the authenticated user's subaccounts. Use 0 for the primary account, or 1-32 for numbered subaccounts.
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplySubaccountTransferRequest'
+      responses:
+        '200':
+          description: Transfer completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplySubaccountTransferResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/subaccounts/balances:
+    get:
+      operationId: GetSubaccountBalances
+      summary: Get All Subaccount Balances
+      description: Gets balances for all subaccounts including the primary account.
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      responses:
+        '200':
+          description: Balances retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSubaccountBalancesResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/subaccounts/transfers:
+    get:
+      operationId: GetSubaccountTransfers
+      summary: Get Subaccount Transfers
+      description: Gets a paginated list of all transfers between subaccounts for the authenticated user.
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      parameters:
+      - $ref: '#/components/parameters/LimitQuery'
+      - $ref: '#/components/parameters/CursorQuery'
+      responses:
+        '200':
+          description: Transfers retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSubaccountTransfersResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/subaccounts/netting:
+    put:
+      operationId: UpdateSubaccountNetting
+      summary: Update Subaccount Netting
+      description: Updates the netting enabled setting for a specific subaccount. Use 0 for the primary account, or 1-32 for numbered subaccounts.
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSubaccountNettingRequest'
+      responses:
+        '200':
+          description: Netting setting updated successfully
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      operationId: GetSubaccountNetting
+      summary: Get Subaccount Netting
+      description: Gets the netting enabled settings for all subaccounts.
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      responses:
+        '200':
+          description: Netting settings retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSubaccountNettingResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/positions:
+    get:
+      operationId: GetPositions
+      summary: Get Positions
+      description: 'Restricts the positions to those with any of following fields with non-zero values, as a comma separated list. The following values are accepted: position, total_traded'
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      parameters:
+      - $ref: '#/components/parameters/PositionsCursorQuery'
+      - $ref: '#/components/parameters/PositionsLimitQuery'
+      - $ref: '#/components/parameters/CountFilterQuery'
+      - $ref: '#/components/parameters/TickerQuery'
+      - $ref: '#/components/parameters/SingleEventTickerQuery'
+      - $ref: '#/components/parameters/SubaccountQueryDefaultPrimary'
+      responses:
+        '200':
+          description: Positions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPositionsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/settlements:
+    get:
+      operationId: GetSettlements
+      summary: Get Settlements
+      description: ' Endpoint for getting the member''s settlements historical track.'
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      parameters:
+      - $ref: '#/components/parameters/LimitQuery'
+      - $ref: '#/components/parameters/CursorQuery'
+      - $ref: '#/components/parameters/TickerQuery'
+      - $ref: '#/components/parameters/SingleEventTickerQuery'
+      - $ref: '#/components/parameters/MinTsQuery'
+      - $ref: '#/components/parameters/MaxTsQuery'
+      - $ref: '#/components/parameters/SubaccountQuery'
+      responses:
+        '200':
+          description: Settlements retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSettlementsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/deposits:
+    get:
+      operationId: GetDeposits
+      summary: Get Deposits
+      description: Endpoint for getting the member's deposit history.
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      parameters:
+      - $ref: '#/components/parameters/WithdrawalLimitQuery'
+      - $ref: '#/components/parameters/CursorQuery'
+      responses:
+        '200':
+          description: Deposits retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDepositsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/withdrawals:
+    get:
+      operationId: GetWithdrawals
+      summary: Get Withdrawals
+      description: Endpoint for getting the member's withdrawal history.
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      parameters:
+      - $ref: '#/components/parameters/WithdrawalLimitQuery'
+      - $ref: '#/components/parameters/CursorQuery'
+      responses:
+        '200':
+          description: Withdrawals retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWithdrawalsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/summary/total_resting_order_value:
+    get:
+      operationId: GetPortfolioRestingOrderTotalValue
+      summary: Get Total Resting Order Value
+      description: ' Endpoint for getting the total value, in cents, of resting orders. This endpoint is only intended for use by FCM members (rare). Note: If you''re uncertain about this endpoint, it likely does not apply to you.'
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      responses:
+        '200':
+          description: Total resting order value retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPortfolioRestingOrderTotalValueResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /portfolio/fills:
+    get:
+      operationId: GetFills
+      summary: Get Fills
+      description: 'Endpoint for getting all fills for the member. A fill is when a trade you have is matched.
+
+        Fills that occurred before the historical cutoff are only available via `GET /historical/fills`. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.
+
+        '
+      tags:
+      - portfolio
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      parameters:
+      - $ref: '#/components/parameters/TickerQuery'
+      - $ref: '#/components/parameters/OrderIdQuery'
+      - $ref: '#/components/parameters/MinTsQuery'
+      - $ref: '#/components/parameters/MaxTsQuery'
+      - $ref: '#/components/parameters/LimitQuery'
+      - $ref: '#/components/parameters/CursorQuery'
+      - $ref: '#/components/parameters/SubaccountQuery'
+      responses:
+        '200':
+          description: Fills retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFillsResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+components:
+  responses:
+    UnauthorizedError:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    Withdrawal:
+      type: object
+      required:
+      - id
+      - status
+      - type
+      - amount_cents
+      - fee_cents
+      - created_ts
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the withdrawal.
+        status:
+          type: string
+          enum:
+          - pending
+          - applied
+          - failed
+          - returned
+          description: Current status of the withdrawal. 'applied' means funds have been deducted from balance.
+        type:
+          type: string
+          enum:
+          - ach
+          - wire
+          - crypto
+          - debit
+          - apm
+          description: Payment type used for the withdrawal.
+        amount_cents:
+          type: integer
+          format: int64
+          description: Withdrawal amount in cents.
+        fee_cents:
+          type: integer
+          format: int64
+          description: Fee charged for the withdrawal in cents.
+        created_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp of when the withdrawal was created.
+        finalized_ts:
+          type: integer
+          format: int64
+          nullable: true
+          description: Unix timestamp of when the withdrawal was finalized (applied, failed, or returned).
+    ApplySubaccountTransferRequest:
+      type: object
+      required:
+      - client_transfer_id
+      - from_subaccount
+      - to_subaccount
+      - amount_cents
+      properties:
+        client_transfer_id:
+          type: string
+          format: uuid
+          description: Unique client-provided transfer ID for idempotency.
+          x-oapi-codegen-extra-tags:
+            validate: required
+        from_subaccount:
+          type: integer
+          description: Source subaccount number (0 for primary, 1-32 for numbered subaccounts).
+        to_subaccount:
+          type: integer
+          description: Destination subaccount number (0 for primary, 1-32 for numbered subaccounts).
+        amount_cents:
+          type: integer
+          format: int64
+          description: Amount to transfer in cents.
+    GetBalanceResponse:
+      type: object
+      required:
+      - balance
+      - balance_dollars
+      - portfolio_value
+      - updated_ts
+      properties:
+        balance:
+          type: integer
+          format: int64
+          description: Member's available balance in cents. This represents the amount available for trading.
+        balance_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Member's available balance as a fixed-point dollar string. This represents the amount available for trading.
+        portfolio_value:
+          type: integer
+          format: int64
+          description: Member's portfolio value in cents. This is the current value of all positions held.
+        updated_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp of the last update to the balance.
+        balance_breakdown:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexedBalance'
+          description: Balance broken down per exchange index.
+    Deposit:
+      type: object
+      required:
+      - id
+      - status
+      - type
+      - amount_cents
+      - fee_cents
+      - created_ts
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the deposit.
+        status:
+          type: string
+          enum:
+          - pending
+          - applied
+          - failed
+          - returned
+          description: Current status of the deposit. 'applied' means funds are reflected in balance.
+        type:
+          type: string
+          enum:
+          - ach
+          - wire
+          - crypto
+          - debit
+          - apm
+          description: Payment method used for the deposit.
+        amount_cents:
+          type: integer
+          format: int64
+          description: Deposit amount in cents.
+        fee_cents:
+          type: integer
+          format: int64
+          description: Fee charged for the deposit in cents.
+        created_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp of when the deposit was created.
+        finalized_ts:
+          type: integer
+          format: int64
+          nullable: true
+          description: Unix timestamp of when the deposit was finalized (applied, failed, or returned).
+    IndexedBalance:
+      type: object
+      required:
+      - exchange_index
+      - balance
+      properties:
+        exchange_index:
+          $ref: '#/components/schemas/ExchangeIndex'
+        balance:
+          $ref: '#/components/schemas/FixedPointDollars'
+    EventPosition:
+      type: object
+      required:
+      - event_ticker
+      - total_cost_dollars
+      - total_cost_shares_fp
+      - event_exposure_dollars
+      - realized_pnl_dollars
+      - fees_paid_dollars
+      properties:
+        event_ticker:
+          type: string
+          description: Unique identifier for events
+        total_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Total spent on this event in dollars
+        total_cost_shares_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the total number of shares traded on this event (including both YES and NO contracts)
+        event_exposure_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Cost of the aggregate event position in dollars
+        realized_pnl_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Locked in profit and loss, in dollars
+        fees_paid_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fees paid on fill orders, in dollars
+    Settlement:
+      type: object
+      required:
+      - ticker
+      - event_ticker
+      - market_result
+      - yes_count_fp
+      - yes_total_cost_dollars
+      - no_count_fp
+      - no_total_cost_dollars
+      - revenue
+      - settled_time
+      - fee_cost
+      properties:
+        ticker:
+          type: string
+          description: The ticker symbol of the market that was settled.
+        event_ticker:
+          type: string
+          description: The event ticker symbol of the market that was settled.
+        market_result:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          - scalar
+          - void
+          description: The outcome of the market settlement. 'yes' = market resolved to YES, 'no' = market resolved to NO, 'scalar' = scalar market settled at a specific value, 'void' = market was voided/cancelled and all positions returned at original cost.
+        yes_count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of YES contracts owned at the time of settlement.
+        yes_total_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Total cost basis of all YES contracts in fixed-point dollars.
+        no_count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of NO contracts owned at the time of settlement.
+        no_total_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Total cost basis of all NO contracts in fixed-point dollars.
+        revenue:
+          type: integer
+          description: Total revenue earned from this settlement in cents (winning contracts pay out 100 cents each).
+        settled_time:
+          type: string
+          format: date-time
+          description: Timestamp when the market was settled and payouts were processed.
+        fee_cost:
+          $ref: '#/components/schemas/FixedPointDollars'
+          example: '0.3400'
+          description: Total fees paid in fixed point dollars.
+        value:
+          type: integer
+          nullable: true
+          description: Payout of a single yes contract in cents.
+    Fill:
+      type: object
+      required:
+      - fill_id
+      - trade_id
+      - order_id
+      - ticker
+      - market_ticker
+      - side
+      - action
+      - outcome_side
+      - book_side
+      - count_fp
+      - yes_price_dollars
+      - no_price_dollars
+      - is_taker
+      - fee_cost
+      properties:
+        fill_id:
+          type: string
+          description: Unique identifier for this fill
+        trade_id:
+          type: string
+          description: Unique identifier for this fill (legacy field name, same as fill_id)
+        order_id:
+          type: string
+          description: Unique identifier for the order that resulted in this fill
+        ticker:
+          type: string
+          description: Unique identifier for the market
+        market_ticker:
+          type: string
+          description: Unique identifier for the market (legacy field name, same as ticker)
+        side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          deprecated: true
+          description: 'Deprecated. Use `outcome_side` (or `book_side`) instead. See [Order direction](/getting_started/order_direction). This field will not be removed before May 14, 2026.
+
+            '
+        action:
+          type: string
+          enum:
+          - buy
+          - sell
+          deprecated: true
+          description: 'Deprecated. Use `outcome_side` (or `book_side`) instead. See [Order direction](/getting_started/order_direction). This field will not be removed before May 14, 2026.
+
+            '
+        outcome_side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          description: 'The outcome side this fill positioned the user for. buy-yes and sell-no produce ''yes''; buy-no and sell-yes produce ''no''.
+
+
+            `outcome_side` describes directional exposure only; it does not change the fill''s price. A fill at price `p` with `outcome_side=no` is matched against an order at the same price `p` with `outcome_side=yes` — both parties trade at the same price, just on opposite directions.
+
+
+            `outcome_side` and `book_side` will become the canonical way to determine fill direction. The legacy `action` and `side` fields will be deprecated in a future release — please migrate to these new fields.
+
+            '
+        book_side:
+          $ref: '#/components/schemas/BookSide'
+          description: 'Same directional bit as outcome_side in book vocabulary. ''bid'' is equivalent to outcome_side ''yes''; ''ask'' is equivalent to outcome_side ''no''.
+
+
+            `outcome_side` and `book_side` will become the canonical way to determine fill direction. The legacy `action` and `side` fields will be deprecated in a future release — please migrate to these new fields.
+
+            '
+        count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought or sold in this fill
+        yes_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fill price for the yes side in fixed-point dollars
+        no_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fill price for the no side in fixed-point dollars
+        is_taker:
+          type: boolean
+          description: If true, this fill was a taker (removed liquidity from the order book)
+        created_time:
+          type: string
+          format: date-time
+          description: Timestamp when this fill was executed
+        fee_cost:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fee cost in fixed-point dollars
+        subaccount_number:
+          type: integer
+          nullable: true
+          x-omitempty: true
+          description: Subaccount number (0 for primary, 1-32 for subaccounts). Present for direct users.
+        ts:
+          type: integer
+          format: int64
+          description: Unix timestamp when this fill was executed (legacy field name)
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
+    SubaccountNettingConfig:
+      type: object
+      required:
+      - subaccount_number
+      - enabled
+      properties:
+        subaccount_number:
+          type: integer
+          description: Subaccount number (0 for primary, 1-32 for subaccounts).
+        enabled:
+          type: boolean
+          description: Whether netting is enabled for this subaccount.
+    GetWithdrawalsResponse:
+      type: object
+      required:
+      - withdrawals
+      properties:
+        withdrawals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Withdrawal'
+        cursor:
+          type: string
+    GetSettlementsResponse:
+      type: object
+      required:
+      - settlements
+      properties:
+        settlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Settlement'
+        cursor:
+          type: string
+    GetFillsResponse:
+      type: object
+      required:
+      - fills
+      - cursor
+      properties:
+        fills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fill'
+        cursor:
+          type: string
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
+    BookSide:
+      type: string
+      enum:
+      - bid
+      - ask
+      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
+    SubaccountBalance:
+      type: object
+      required:
+      - subaccount_number
+      - balance
+      - updated_ts
+      properties:
+        subaccount_number:
+          type: integer
+          description: Subaccount number (0 for primary, 1-32 for subaccounts).
+        balance:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Balance in dollars.
+        updated_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp of last balance update.
+    CreateSubaccountResponse:
+      type: object
+      required:
+      - subaccount_number
+      properties:
+        subaccount_number:
+          type: integer
+          description: The sequential number assigned to this subaccount (1-32).
+    FixedPointDollars:
+      type: string
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+    GetSubaccountBalancesResponse:
+      type: object
+      required:
+      - subaccount_balances
+      properties:
+        subaccount_balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubaccountBalance'
+    GetSubaccountTransfersResponse:
+      type: object
+      required:
+      - transfers
+      properties:
+        transfers:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubaccountTransfer'
+        cursor:
+          type: string
+          description: Cursor for the next page of results.
+    SubaccountTransfer:
+      type: object
+      required:
+      - transfer_id
+      - from_subaccount
+      - to_subaccount
+      - amount_cents
+      - created_ts
+      properties:
+        transfer_id:
+          type: string
+          description: Unique identifier for this transfer.
+        from_subaccount:
+          type: integer
+          description: Source subaccount number (0 for primary, 1-32 for subaccounts).
+        to_subaccount:
+          type: integer
+          description: Destination subaccount number (0 for primary, 1-32 for subaccounts).
+        amount_cents:
+          type: integer
+          format: int64
+          description: Transfer amount in cents.
+        created_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp when the transfer was created.
+    GetDepositsResponse:
+      type: object
+      required:
+      - deposits
+      properties:
+        deposits:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deposit'
+        cursor:
+          type: string
+    GetPositionsResponse:
+      type: object
+      required:
+      - market_positions
+      - event_positions
+      properties:
+        cursor:
+          type: string
+          description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned here in the cursor query parameter for this end-point to get the next page containing limit records. An empty value of this field indicates there is no next page.
+        market_positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketPosition'
+          description: List of market positions
+        event_positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventPosition'
+          description: List of event positions
+    GetSubaccountNettingResponse:
+      type: object
+      required:
+      - netting_configs
+      properties:
+        netting_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubaccountNettingConfig'
+    ApplySubaccountTransferResponse:
+      type: object
+      description: Empty response indicating successful transfer.
+    GetPortfolioRestingOrderTotalValueResponse:
+      type: object
+      required:
+      - total_resting_order_value
+      properties:
+        total_resting_order_value:
+          type: integer
+          description: Total value of resting orders in cents
+    UpdateSubaccountNettingRequest:
+      type: object
+      required:
+      - subaccount_number
+      - enabled
+      properties:
+        subaccount_number:
+          type: integer
+          description: Subaccount number (0 for primary, 1-32 for subaccounts).
+        enabled:
+          type: boolean
+          description: Whether netting is enabled for this subaccount.
+    MarketPosition:
+      type: object
+      required:
+      - ticker
+      - total_traded_dollars
+      - position_fp
+      - market_exposure_dollars
+      - realized_pnl_dollars
+      - resting_orders_count
+      - fees_paid_dollars
+      - last_updated_ts
+      properties:
+        ticker:
+          type: string
+          description: Unique identifier for the market
+          x-go-type-skip-optional-pointer: true
+        total_traded_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Total spent on this market in dollars
+        position_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought in this market. Negative means NO contracts and positive means YES contracts
+        market_exposure_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Cost of the aggregate market position in dollars
+        realized_pnl_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Locked in profit and loss, in dollars
+        resting_orders_count:
+          type: integer
+          format: int32
+          description: '[DEPRECATED] Aggregate size of resting orders in contract units'
+          deprecated: true
+        fees_paid_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fees paid on fill orders, in dollars
+        last_updated_ts:
+          type: string
+          format: date-time
+          description: Last time the position is updated
+  parameters:
+    MinTsQuery:
+      name: min_ts
+      in: query
+      description: Filter items after this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    TickerQuery:
+      name: ticker
+      in: query
+      description: Filter by market ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    MaxTsQuery:
+      name: max_ts
+      in: query
+      description: Filter items before this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    OrderIdQuery:
+      name: order_id
+      in: query
+      description: Filter by order ID
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    WithdrawalLimitQuery:
+      name: limit
+      in: query
+      description: Number of results per page. Defaults to 100. Maximum value is 500.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+        maximum: 500
+        default: 100
+        x-oapi-codegen-extra-tags:
+          validate: omitempty,min=1,max=500
+    SubaccountQuery:
+      name: subaccount
+      in: query
+      description: Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts.
+      schema:
+        type: integer
+    CursorQuery:
+      name: cursor
+      in: query
+      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    SubaccountQueryDefaultPrimary:
+      name: subaccount
+      in: query
+      description: Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0.
+      schema:
+        type: integer
+    SingleEventTickerQuery:
+      name: event_ticker
+      in: query
+      description: Event ticker to filter by. Only a single event ticker is supported.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    LimitQuery:
+      name: limit
+      in: query
+      description: Number of results per page. Defaults to 100.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+        maximum: 1000
+        default: 100
+        x-oapi-codegen-extra-tags:
+          validate: omitempty,min=1,max=1000
+    CountFilterQuery:
+      name: count_filter
+      in: query
+      description: Restricts the positions to those with any of following fields with non-zero values, as a comma separated list. The following values are accepted - position, total_traded
+      schema:
+        type: string
+    PositionsLimitQuery:
+      name: limit
+      in: query
+      description: Parameter to specify the number of results per page. Defaults to 100.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 100
+    PositionsCursorQuery:
+      name: cursor
+      in: query
+      description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned from the previous response to get the next page.
+      schema:
+        type: string
+  securitySchemes:
+    kalshiAccessKey:
+      type: apiKey
+      in: header
+      name: KALSHI-ACCESS-KEY
+      description: Your API key ID
+    kalshiAccessSignature:
+      type: apiKey
+      in: header
+      name: KALSHI-ACCESS-SIGNATURE
+      description: RSA-PSS signature of the request
+    kalshiAccessTimestamp:
+      type: apiKey
+      in: header
+      name: KALSHI-ACCESS-TIMESTAMP
+      description: Request timestamp in milliseconds

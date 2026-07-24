@@ -1,0 +1,1218 @@
+openapi: 3.0.0
+info:
+  title: Kalshi Trade API Manual Endpoints account historical API
+  version: 3.19.0
+  description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
+servers:
+- url: https://external-api.kalshi.com/trade-api/v2
+  description: Production Trade API server
+- url: https://api.elections.kalshi.com/trade-api/v2
+  description: Production shared API server, also supported
+- url: https://external-api.demo.kalshi.co/trade-api/v2
+  description: Demo Trade API server
+- url: https://demo-api.kalshi.co/trade-api/v2
+  description: Demo shared API server, also supported
+tags:
+- name: historical
+paths:
+  /historical/cutoff:
+    get:
+      operationId: GetHistoricalCutoff
+      summary: Get Historical Cutoff Timestamps
+      description: 'Returns the cutoff timestamps that define the boundary between **live** and **historical** data.
+
+
+        ## Cutoff fields
+
+        - `market_settled_ts` : Markets that **settled** before this timestamp, and their candlesticks, must be accessed via `GET /historical/markets` and `GET /historical/markets/{ticker}/candlesticks`.
+
+        - `trades_created_ts` : Trades that were **filled** before this timestamp must be accessed via `GET /historical/fills`.
+
+        - `orders_updated_ts` : Orders that were **canceled or fully executed** before this timestamp must be accessed via `GET /historical/orders`. Resting (active) orders are always available in `GET /portfolio/orders`.
+
+        '
+      tags:
+      - historical
+      responses:
+        '200':
+          description: Historical cutoff timestamps retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetHistoricalCutoffResponse'
+        '500':
+          description: Internal server error
+  /historical/markets/{ticker}/candlesticks:
+    get:
+      operationId: GetMarketCandlesticksHistorical
+      summary: Get Historical Market Candlesticks
+      description: ' Endpoint for fetching historical candlestick data for markets that have been archived from the live data set. Time period length of each candlestick in minutes. Valid values: 1 (1 minute), 60 (1 hour), 1440 (1 day).'
+      tags:
+      - historical
+      parameters:
+      - name: ticker
+        in: path
+        required: true
+        description: Market ticker - unique identifier for the specific market
+        schema:
+          type: string
+      - name: start_ts
+        in: query
+        required: true
+        description: Start timestamp (Unix timestamp). Candlesticks will include those ending on or after this time.
+        schema:
+          type: integer
+          format: int64
+      - name: end_ts
+        in: query
+        required: true
+        description: End timestamp (Unix timestamp). Candlesticks will include those ending on or before this time.
+        schema:
+          type: integer
+          format: int64
+      - name: period_interval
+        in: query
+        required: true
+        description: Time period length of each candlestick in minutes. Valid values are 1 (1 minute), 60 (1 hour), or 1440 (1 day).
+        schema:
+          type: integer
+          enum:
+          - 1
+          - 60
+          - 1440
+        x-oapi-codegen-extra-tags:
+          validate: required,oneof=1 60 1440
+      responses:
+        '200':
+          description: Candlesticks retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMarketCandlesticksHistoricalResponse'
+        '400':
+          description: Bad request
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+  /historical/fills:
+    get:
+      operationId: GetFillsHistorical
+      summary: Get Historical Fills
+      description: ' Endpoint for getting all historical fills for the member. A fill is when a trade you have is matched.'
+      tags:
+      - historical
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      parameters:
+      - $ref: '#/components/parameters/TickerQuery'
+      - $ref: '#/components/parameters/MaxTsQuery'
+      - $ref: '#/components/parameters/LimitQuery'
+      - $ref: '#/components/parameters/CursorQuery'
+      responses:
+        '200':
+          description: Fills retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFillsResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          description: Internal server error
+  /historical/orders:
+    get:
+      operationId: GetHistoricalOrders
+      summary: Get Historical Orders
+      description: ' Endpoint for getting orders that have been archived to the historical database.'
+      tags:
+      - historical
+      security:
+      - kalshiAccessKey: []
+        kalshiAccessSignature: []
+        kalshiAccessTimestamp: []
+      parameters:
+      - $ref: '#/components/parameters/TickerQuery'
+      - $ref: '#/components/parameters/MaxTsQuery'
+      - $ref: '#/components/parameters/LimitQuery'
+      - $ref: '#/components/parameters/CursorQuery'
+      responses:
+        '200':
+          description: Historical orders retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrdersResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /historical/trades:
+    get:
+      operationId: GetTradesHistorical
+      summary: Get Historical Trades
+      description: ' Endpoint for getting all historical trades for all markets. Trades that were filled before the historical cutoff are available via this endpoint. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.'
+      tags:
+      - historical
+      parameters:
+      - $ref: '#/components/parameters/TickerQuery'
+      - $ref: '#/components/parameters/MinTsQuery'
+      - $ref: '#/components/parameters/MaxTsQuery'
+      - $ref: '#/components/parameters/MarketLimitQuery'
+      - $ref: '#/components/parameters/CursorQuery'
+      responses:
+        '200':
+          description: Historical trades retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTradesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /historical/markets:
+    get:
+      operationId: GetHistoricalMarkets
+      summary: Get Historical Markets
+      description: 'Endpoint for getting markets that have been archived to the historical database. Filters are mutually exclusive.
+
+        '
+      tags:
+      - historical
+      parameters:
+      - $ref: '#/components/parameters/MarketLimitQuery'
+      - $ref: '#/components/parameters/CursorQuery'
+      - $ref: '#/components/parameters/TickersQuery'
+      - $ref: '#/components/parameters/SingleEventTickerQuery'
+      - $ref: '#/components/parameters/SeriesTickerQuery'
+      - $ref: '#/components/parameters/MveHistoricalFilterQuery'
+      responses:
+        '200':
+          description: Historical markets retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMarketsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /historical/markets/{ticker}:
+    get:
+      operationId: GetHistoricalMarket
+      summary: Get Historical Market
+      description: ' Endpoint for getting data about a specific market by its ticker from the historical database.'
+      tags:
+      - historical
+      parameters:
+      - $ref: '#/components/parameters/TickerPath'
+      responses:
+        '200':
+          description: Historical market retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMarketResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    UnauthorizedError:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    GetHistoricalCutoffResponse:
+      type: object
+      required:
+      - market_settled_ts
+      - trades_created_ts
+      - orders_updated_ts
+      properties:
+        market_settled_ts:
+          type: string
+          format: date-time
+          description: 'Cutoff based on **market settlement time**. Markets and their candlesticks that settled before this timestamp must be accessed via `GET /historical/markets` and `GET /historical/markets/{ticker}/candlesticks`.
+
+            '
+        trades_created_ts:
+          type: string
+          format: date-time
+          description: 'Cutoff based on **trade fill time**. Fills that occurred before this timestamp must be accessed via `GET /historical/fills`.
+
+            '
+        orders_updated_ts:
+          type: string
+          format: date-time
+          description: 'Cutoff based on **order cancellation or execution time**. Orders canceled or fully executed before this timestamp must be accessed via `GET /historical/orders`. Resting (active) orders are always available in `GET /portfolio/orders`.
+
+            '
+    PriceRange:
+      type: object
+      required:
+      - start
+      - end
+      - step
+      properties:
+        start:
+          type: string
+          description: Starting price for this range in dollars
+        end:
+          type: string
+          description: Ending price for this range in dollars
+        step:
+          type: string
+          description: Price step/tick size for this range in dollars
+    MarketCandlestickHistorical:
+      type: object
+      required:
+      - end_period_ts
+      - yes_bid
+      - yes_ask
+      - price
+      - volume
+      - open_interest
+      properties:
+        end_period_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp for the inclusive end of the candlestick period.
+        yes_bid:
+          $ref: '#/components/schemas/BidAskDistributionHistorical'
+          description: Open, high, low, close (OHLC) data for YES buy offers on the market during the candlestick period.
+        yes_ask:
+          $ref: '#/components/schemas/BidAskDistributionHistorical'
+          description: Open, high, low, close (OHLC) data for YES sell offers on the market during the candlestick period.
+        price:
+          $ref: '#/components/schemas/PriceDistributionHistorical'
+          description: Open, high, low, close (OHLC) and more data for trade YES contract prices on the market during the candlestick period.
+        volume:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought on the market during the candlestick period.
+        open_interest:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought on the market by end of the candlestick period (end_period_ts).
+    Trade:
+      type: object
+      required:
+      - trade_id
+      - ticker
+      - count_fp
+      - yes_price_dollars
+      - no_price_dollars
+      - taker_side
+      - taker_outcome_side
+      - taker_book_side
+      - created_time
+      properties:
+        trade_id:
+          type: string
+          description: Unique identifier for this trade
+        ticker:
+          type: string
+          description: Unique identifier for the market
+        count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought or sold in this trade
+        yes_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Yes price for this trade in dollars
+        no_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: No price for this trade in dollars
+        taker_side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          x-enum-varnames:
+          - TradeTakerSideYes
+          - TradeTakerSideNo
+          deprecated: true
+          description: 'Deprecated. Use `taker_outcome_side` (or `taker_book_side`) instead. See [Order direction](/getting_started/order_direction). This field will not be removed before May 14, 2026.
+
+            '
+        taker_outcome_side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          x-enum-varnames:
+          - TradeTakerOutcomeSideYes
+          - TradeTakerOutcomeSideNo
+          description: 'The outcome side the taker is positioned for. buy-yes and sell-no produce ''yes''; buy-no and sell-yes produce ''no''.
+
+
+            `taker_outcome_side` describes directional exposure only; it does not change the trade''s price. A trade at price `p` with `taker_outcome_side=no` is matched against the maker at the same price `p` with the opposite direction — both parties trade at the same price.
+
+
+            `taker_outcome_side` and `taker_book_side` will become the canonical way to determine trade direction. The legacy `taker_side` field will be deprecated in a future release — please migrate to these new fields.
+
+            '
+        taker_book_side:
+          $ref: '#/components/schemas/BookSide'
+          description: 'Same directional bit as taker_outcome_side in book vocabulary. ''bid'' is equivalent to taker_outcome_side ''yes''; ''ask'' is equivalent to taker_outcome_side ''no''.
+
+
+            `taker_outcome_side` and `taker_book_side` will become the canonical way to determine trade direction. The legacy `taker_side` field will be deprecated in a future release — please migrate to these new fields.
+
+            '
+        created_time:
+          type: string
+          format: date-time
+          description: Timestamp when this trade was executed
+    GetMarketsResponse:
+      type: object
+      required:
+      - markets
+      - cursor
+      properties:
+        markets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Market'
+        cursor:
+          type: string
+    Fill:
+      type: object
+      required:
+      - fill_id
+      - trade_id
+      - order_id
+      - ticker
+      - market_ticker
+      - side
+      - action
+      - outcome_side
+      - book_side
+      - count_fp
+      - yes_price_dollars
+      - no_price_dollars
+      - is_taker
+      - fee_cost
+      properties:
+        fill_id:
+          type: string
+          description: Unique identifier for this fill
+        trade_id:
+          type: string
+          description: Unique identifier for this fill (legacy field name, same as fill_id)
+        order_id:
+          type: string
+          description: Unique identifier for the order that resulted in this fill
+        ticker:
+          type: string
+          description: Unique identifier for the market
+        market_ticker:
+          type: string
+          description: Unique identifier for the market (legacy field name, same as ticker)
+        side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          deprecated: true
+          description: 'Deprecated. Use `outcome_side` (or `book_side`) instead. See [Order direction](/getting_started/order_direction). This field will not be removed before May 14, 2026.
+
+            '
+        action:
+          type: string
+          enum:
+          - buy
+          - sell
+          deprecated: true
+          description: 'Deprecated. Use `outcome_side` (or `book_side`) instead. See [Order direction](/getting_started/order_direction). This field will not be removed before May 14, 2026.
+
+            '
+        outcome_side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          description: 'The outcome side this fill positioned the user for. buy-yes and sell-no produce ''yes''; buy-no and sell-yes produce ''no''.
+
+
+            `outcome_side` describes directional exposure only; it does not change the fill''s price. A fill at price `p` with `outcome_side=no` is matched against an order at the same price `p` with `outcome_side=yes` — both parties trade at the same price, just on opposite directions.
+
+
+            `outcome_side` and `book_side` will become the canonical way to determine fill direction. The legacy `action` and `side` fields will be deprecated in a future release — please migrate to these new fields.
+
+            '
+        book_side:
+          $ref: '#/components/schemas/BookSide'
+          description: 'Same directional bit as outcome_side in book vocabulary. ''bid'' is equivalent to outcome_side ''yes''; ''ask'' is equivalent to outcome_side ''no''.
+
+
+            `outcome_side` and `book_side` will become the canonical way to determine fill direction. The legacy `action` and `side` fields will be deprecated in a future release — please migrate to these new fields.
+
+            '
+        count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought or sold in this fill
+        yes_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fill price for the yes side in fixed-point dollars
+        no_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fill price for the no side in fixed-point dollars
+        is_taker:
+          type: boolean
+          description: If true, this fill was a taker (removed liquidity from the order book)
+        created_time:
+          type: string
+          format: date-time
+          description: Timestamp when this fill was executed
+        fee_cost:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fee cost in fixed-point dollars
+        subaccount_number:
+          type: integer
+          nullable: true
+          x-omitempty: true
+          description: Subaccount number (0 for primary, 1-32 for subaccounts). Present for direct users.
+        ts:
+          type: integer
+          format: int64
+          description: Unix timestamp when this fill was executed (legacy field name)
+    GetOrdersResponse:
+      type: object
+      required:
+      - orders
+      - cursor
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        cursor:
+          type: string
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
+    SelfTradePreventionType:
+      type: string
+      enum:
+      - taker_at_cross
+      - maker
+      description: 'The self-trade prevention type for orders. `taker_at_cross` cancels the taker order when it would trade against another order from the same user; execution stops and any partial fills already matched are executed. `maker` cancels the resting maker order and continues matching.
+
+        '
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
+    Order:
+      type: object
+      required:
+      - order_id
+      - user_id
+      - client_order_id
+      - ticker
+      - side
+      - action
+      - outcome_side
+      - book_side
+      - type
+      - status
+      - yes_price_dollars
+      - no_price_dollars
+      - fill_count_fp
+      - remaining_count_fp
+      - initial_count_fp
+      - taker_fees_dollars
+      - maker_fees_dollars
+      - taker_fill_cost_dollars
+      - maker_fill_cost_dollars
+      properties:
+        order_id:
+          type: string
+        user_id:
+          type: string
+          description: Unique identifier for users
+        client_order_id:
+          type: string
+        ticker:
+          type: string
+        side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          deprecated: true
+          description: 'Deprecated. Use `outcome_side` (or `book_side`) instead. See [Order direction](/getting_started/order_direction). This field will not be removed before May 14, 2026.
+
+            '
+        action:
+          type: string
+          enum:
+          - buy
+          - sell
+          deprecated: true
+          description: 'Deprecated. Use `outcome_side` (or `book_side`) instead. See [Order direction](/getting_started/order_direction). This field will not be removed before May 14, 2026.
+
+            '
+        outcome_side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          description: 'The outcome side this order is positioned for. buy-yes and sell-no produce ''yes''; buy-no and sell-yes produce ''no''.
+
+
+            `outcome_side` describes directional exposure only; it does not change the order''s price. An order at price `p` with `outcome_side=no` is matched by an order at the same price `p` with `outcome_side=yes` — both parties trade at the same price, just on opposite directions.
+
+
+            `outcome_side` and `book_side` will become the canonical way to determine order direction. The legacy `action`, `side`, and `is_yes` fields will be deprecated in a future release — please migrate to these new fields.
+
+            '
+        book_side:
+          $ref: '#/components/schemas/BookSide'
+          description: 'Same directional bit as outcome_side in book vocabulary. ''bid'' is equivalent to outcome_side ''yes''; ''ask'' is equivalent to outcome_side ''no''.
+
+
+            `outcome_side` and `book_side` will become the canonical way to determine order direction. The legacy `action`, `side`, and `is_yes` fields will be deprecated in a future release — please migrate to these new fields.
+
+            '
+        type:
+          type: string
+          enum:
+          - limit
+          - market
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        yes_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: The yes price for this order in fixed-point dollars
+        no_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: The no price for this order in fixed-point dollars
+        fill_count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts that have been filled
+        remaining_count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the remaining contracts for this order
+        initial_count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the initial size of the order (contract units)
+        taker_fill_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: The cost of filled taker orders in dollars
+        maker_fill_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: The cost of filled maker orders in dollars
+        taker_fees_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fees paid on filled taker contracts, in dollars
+        maker_fees_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fees paid on filled maker contracts, in dollars
+        expiration_time:
+          type: string
+          format: date-time
+          nullable: true
+        created_time:
+          type: string
+          format: date-time
+          nullable: true
+          x-omitempty: false
+        last_update_time:
+          type: string
+          format: date-time
+          nullable: true
+          x-omitempty: true
+          description: The last update to an order (modify, cancel, fill)
+        self_trade_prevention_type:
+          $ref: '#/components/schemas/SelfTradePreventionType'
+          nullable: true
+          x-omitempty: false
+        order_group_id:
+          type: string
+          nullable: true
+          description: The order group this order is part of
+        cancel_order_on_pause:
+          type: boolean
+          description: If this flag is set to true, the order will be canceled if the order is open and trading on the exchange is paused for any reason.
+        subaccount_number:
+          type: integer
+          nullable: true
+          x-omitempty: true
+          description: Subaccount number (0 for primary, 1-32 for subaccounts).
+        exchange_index:
+          allOf:
+          - $ref: '#/components/schemas/ExchangeIndex'
+          x-go-type-skip-optional-pointer: true
+    BidAskDistributionHistorical:
+      type: object
+      required:
+      - open
+      - low
+      - high
+      - close
+      properties:
+        open:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Offer price on the market at the start of the candlestick period (in dollars).
+        low:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Lowest offer price on the market during the candlestick period (in dollars).
+        high:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Highest offer price on the market during the candlestick period (in dollars).
+        close:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Offer price on the market at the end of the candlestick period (in dollars).
+    GetTradesResponse:
+      type: object
+      required:
+      - trades
+      - cursor
+      properties:
+        trades:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trade'
+        cursor:
+          type: string
+    Market:
+      type: object
+      required:
+      - ticker
+      - event_ticker
+      - market_type
+      - yes_sub_title
+      - no_sub_title
+      - created_time
+      - updated_time
+      - open_time
+      - close_time
+      - latest_expiration_time
+      - settlement_timer_seconds
+      - status
+      - notional_value_dollars
+      - yes_bid_dollars
+      - yes_ask_dollars
+      - no_bid_dollars
+      - no_ask_dollars
+      - yes_bid_size_fp
+      - yes_ask_size_fp
+      - last_price_dollars
+      - previous_yes_bid_dollars
+      - previous_yes_ask_dollars
+      - previous_price_dollars
+      - volume_fp
+      - volume_24h_fp
+      - liquidity_dollars
+      - open_interest_fp
+      - result
+      - can_close_early
+      - fractional_trading_enabled
+      - expiration_value
+      - rules_primary
+      - rules_secondary
+      - price_level_structure
+      - price_ranges
+      properties:
+        ticker:
+          type: string
+        event_ticker:
+          type: string
+        market_type:
+          type: string
+          enum:
+          - binary
+          - scalar
+          description: Identifies the type of market
+        title:
+          type: string
+          deprecated: true
+          x-go-type-skip-optional-pointer: true
+        subtitle:
+          type: string
+          deprecated: true
+          x-go-type-skip-optional-pointer: true
+        yes_sub_title:
+          type: string
+          description: Shortened title for the yes side of this market
+        no_sub_title:
+          type: string
+          description: Shortened title for the no side of this market
+        created_time:
+          type: string
+          format: date-time
+        updated_time:
+          type: string
+          format: date-time
+          description: Time of the last non-trading metadata update.
+        open_time:
+          type: string
+          format: date-time
+        close_time:
+          type: string
+          format: date-time
+        expected_expiration_time:
+          type: string
+          format: date-time
+          nullable: true
+          x-omitempty: true
+          description: Time when this market is expected to expire
+        expiration_time:
+          type: string
+          format: date-time
+          deprecated: true
+          x-go-type-skip-optional-pointer: true
+        latest_expiration_time:
+          type: string
+          format: date-time
+          description: Latest possible time for this market to expire
+        settlement_timer_seconds:
+          type: integer
+          description: The amount of time after determination that the market settles
+        status:
+          type: string
+          enum:
+          - initialized
+          - inactive
+          - active
+          - closed
+          - determined
+          - disputed
+          - amended
+          - finalized
+          description: The current status of the market in its lifecycle.
+        response_price_units:
+          type: string
+          enum:
+          - usd_cent
+          deprecated: true
+          description: 'DEPRECATED: Use price_level_structure and price_ranges instead.'
+          x-go-type-skip-optional-pointer: true
+        yes_bid_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Price for the highest YES buy offer on this market in dollars
+        yes_bid_size_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: Total contract size of orders to buy YES at the best bid price (fixed-point count string).
+        yes_ask_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Price for the lowest YES sell offer on this market in dollars
+        yes_ask_size_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: Total contract size of orders to sell YES at the best ask price (fixed-point count string).
+        no_bid_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Price for the highest NO buy offer on this market in dollars
+        no_ask_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Price for the lowest NO sell offer on this market in dollars
+        last_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Price for the last traded YES contract on this market in dollars
+        volume_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the market volume in contracts
+        volume_24h_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the 24h market volume in contracts
+        result:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          - scalar
+          - ''
+        can_close_early:
+          type: boolean
+        fractional_trading_enabled:
+          type: boolean
+          deprecated: true
+          description: Deprecated. This flag is always `true` and carries no information. Will be removed after a pre-announcement with the removal date.
+        open_interest_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought on this market disconsidering netting
+        notional_value_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: The total value of a single contract at settlement in dollars
+        previous_yes_bid_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Price for the highest YES buy offer on this market a day ago in dollars
+        previous_yes_ask_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Price for the lowest YES sell offer on this market a day ago in dollars
+        previous_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Price for the last traded YES contract on this market a day ago in dollars
+        liquidity_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          deprecated: true
+          description: 'DEPRECATED: This field is deprecated and will always return "0.0000".'
+        settlement_value_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          nullable: true
+          x-omitempty: true
+          description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
+        settlement_ts:
+          type: string
+          format: date-time
+          nullable: true
+          x-omitempty: true
+          description: Timestamp when the market was settled. Only filled for settled markets
+        expiration_value:
+          type: string
+          description: The value that was considered for the settlement
+        occurrence_datetime:
+          type: string
+          format: date-time
+          nullable: true
+          description: The recorded datetime when the underlying event occurred, if available
+        fee_waiver_expiration_time:
+          type: string
+          format: date-time
+          nullable: true
+          x-omitempty: true
+          description: Time when this market's fee waiver expires
+        early_close_condition:
+          type: string
+          nullable: true
+          x-omitempty: true
+          description: The condition under which the market can close early
+          x-go-type-skip-optional-pointer: true
+        strike_type:
+          type: string
+          enum:
+          - greater
+          - greater_or_equal
+          - less
+          - less_or_equal
+          - between
+          - functional
+          - custom
+          - structured
+          x-omitempty: true
+          description: Strike type defines how the market strike is defined and evaluated
+          x-go-type-skip-optional-pointer: true
+        floor_strike:
+          type: number
+          format: double
+          nullable: true
+          x-omitempty: true
+          description: Minimum expiration value that leads to a YES settlement
+        cap_strike:
+          type: number
+          format: double
+          nullable: true
+          x-omitempty: true
+          description: Maximum expiration value that leads to a YES settlement
+        functional_strike:
+          type: string
+          nullable: true
+          x-omitempty: true
+          description: Mapping from expiration values to settlement values
+        custom_strike:
+          type: object
+          nullable: true
+          x-omitempty: true
+          description: Expiration value for each target that leads to a YES settlement
+        rules_primary:
+          type: string
+          description: A plain language description of the most important market terms
+        rules_secondary:
+          type: string
+          description: A plain language description of secondary market terms
+        mve_collection_ticker:
+          type: string
+          x-omitempty: true
+          description: The ticker of the multivariate event collection
+          x-go-type-skip-optional-pointer: true
+        mve_selected_legs:
+          type: array
+          x-omitempty: true
+          items:
+            $ref: '#/components/schemas/MveSelectedLeg'
+          x-go-type-skip-optional-pointer: true
+        primary_participant_key:
+          type: string
+          nullable: true
+          x-omitempty: true
+        price_level_structure:
+          type: string
+          description: Price level structure for this market, defining price ranges and tick sizes
+        price_ranges:
+          type: array
+          description: Valid price ranges for orders on this market
+          items:
+            $ref: '#/components/schemas/PriceRange'
+        is_provisional:
+          type: boolean
+          x-omitempty: true
+          description: If true, the market may be removed after determination if there is no activity on it
+          x-go-type-skip-optional-pointer: true
+        exchange_index:
+          allOf:
+          - $ref: '#/components/schemas/ExchangeIndex'
+          x-go-type-skip-optional-pointer: true
+    PriceDistributionHistorical:
+      type: object
+      required:
+      - open
+      - low
+      - high
+      - close
+      - mean
+      - previous
+      properties:
+        open:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          nullable: true
+          description: Price of the first trade during the candlestick period (in dollars). Null if no trades occurred.
+        low:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          nullable: true
+          description: Lowest trade price during the candlestick period (in dollars). Null if no trades occurred.
+        high:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          nullable: true
+          description: Highest trade price during the candlestick period (in dollars). Null if no trades occurred.
+        close:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          nullable: true
+          description: Price of the last trade during the candlestick period (in dollars). Null if no trades occurred.
+        mean:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          nullable: true
+          description: Volume-weighted average price during the candlestick period (in dollars). Null if no trades occurred.
+        previous:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          nullable: true
+          description: Close price from the previous candlestick period (in dollars). Null if this is the first candlestick or no prior trade exists.
+    GetFillsResponse:
+      type: object
+      required:
+      - fills
+      - cursor
+      properties:
+        fills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fill'
+        cursor:
+          type: string
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
+    OrderStatus:
+      type: string
+      enum:
+      - resting
+      - canceled
+      - executed
+      description: The status of an order
+    GetMarketCandlesticksHistoricalResponse:
+      type: object
+      required:
+      - ticker
+      - candlesticks
+      properties:
+        ticker:
+          type: string
+          description: Unique identifier for the market.
+        candlesticks:
+          type: array
+          description: Array of candlestick data points for the specified time range.
+          items:
+            $ref: '#/components/schemas/MarketCandlestickHistorical'
+    BookSide:
+      type: string
+      enum:
+      - bid
+      - ask
+      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
+    FixedPointDollars:
+      type: string
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+    GetMarketResponse:
+      type: object
+      required:
+      - market
+      properties:
+        market:
+          $ref: '#/components/schemas/Market'
+    MveSelectedLeg:
+      type: object
+      properties:
+        event_ticker:
+          type: string
+          description: Unique identifier for the selected event
+          x-go-type-skip-optional-pointer: true
+        market_ticker:
+          type: string
+          description: Unique identifier for the selected market
+          x-go-type-skip-optional-pointer: true
+        side:
+          type: string
+          description: The side of the selected market
+          x-go-type-skip-optional-pointer: true
+        yes_settlement_value_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          nullable: true
+          x-omitempty: true
+          description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
+  parameters:
+    MinTsQuery:
+      name: min_ts
+      in: query
+      description: Filter items after this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    TickerQuery:
+      name: ticker
+      in: query
+      description: Filter by market ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    SeriesTickerQuery:
+      name: series_ticker
+      in: query
+      description: Filter by series ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    MaxTsQuery:
+      name: max_ts
+      in: query
+      description: Filter items before this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    MarketLimitQuery:
+      name: limit
+      in: query
+      description: Number of results per page. Defaults to 100. Maximum value is 1000.
+      schema:
+        type: integer
+        format: int64
+        minimum: 0
+        maximum: 1000
+        default: 100
+        x-oapi-codegen-extra-tags:
+          validate: omitempty,gte=0,lte=1000
+    CursorQuery:
+      name: cursor
+      in: query
+      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    SingleEventTickerQuery:
+      name: event_ticker
+      in: query
+      description: Event ticker to filter by. Only a single event ticker is supported.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    LimitQuery:
+      name: limit
+      in: query
+      description: Number of results per page. Defaults to 100.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+        maximum: 1000
+        default: 100
+        x-oapi-codegen-extra-tags:
+          validate: omitempty,min=1,max=1000
+    TickerPath:
+      name: ticker
+      in: path
+      required: true
+      description: Market ticker
+      schema:
+        type: string
+    TickersQuery:
+      name: tickers
+      in: query
+      description: Filter by specific market tickers. Comma-separated list of market tickers to retrieve.
+      schema:
+        type: string
+    MveHistoricalFilterQuery:
+      name: mve_filter
+      in: query
+      description: Filter by multivariate events (combos). By default, MVE markets are included.
+      schema:
+        type: string
+        enum:
+        - exclude
+        nullable: true
+        default: null
+  securitySchemes:
+    kalshiAccessKey:
+      type: apiKey
+      in: header
+      name: KALSHI-ACCESS-KEY
+      description: Your API key ID
+    kalshiAccessSignature:
+      type: apiKey
+      in: header
+      name: KALSHI-ACCESS-SIGNATURE
+      description: RSA-PSS signature of the request
+    kalshiAccessTimestamp:
+      type: apiKey
+      in: header
+      name: KALSHI-ACCESS-TIMESTAMP
+      description: Request timestamp in milliseconds
