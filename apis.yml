@@ -10,7 +10,20 @@ description: >-
   specification and AsyncAPI definition for the streaming surface. A demo
   environment mirrors production for safe development. Official Python and
   community SDKs are provided.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: free
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Free · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/kalshi.png
 tags:
   - Prediction Markets
   - Event Contracts
@@ -22,119 +35,272 @@ created: '2026-05-23'
 modified: '2026-05-29'
 specificationVersion: '0.19'
 apis:
-  - aid: kalshi:trade-api
-    name: Kalshi Trade API (REST)
-    description: >-
-      Public REST API for trading on Kalshi - browse markets, events, and
-      series, place and cancel orders, manage portfolio and positions, fund and
-      withdraw, and pull historical trades. Authenticated with API keys and
-      Ed25519 request signatures.
-    humanURL: https://docs.kalshi.com/api-reference
-    baseURL: https://api.elections.kalshi.com/trade-api/v2
-    tags:
-      - REST
-      - Trading
-      - Markets
-      - Orders
-    properties:
-      - type: Documentation
-        url: https://docs.kalshi.com/api-reference
-      - type: OpenAPI
-        url: https://docs.kalshi.com/openapi.yaml
-  - aid: kalshi:trade-api-external
-    name: Kalshi Trade API (external-api host)
-    description: >-
-      Alternate production host for the Kalshi Trade API, used by external
-      integrators. Same API surface and authentication as the primary host.
-    humanURL: https://docs.kalshi.com/api-reference
-    baseURL: https://external-api.kalshi.com/trade-api/v2
-    tags:
-      - REST
-      - Trading
-      - External
-    properties:
-      - type: Documentation
-        url: https://docs.kalshi.com/api-reference
-      - type: OpenAPI
-        url: https://docs.kalshi.com/openapi.yaml
-  - aid: kalshi:trade-api-demo
-    name: Kalshi Trade API (Demo)
-    description: >-
-      Demo / sandbox environment for the Kalshi Trade API - mirrors production
-      semantics with simulated balances and markets for safe development and
-      automated testing.
-    humanURL: https://docs.kalshi.com/api-reference
-    baseURL: https://demo-api.kalshi.co/trade-api/v2
-    tags:
-      - REST
-      - Demo
-      - Sandbox
-      - Testing
-    properties:
-      - type: Documentation
-        url: https://docs.kalshi.com/api-reference
-  - aid: kalshi:websocket
-    name: Kalshi WebSocket Streaming API
-    description: >-
-      Real-time streaming feed for market data, order book updates, fills, and
-      portfolio events on Kalshi. Documented as an AsyncAPI spec alongside the
-      OpenAPI REST surface.
-    humanURL: https://docs.kalshi.com/api-reference
-    baseURL: wss://api.elections.kalshi.com/trade-api/ws/v2
-    tags:
-      - WebSocket
-      - Streaming
-      - Market Data
-    properties:
-      - type: Documentation
-        url: https://docs.kalshi.com/api-reference
-      - type: AsyncAPI
-        url: https://docs.kalshi.com/asyncapi.yaml
-      - type: AsyncAPI
-        url: https://raw.githubusercontent.com/api-evangelist/kalshi/refs/heads/main/asyncapi/kalshi-asyncapi.yml
-  - aid: kalshi:openapi
-    name: Kalshi OpenAPI Specification
-    description: >-
-      Machine-readable OpenAPI 3 description of the Kalshi Trade REST API.
-      Suitable for generating clients, mocks, and contract tests.
-    humanURL: https://docs.kalshi.com/
-    baseURL: https://docs.kalshi.com/openapi.yaml
-    tags:
-      - OpenAPI
-      - Specification
-    properties:
-      - type: OpenAPI
-        url: https://docs.kalshi.com/openapi.yaml
-  - aid: kalshi:asyncapi
-    name: Kalshi AsyncAPI Specification
-    description: >-
-      Machine-readable AsyncAPI description of the Kalshi WebSocket streaming
-      API. Suitable for generating async clients and documenting message
-      schemas.
-    humanURL: https://docs.kalshi.com/
-    baseURL: https://docs.kalshi.com/asyncapi.yaml
-    tags:
-      - AsyncAPI
-      - Specification
-      - WebSocket
-    properties:
-      - type: AsyncAPI
-        url: https://docs.kalshi.com/asyncapi.yaml
-  - aid: kalshi:python-starter
-    name: Kalshi Python Starter Kit
-    description: >-
-      Official Python starter / SDK published by Kalshi for connecting to the
-      Trade REST API and WebSocket streams. Includes request signing,
-      authentication helpers, and example trading flows.
-    humanURL: https://github.com/Kalshi/kalshi-starter-code-python
-    baseURL: https://github.com/Kalshi/kalshi-starter-code-python
-    tags:
-      - SDK
-      - Python
-      - Starter
-    properties:
-      - type: Repository
-        url: https://github.com/Kalshi/kalshi-starter-code-python
+- aid: kalshi:trade-api-demo
+  name: Kalshi Trade API (Demo)
+  description: >-
+    Demo / sandbox environment for the Kalshi Trade API - mirrors production semantics with simulated
+    balances and markets for safe development and automated testing.
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://demo-api.kalshi.co/trade-api/v2
+  tags:
+  - REST
+  - Demo
+  - Sandbox
+  - Testing
+  properties:
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:websocket
+  name: Kalshi WebSocket Streaming API
+  description: >-
+    Real-time streaming feed for market data, order book updates, fills, and portfolio events on Kalshi.
+    Documented as an AsyncAPI spec alongside the OpenAPI REST surface.
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: wss://api.elections.kalshi.com/trade-api/ws/v2
+  tags:
+  - WebSocket
+  - Streaming
+  - Market Data
+  properties:
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+  - type: AsyncAPI
+    url: https://docs.kalshi.com/asyncapi.yaml
+  - type: AsyncAPI
+    url: >-
+      https://raw.githubusercontent.com/api-evangelist/kalshi/refs/heads/main/asyncapi/kalshi-asyncapi.yml
+- aid: kalshi:asyncapi
+  name: Kalshi AsyncAPI Specification
+  description: >-
+    Machine-readable AsyncAPI description of the Kalshi WebSocket streaming API. Suitable for generating
+    async clients and documenting message schemas.
+  humanURL: https://docs.kalshi.com/
+  baseURL: https://docs.kalshi.com/asyncapi.yaml
+  tags:
+  - AsyncAPI
+  - Specification
+  - WebSocket
+  properties:
+  - type: AsyncAPI
+    url: https://docs.kalshi.com/asyncapi.yaml
+- aid: kalshi:python-starter
+  name: Kalshi Python Starter Kit
+  description: >-
+    Official Python starter / SDK published by Kalshi for connecting to the Trade REST API and WebSocket
+    streams. Includes request signing, authentication helpers, and example trading flows.
+  humanURL: https://github.com/Kalshi/kalshi-starter-code-python
+  baseURL: https://github.com/Kalshi/kalshi-starter-code-python
+  tags:
+  - SDK
+  - Python
+  - Starter
+  properties:
+  - type: Repository
+    url: https://github.com/Kalshi/kalshi-starter-code-python
+- aid: kalshi:kalshi-account-api
+  name: Kalshi account API
+  description: The account API from Kalshi — 2 operation(s) for account.
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - account
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-account-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-api-keys-api
+  name: Kalshi api-keys API
+  description: API key management endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - api-keys
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-api-keys-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-communications-api
+  name: Kalshi communications API
+  description: Request-for-quote (RFQ) endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - communications
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-communications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-events-api
+  name: Kalshi events API
+  description: Event endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - events
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-events-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-exchange-api
+  name: Kalshi exchange API
+  description: Exchange status and information endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - exchange
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-exchange-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-fcm-api
+  name: Kalshi fcm API
+  description: FCM member specific endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - fcm
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-fcm-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-historical-api
+  name: Kalshi historical API
+  description: The historical API from Kalshi — 7 operation(s) for historical.
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - historical
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-historical-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-incentive-programs-api
+  name: Kalshi incentive-programs API
+  description: Incentive program endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - incentive-programs
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-incentive-programs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-live-data-api
+  name: Kalshi live-data API
+  description: Live data endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - live-data
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-live-data-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-market-api
+  name: Kalshi market API
+  description: The market API from Kalshi — 9 operation(s) for market.
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - market
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-market-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-milestone-api
+  name: Kalshi milestone API
+  description: Milestone endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - milestone
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-milestone-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-multivariate-api
+  name: Kalshi multivariate API
+  description: Multivariate event collection endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - multivariate
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-multivariate-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-order-groups-api
+  name: Kalshi order-groups API
+  description: Order group management endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - order-groups
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-order-groups-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-orders-api
+  name: Kalshi orders API
+  description: Order management endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - orders
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-orders-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-portfolio-api
+  name: Kalshi portfolio API
+  description: Portfolio and balance information endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - portfolio
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-portfolio-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-search-api
+  name: Kalshi search API
+  description: Search and filtering endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - search
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-search-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
+- aid: kalshi:kalshi-structured-targets-api
+  name: Kalshi structured-targets API
+  description: Structured targets endpoints
+  humanURL: https://docs.kalshi.com/api-reference
+  baseURL: https://api.elections.kalshi.com/trade-api/v2
+  tags:
+  - structured-targets
+  properties:
+  - type: OpenAPI
+    url: openapi/kalshi-structured-targets-api-openapi.yml
+  - type: Documentation
+    url: https://docs.kalshi.com/api-reference
 common:
   - type: AgenticAccess
     url: agentic-access/kalshi-agentic-access.yml
