@@ -1,0 +1,146 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account fcm API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "fcm",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get FCM Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/fcm/orders",
+            "params": [
+              {
+                "name": "subtrader_id",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to orders for a specific subtrader (FCM members only)"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "min_ts",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to orders after a timestamp, formatted as a Unix Timestamp"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to orders before a timestamp, formatted as a Unix Timestamp"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to orders that have a certain status"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 100"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for FCM members to get orders filtered by subtrader ID.\nThis endpoint requires FCM member access level and allows filtering orders by subtrader ID.\n"
+        },
+        {
+          "info": {
+            "name": "Get FCM Positions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/fcm/positions",
+            "params": [
+              {
+                "name": "subtrader_id",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the response to positions for a specific subtrader (FCM members only)"
+              },
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Ticker of desired positions"
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker of desired positions"
+              },
+              {
+                "name": "count_filter",
+                "value": "",
+                "type": "query",
+                "description": "Restricts the positions to those with any of following fields with non-zero values, as a comma separated list"
+              },
+              {
+                "name": "settlement_status",
+                "value": "",
+                "type": "query",
+                "description": "Settlement status of the markets to return. Defaults to unsettled"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 100"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "The Cursor represents a pointer to the next page of records in the pagination"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for FCM members to get market positions filtered by subtrader ID.\nThis endpoint requires FCM member access level and allows filtering positions by subtrader ID.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

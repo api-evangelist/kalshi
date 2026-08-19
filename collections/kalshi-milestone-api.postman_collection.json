@@ -1,0 +1,632 @@
+{
+  "item": [
+    {
+      "id": "4bd12e4b-35c6-47f9-988f-8f1b87c5fff9",
+      "name": "milestone",
+      "description": {
+        "content": "Milestone endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "639e7e4b-da93-4418-8e0f-cbaa05e26eae",
+          "name": "Get Milestone",
+          "request": {
+            "name": "Get Milestone",
+            "description": {
+              "content": " Endpoint for getting data about a specific milestone by its ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "milestones",
+                ":milestone_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "milestone_id",
+                  "description": "(Required) Milestone ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "452797d9-f4d5-4608-b0a7-207340d2ade0",
+              "name": "Milestone retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "milestones",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"milestone\": {\n    \"id\": \"string\",\n    \"category\": \"Sports\",\n    \"type\": \"football_game\",\n    \"start_date\": \"1999-08-02T06:06:53.164Z\",\n    \"related_event_tickers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"title\": \"string\",\n    \"notification_message\": \"string\",\n    \"details\": {\n      \"key_0\": 8952\n    },\n    \"primary_event_tickers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"last_updated_ts\": \"2013-02-04T17:29:59.868Z\",\n    \"end_date\": \"2020-12-31T15:00:52.277Z\",\n    \"source_id\": \"string\",\n    \"source_ids\": {\n      \"key_0\": \"string\",\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6a00a32-e4f9-4835-b4d8-00fe347475c6",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "milestones",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "50d87c02-0ef6-40ff-b7d5-3e20d83ef374",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "milestones",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bd8837ac-92e1-43a2-bfd8-301830e6ddf5",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "milestones",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "32b9e3eb-3785-498c-88a3-8d8694ffee0d",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "milestones",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c7be8e9d-1d2b-4635-8a15-19afda9d8d9d",
+          "name": "Get Milestones",
+          "request": {
+            "name": "Get Milestones",
+            "description": {
+              "content": "Minimum start date to filter milestones. Format: RFC3339 timestamp",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "milestones"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "(Required) Number of milestones to return per page"
+                },
+                {
+                  "disabled": false,
+                  "key": "minimum_start_date",
+                  "value": "<dateTime>",
+                  "description": "Minimum start date to filter milestones. Format RFC3339 timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>",
+                  "description": "Filter by milestone category. E.g. Sports, Elections, Esports, Crypto."
+                },
+                {
+                  "disabled": false,
+                  "key": "competition",
+                  "value": "<string>",
+                  "description": "Filter by competition. E.g. Pro Football, Pro Basketball (M), Pro Baseball, Pro Hockey, College Football."
+                },
+                {
+                  "disabled": false,
+                  "key": "source_id",
+                  "value": "<string>",
+                  "description": "Filter by source id"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Filter by milestone type. E.g. football_game, basketball_game, soccer_tournament_multi_leg, baseball_game, hockey_match, political_race."
+                },
+                {
+                  "disabled": false,
+                  "key": "related_event_ticker",
+                  "value": "<string>",
+                  "description": "Filter by related event ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_updated_ts",
+                  "value": "<long>",
+                  "description": "Filter milestones with metadata updated after this Unix timestamp (in seconds). Use this to efficiently poll for changes."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0397344f-2d38-4d88-9932-51caa74685fa",
+              "name": "Milestones retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "milestones"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "minimum_start_date",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "category",
+                      "value": "Sports"
+                    },
+                    {
+                      "key": "competition",
+                      "value": "Pro Football"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "football_game"
+                    },
+                    {
+                      "key": "related_event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"milestones\": [\n    {\n      \"id\": \"string\",\n      \"category\": \"Sports\",\n      \"type\": \"football_game\",\n      \"start_date\": \"1978-06-19T09:27:01.647Z\",\n      \"related_event_tickers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"title\": \"string\",\n      \"notification_message\": \"string\",\n      \"details\": {\n        \"key_0\": 9696\n      },\n      \"primary_event_tickers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"last_updated_ts\": \"1971-05-24T14:39:34.999Z\",\n      \"end_date\": \"2014-07-05T15:37:26.803Z\",\n      \"source_id\": \"string\",\n      \"source_ids\": {\n        \"key_0\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"category\": \"Sports\",\n      \"type\": \"football_game\",\n      \"start_date\": \"2001-07-14T11:36:07.344Z\",\n      \"related_event_tickers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"title\": \"string\",\n      \"notification_message\": \"string\",\n      \"details\": {\n        \"key_0\": 8473\n      },\n      \"primary_event_tickers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"last_updated_ts\": \"1985-07-14T15:45:41.666Z\",\n      \"end_date\": \"1997-09-23T02:22:59.306Z\",\n      \"source_id\": \"string\",\n      \"source_ids\": {\n        \"key_0\": \"string\"\n      }\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "611ad4ea-fd02-423d-8e40-dd19dd325bb6",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "milestones"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "minimum_start_date",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "category",
+                      "value": "Sports"
+                    },
+                    {
+                      "key": "competition",
+                      "value": "Pro Football"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "football_game"
+                    },
+                    {
+                      "key": "related_event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ba0d6dff-6478-41b9-ba3e-32a164c733e9",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "milestones"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "minimum_start_date",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "category",
+                      "value": "Sports"
+                    },
+                    {
+                      "key": "competition",
+                      "value": "Pro Football"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "football_game"
+                    },
+                    {
+                      "key": "related_event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6b2a2036-89b0-46d5-b384-7d07e6fa96ed",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "milestones"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "minimum_start_date",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "category",
+                      "value": "Sports"
+                    },
+                    {
+                      "key": "competition",
+                      "value": "Pro Football"
+                    },
+                    {
+                      "key": "source_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "football_game"
+                    },
+                    {
+                      "key": "related_event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external-api.kalshi.com/trade-api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "3ec5ddbf-6964-4f06-a211-ad34fd77de05",
+    "name": "Kalshi Trade API Manual Endpoints account milestone API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manually defined OpenAPI spec for endpoints being migrated to spec-first approach",
+      "type": "text/plain"
+    }
+  }
+}

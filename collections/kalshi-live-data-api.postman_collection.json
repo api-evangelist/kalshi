@@ -1,0 +1,763 @@
+{
+  "item": [
+    {
+      "id": "5be706a3-b034-4760-9420-b242b223481d",
+      "name": "live-data",
+      "description": {
+        "content": "Live data endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "728f3d3d-6e6c-4fd5-9f0a-90f9c179e899",
+          "name": "Get Live Data",
+          "request": {
+            "name": "Get Live Data",
+            "description": {
+              "content": "Get live data for a specific milestone.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "live_data",
+                "milestone",
+                ":milestone_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include_player_stats",
+                  "value": "false",
+                  "description": "When true, includes player-level statistics in the live data response. Supported for Pro Football, Pro Basketball, and College Men's Basketball milestones that have player ID mappings configured. Has no effect for other sports or milestones without player mappings."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "milestone_id",
+                  "description": "(Required) Milestone ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dc0b5cbf-3f4b-4304-975a-bb00588c814b",
+              "name": "Live data retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    "milestone",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_player_stats",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"live_data\": {\n    \"type\": \"string\",\n    \"details\": {\n      \"key_0\": 1004.9233890491893\n    },\n    \"milestone_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b97f2b55-db95-48c6-bba0-ce998029da6f",
+              "name": "Live data not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    "milestone",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_player_stats",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e011eeae-405e-43ed-960c-2a74afd56751",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    "milestone",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_player_stats",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "74754d97-9e62-473e-86db-b0a462fd7f97",
+          "name": "Get Live Data (with type)",
+          "request": {
+            "name": "Get Live Data (with type)",
+            "description": {
+              "content": "Get live data for a specific milestone. This is the legacy endpoint that requires a type path parameter. Prefer using `/live_data/milestone/{milestone_id}` instead.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "live_data",
+                ":type",
+                "milestone",
+                ":milestone_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include_player_stats",
+                  "value": "false",
+                  "description": "When true, includes player-level statistics in the live data response. Supported for Pro Football, Pro Basketball, and College Men's Basketball milestones that have player ID mappings configured. Has no effect for other sports or milestones without player mappings."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "type",
+                  "description": "(Required) Type of live data"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "milestone_id",
+                  "description": "(Required) Milestone ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dc24d8ef-3eb5-49b3-a937-e9d06f930e75",
+              "name": "Live data retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    ":type",
+                    "milestone",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_player_stats",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "type",
+                      "description": "(Required) Type of live data"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"live_data\": {\n    \"type\": \"string\",\n    \"details\": {\n      \"key_0\": 1004.9233890491893\n    },\n    \"milestone_id\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b29c0f13-fb51-4adf-ab2b-66eee876c9ee",
+              "name": "Live data not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    ":type",
+                    "milestone",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_player_stats",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "type",
+                      "description": "(Required) Type of live data"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "26f4430c-7cb2-4b5d-8a61-a92cb584241a",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    ":type",
+                    "milestone",
+                    ":milestone_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_player_stats",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "type",
+                      "description": "(Required) Type of live data"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48020e82-b924-44ad-9f93-3a04cd5d3478",
+          "name": "Get Multiple Live Data",
+          "request": {
+            "name": "Get Multiple Live Data",
+            "description": {
+              "content": "Get live data for multiple milestones",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "live_data",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "milestone_ids",
+                  "value": "<string>",
+                  "description": "(Required) Array of milestone IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "milestone_ids",
+                  "value": "<string>",
+                  "description": "(Required) Array of milestone IDs"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_player_stats",
+                  "value": "false",
+                  "description": "When true, includes player-level statistics in the live data response. Supported for Pro Football, Pro Basketball, and College Men's Basketball milestones that have player ID mappings configured. Has no effect for other sports or milestones without player mappings."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "23ccd86a-3aba-4129-a484-83ba77be00ed",
+              "name": "Live data retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "milestone_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "milestone_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_player_stats",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"live_datas\": [\n    {\n      \"type\": \"string\",\n      \"details\": {\n        \"key_0\": true,\n        \"key_1\": 3113\n      },\n      \"milestone_id\": \"string\"\n    },\n    {\n      \"type\": \"string\",\n      \"details\": {\n        \"key_0\": 2088,\n        \"key_1\": false\n      },\n      \"milestone_id\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c9d4769-e22e-4c3a-b380-efa67a938dc3",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "milestone_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "milestone_ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_player_stats",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d59620d7-ccc1-4819-a671-9efaca0b8c8f",
+          "name": "Get Game Stats",
+          "request": {
+            "name": "Get Game Stats",
+            "description": {
+              "content": "Get play-by-play game statistics for a specific milestone. Supported sports: Pro Football, College Football, Pro Basketball, College Men's Basketball, College Women's Basketball, WNBA, Soccer, Pro Hockey, and Pro Baseball. Returns null for unsupported milestone types or milestones without a Sportradar ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "live_data",
+                "milestone",
+                ":milestone_id",
+                "game_stats"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "milestone_id",
+                  "description": "(Required) Milestone ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c5f5233f-1bc6-4efc-ae03-06dc371efe46",
+              "name": "Game stats retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    "milestone",
+                    ":milestone_id",
+                    "game_stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pbp\": {\n    \"periods\": [\n      {\n        \"events\": [\n          {\n            \"key_0\": \"string\",\n            \"key_1\": 8228.16854687069\n          },\n          {\n            \"key_0\": true\n          }\n        ]\n      },\n      {\n        \"events\": [\n          {\n            \"key_0\": 8034.612581594633,\n            \"key_1\": 1875.433582810523\n          },\n          {\n            \"key_0\": \"string\",\n            \"key_1\": \"string\",\n            \"key_2\": 9117.947138435098,\n            \"key_3\": 6794.748967491946,\n            \"key_4\": false\n          }\n        ]\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53dfcc18-6fb5-43c8-a467-00989e4e7536",
+              "name": "Game stats not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    "milestone",
+                    ":milestone_id",
+                    "game_stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4942a5d2-61b6-48e6-b72d-228a1b6e8f47",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "live_data",
+                    "milestone",
+                    ":milestone_id",
+                    "game_stats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "milestone_id",
+                      "description": "(Required) Milestone ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external-api.kalshi.com/trade-api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "fa1161f3-6a42-4bdc-9a60-9e20533cd51e",
+    "name": "Kalshi Trade API Manual Endpoints account live-data API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manually defined OpenAPI spec for endpoints being migrated to spec-first approach",
+      "type": "text/plain"
+    }
+  }
+}

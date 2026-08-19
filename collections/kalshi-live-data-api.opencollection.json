@@ -1,0 +1,118 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account live-data API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "live-data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Live Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/live_data/milestone/:milestone_id",
+            "params": [
+              {
+                "name": "milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Milestone ID"
+              },
+              {
+                "name": "include_player_stats",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes player-level statistics in the live data response. Supported for Pro Football, Pro Basketball, and College Men's Basketball milestones that have player ID mappings configured. Has no effect for other sports or milestones without player mappings."
+              }
+            ]
+          },
+          "docs": "Get live data for a specific milestone."
+        },
+        {
+          "info": {
+            "name": "Get Live Data (with type)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/live_data/:type/milestone/:milestone_id",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Type of live data"
+              },
+              {
+                "name": "milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Milestone ID"
+              },
+              {
+                "name": "include_player_stats",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes player-level statistics in the live data response. Supported for Pro Football, Pro Basketball, and College Men's Basketball milestones that have player ID mappings configured. Has no effect for other sports or milestones without player mappings."
+              }
+            ]
+          },
+          "docs": "Get live data for a specific milestone. This is the legacy endpoint that requires a type path parameter. Prefer using `/live_data/milestone/{milestone_id}` instead."
+        },
+        {
+          "info": {
+            "name": "Get Multiple Live Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/live_data/batch",
+            "params": [
+              {
+                "name": "milestone_ids",
+                "value": "",
+                "type": "query",
+                "description": "Array of milestone IDs"
+              },
+              {
+                "name": "include_player_stats",
+                "value": "",
+                "type": "query",
+                "description": "When true, includes player-level statistics in the live data response. Supported for Pro Football, Pro Basketball, and College Men's Basketball milestones that have player ID mappings configured. Has no effect for other sports or milestones without player mappings."
+              }
+            ]
+          },
+          "docs": "Get live data for multiple milestones"
+        },
+        {
+          "info": {
+            "name": "Get Game Stats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/live_data/milestone/:milestone_id/game_stats",
+            "params": [
+              {
+                "name": "milestone_id",
+                "value": "",
+                "type": "path",
+                "description": "Milestone ID"
+              }
+            ]
+          },
+          "docs": "Get play-by-play game statistics for a specific milestone. Supported sports: Pro Football, College Football, Pro Basketball, College Men's Basketball, College Women's Basketball, WNBA, Soccer, Pro Hockey, and Pro Baseball. Returns null for unsupported milestone types or milestones without a Sportradar ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

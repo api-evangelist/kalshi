@@ -1,0 +1,386 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account communications API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "communications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Communications ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/id",
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting the communications ID of the logged-in user."
+        },
+        {
+          "info": {
+            "name": "Get RFQs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/rfqs",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "market_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 100."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter RFQs by status"
+              },
+              {
+                "name": "creator_user_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter RFQs by creator user ID"
+              },
+              {
+                "name": "user_filter",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting RFQs"
+        },
+        {
+          "info": {
+            "name": "Create RFQ",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/rfqs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for creating a new RFQ. You can have a maximum of 100 open RFQs at a time."
+        },
+        {
+          "info": {
+            "name": "Get RFQ",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/rfqs/:rfq_id",
+            "params": [
+              {
+                "name": "rfq_id",
+                "value": "",
+                "type": "path",
+                "description": "RFQ ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting a single RFQ by id"
+        },
+        {
+          "info": {
+            "name": "Delete RFQ",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/rfqs/:rfq_id",
+            "params": [
+              {
+                "name": "rfq_id",
+                "value": "",
+                "type": "path",
+                "description": "RFQ ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for deleting an RFQ by ID"
+        },
+        {
+          "info": {
+            "name": "Get Quotes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes",
+            "params": [
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "market_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Parameter to specify the number of results per page. Defaults to 500."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by status"
+              },
+              {
+                "name": "quote_creator_user_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by quote creator user ID"
+              },
+              {
+                "name": "user_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter for quotes created by the authenticated user."
+              },
+              {
+                "name": "rfq_user_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter for quotes responding to RFQs created by the authenticated user."
+              },
+              {
+                "name": "rfq_creator_user_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by RFQ creator user ID"
+              },
+              {
+                "name": "rfq_creator_subtrader_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by RFQ creator subtrader ID (FCM members only)"
+              },
+              {
+                "name": "rfq_id",
+                "value": "",
+                "type": "query",
+                "description": "Filter quotes by RFQ ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting quotes"
+        },
+        {
+          "info": {
+            "name": "Create Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for creating a quote in response to an RFQ"
+        },
+        {
+          "info": {
+            "name": "Get Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes/:quote_id",
+            "params": [
+              {
+                "name": "quote_id",
+                "value": "",
+                "type": "path",
+                "description": "Quote ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting a particular quote"
+        },
+        {
+          "info": {
+            "name": "Delete Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes/:quote_id",
+            "params": [
+              {
+                "name": "quote_id",
+                "value": "",
+                "type": "path",
+                "description": "Quote ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for deleting a quote, which means it can no longer be accepted."
+        },
+        {
+          "info": {
+            "name": "Accept Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes/:quote_id/accept",
+            "params": [
+              {
+                "name": "quote_id",
+                "value": "",
+                "type": "path",
+                "description": "Quote ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for accepting a quote. This will require the quoter to confirm"
+        },
+        {
+          "info": {
+            "name": "Confirm Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/communications/quotes/:quote_id/confirm",
+            "params": [
+              {
+                "name": "quote_id",
+                "value": "",
+                "type": "path",
+                "description": "Quote ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for confirming a quote. This will start a timer for order execution"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,263 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account historical API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "historical",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Historical Cutoff Timestamps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/cutoff"
+          },
+          "docs": "Returns the cutoff timestamps that define the boundary between **live** and **historical** data.\n\n## Cutoff fields\n- `market_settled_ts` : Markets that **settled** before this timestamp, and their candlesticks, must be accessed via `GET /historical/markets` and `GET /historical/markets/{ticker}/candlesticks`.\n- `trades_created_ts` : Trades that were **filled** before this timestamp must be accessed via `GET /historical/fills`.\n- `orders_updated_ts` : Orders that were **canceled or fully executed"
+        },
+        {
+          "info": {
+            "name": "Get Historical Market Candlesticks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/markets/:ticker/candlesticks",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "path",
+                "description": "Market ticker - unique identifier for the specific market"
+              },
+              {
+                "name": "start_ts",
+                "value": "",
+                "type": "query",
+                "description": "Start timestamp (Unix timestamp). Candlesticks will include those ending on or after this time."
+              },
+              {
+                "name": "end_ts",
+                "value": "",
+                "type": "query",
+                "description": "End timestamp (Unix timestamp). Candlesticks will include those ending on or before this time."
+              },
+              {
+                "name": "period_interval",
+                "value": "",
+                "type": "query",
+                "description": "Time period length of each candlestick in minutes. Valid values are 1 (1 minute), 60 (1 hour), or 1440 (1 day)."
+              }
+            ]
+          },
+          "docs": " Endpoint for fetching historical candlestick data for markets that have been archived from the live data set. Time period length of each candlestick in minutes. Valid values: 1 (1 minute), 60 (1 hour), 1440 (1 day)."
+        },
+        {
+          "info": {
+            "name": "Get Historical Fills",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/fills",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting all historical fills for the member. A fill is when a trade you have is matched."
+        },
+        {
+          "info": {
+            "name": "Get Historical Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/orders",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting orders that have been archived to the historical database."
+        },
+        {
+          "info": {
+            "name": "Get Historical Trades",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/trades",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "min_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items after this Unix timestamp"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              }
+            ]
+          },
+          "docs": " Endpoint for getting all historical trades for all markets. Trades that were filled before the historical cutoff are available via this endpoint. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details."
+        },
+        {
+          "info": {
+            "name": "Get Historical Markets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/markets",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "tickers",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific market tickers. Comma-separated list of market tickers to retrieve."
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by. Only a single event ticker is supported."
+              },
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by series ticker"
+              },
+              {
+                "name": "mve_filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter by multivariate events (combos). By default, MVE markets are included."
+              }
+            ]
+          },
+          "docs": "Endpoint for getting markets that have been archived to the historical database. Filters are mutually exclusive.\n"
+        },
+        {
+          "info": {
+            "name": "Get Historical Market",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/historical/markets/:ticker",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "path",
+                "description": "Market ticker"
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about a specific market by its ticker from the historical database."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

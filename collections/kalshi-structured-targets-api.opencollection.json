@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account structured-targets API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "structured-targets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Structured Targets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/structured_targets",
+            "params": [
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific structured target IDs. Pass multiple IDs by repeating the parameter (e.g. `?ids=uuid1&ids=uuid2`)."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by structured target type"
+              },
+              {
+                "name": "competition",
+                "value": "",
+                "type": "query",
+                "description": "Filter by competition. Matches against the league, conference, division, or tour in the structured target details."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of items per page (min 1, max 2000, default 100)"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor"
+              }
+            ]
+          },
+          "docs": "Page size (min: 1, max: 2000)"
+        },
+        {
+          "info": {
+            "name": "Get Structured Target",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/structured_targets/:structured_target_id",
+            "params": [
+              {
+                "name": "structured_target_id",
+                "value": "",
+                "type": "path",
+                "description": "Structured target ID"
+              }
+            ]
+          },
+          "docs": " Endpoint for getting data about a specific structured target by its ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

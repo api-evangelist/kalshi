@@ -1,0 +1,61 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account incentive-programs API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "incentive-programs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Incentives",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/incentive_programs",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Status filter. Can be \"all\", \"active\", \"upcoming\", \"closed\", or \"paid_out\". Default is \"all\"."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type filter. Can be \"all\", \"liquidity\", or \"volume\". Default is \"all\"."
+              },
+              {
+                "name": "incentive_description",
+                "value": "",
+                "type": "query",
+                "description": "Filter by exact incentive description."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100. Maximum value is 10000."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Cursor for pagination"
+              }
+            ]
+          },
+          "docs": " List incentives with optional filters. Incentives are rewards programs for trading activity on specific markets."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

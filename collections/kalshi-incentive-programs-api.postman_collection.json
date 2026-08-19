@@ -1,0 +1,266 @@
+{
+  "item": [
+    {
+      "id": "d645f85f-5e3d-44ff-921c-3d6c8b25e64c",
+      "name": "incentive-programs",
+      "description": {
+        "content": "Incentive program endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2a20c9c6-fcf9-4c9a-b8ea-81f760ba771b",
+          "name": "Get Incentives",
+          "request": {
+            "name": "Get Incentives",
+            "description": {
+              "content": " List incentives with optional filters. Incentives are rewards programs for trading activity on specific markets.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "incentive_programs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Status filter. Can be \"all\", \"active\", \"upcoming\", \"closed\", or \"paid_out\". Default is \"all\"."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Type filter. Can be \"all\", \"liquidity\", or \"volume\". Default is \"all\"."
+                },
+                {
+                  "disabled": false,
+                  "key": "incentive_description",
+                  "value": "<string>",
+                  "description": "Filter by exact incentive description."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Number of results per page. Defaults to 100. Maximum value is 10000."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Cursor for pagination"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "481baca4-bb79-4f5b-b899-a0b333671f6f",
+              "name": "Incentive programs retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "incentive_programs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "incentive_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"incentive_programs\": [\n    {\n      \"id\": \"string\",\n      \"market_id\": \"string\",\n      \"market_ticker\": \"string\",\n      \"incentive_type\": \"liquidity\",\n      \"incentive_description\": \"string\",\n      \"start_date\": \"1988-08-28T20:05:41.752Z\",\n      \"end_date\": \"2007-12-22T19:30:31.284Z\",\n      \"period_reward\": 8282,\n      \"paid_out\": true,\n      \"discount_factor_bps\": 3914,\n      \"target_size_fp\": \"10.00\"\n    },\n    {\n      \"id\": \"string\",\n      \"market_id\": \"string\",\n      \"market_ticker\": \"string\",\n      \"incentive_type\": \"volume\",\n      \"incentive_description\": \"string\",\n      \"start_date\": \"2001-06-24T23:48:37.285Z\",\n      \"end_date\": \"1956-09-02T07:43:19.282Z\",\n      \"period_reward\": 5335,\n      \"paid_out\": true,\n      \"discount_factor_bps\": 719,\n      \"target_size_fp\": \"10.00\"\n    }\n  ],\n  \"next_cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "180650eb-dff6-4117-81e2-c7f9e292c089",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "incentive_programs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "incentive_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df622dac-900e-48f2-8d2e-c97f03eef9b3",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "incentive_programs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "incentive_description",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external-api.kalshi.com/trade-api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "cf35b861-d3ca-4309-8ba5-87e3e447a99c",
+    "name": "Kalshi Trade API Manual Endpoints account incentive-programs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manually defined OpenAPI spec for endpoints being migrated to spec-first approach",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,498 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account orders API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders",
+            "params": [
+              {
+                "name": "ticker",
+                "value": "",
+                "type": "query",
+                "description": "Filter by market ticker"
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event tickers to filter by, as a comma-separated list (maximum 10)."
+              },
+              {
+                "name": "min_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items after this Unix timestamp"
+              },
+              {
+                "name": "max_ts",
+                "value": "",
+                "type": "query",
+                "description": "Filter items before this Unix timestamp"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by status. Possible values depend on the endpoint."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page. Defaults to 100."
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query",
+                "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Restricts the response to orders that have a certain status: resting, canceled, or executed.\nOrders that have been canceled or fully executed before the historical cutoff are only available via `GET /historical/orders`. Resting orders will always be available through this endpoint. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.\n"
+        },
+        {
+          "info": {
+            "name": "Create Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for submitting orders in a market. Each user is limited to 200 000 open orders at a time."
+        },
+        {
+          "info": {
+            "name": "Get Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting a single order."
+        },
+        {
+          "info": {
+            "name": "Cancel Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for canceling orders. The value for the orderId should match the id field of the order you want to decrease. Commonly, DELETE-type endpoints return 204 status with no body content on success. But we can't completely delete the order, as it may be partially filled already. Instead, the DeleteOrder endpoint reduce the order completely, essentially zeroing the remaining resting contracts on it. The zeroed order is returned on the response payload as a form of validation for the client."
+        },
+        {
+          "info": {
+            "name": "Batch Create Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/batched",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for submitting a batch of orders. The maximum batch size scales with your tier's write budget — see [Rate Limits and Tiers](/getting_started/rate_limits)."
+        },
+        {
+          "info": {
+            "name": "Batch Cancel Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/batched",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for cancelling a batch of orders. The maximum batch size scales with your tier's write budget — see [Rate Limits and Tiers](/getting_started/rate_limits)."
+        },
+        {
+          "info": {
+            "name": "Amend Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id/amend",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for amending the max number of fillable contracts and/or price in an existing order. Max fillable contracts is `remaining_count` + `fill_count`."
+        },
+        {
+          "info": {
+            "name": "Decrease Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id/decrease",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for decreasing the number of contracts in an existing order. This is the only kind of edit available on order quantity. Cancelling an order is equivalent to decreasing an order amount to zero."
+        },
+        {
+          "info": {
+            "name": "Get Queue Positions for Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/queue_positions",
+            "params": [
+              {
+                "name": "market_tickers",
+                "value": "",
+                "type": "query",
+                "description": "Comma-separated list of market tickers to filter by"
+              },
+              {
+                "name": "event_ticker",
+                "value": "",
+                "type": "query",
+                "description": "Event ticker to filter by"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting queue positions for all resting orders. Queue position represents the number of contracts that need to be matched before an order receives a partial or full match, determined using price-time priority."
+        },
+        {
+          "info": {
+            "name": "Get Order Queue Position",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/orders/:order_id/queue_position",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint for getting an order's queue position in the order book. This represents the amount of orders that need to be matched before this order receives a partial or full match. Queue position is determined using a price-time priority."
+        },
+        {
+          "info": {
+            "name": "Create Order (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for submitting event-market orders using the V2 request/response shape (single-book `bid`/`ask` side and fixed-point dollar prices). The legacy `/portfolio/orders` endpoint will be deprecated no earlier than May 6, 2026 — clients should migrate to this path."
+        },
+        {
+          "info": {
+            "name": "Batch Create Orders (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/batched",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for submitting a batch of event-market orders using the V2 request/response shape. The maximum batch size scales with your tier's write budget — see [Rate Limits and Tiers](/getting_started/rate_limits)."
+        },
+        {
+          "info": {
+            "name": "Batch Cancel Orders (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/batched",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for cancelling a batch of event-market orders using the V2 response shape. The maximum batch size scales with your tier's write budget — see [Rate Limits and Tiers](/getting_started/rate_limits)."
+        },
+        {
+          "info": {
+            "name": "Cancel Order (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/:order_id",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for cancelling event-market orders using the V2 response shape. Returns `{order_id, client_order_id, reduced_by}` rather than a full order object."
+        },
+        {
+          "info": {
+            "name": "Amend Order (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/:order_id/amend",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for amending the price and/or max fillable count of an existing event-market order using the V2 request/response shape. The request `count` is the updated total/max fillable count, equal to already filled count plus desired resting remaining count. This behavior matches the v1 amend endpoints; only the request/response shape differs."
+        },
+        {
+          "info": {
+            "name": "Decrease Order (V2)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/events/orders/:order_id/decrease",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "Order ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint for decreasing the remaining count of an existing event-market order using the V2 request/response shape. Exactly one of `reduce_by` or `reduce_to` must be provided."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

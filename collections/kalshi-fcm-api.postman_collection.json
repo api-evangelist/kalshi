@@ -1,0 +1,946 @@
+{
+  "item": [
+    {
+      "id": "2bf36cbb-d026-438d-8347-f5ef242f9f99",
+      "name": "fcm",
+      "description": {
+        "content": "FCM member specific endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9bab6eac-bdc4-4c20-a032-a9ac7ea57fc6",
+          "name": "Get FCM Orders",
+          "request": {
+            "name": "Get FCM Orders",
+            "description": {
+              "content": "Endpoint for FCM members to get orders filtered by subtrader ID.\nThis endpoint requires FCM member access level and allows filtering orders by subtrader ID.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fcm",
+                "orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "subtrader_id",
+                  "value": "<string>",
+                  "description": "(Required) Restricts the response to orders for a specific subtrader (FCM members only)"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+                },
+                {
+                  "disabled": false,
+                  "key": "event_ticker",
+                  "value": "<string>",
+                  "description": "Event ticker to filter by. Only a single event ticker is supported."
+                },
+                {
+                  "disabled": false,
+                  "key": "ticker",
+                  "value": "<string>",
+                  "description": "Filter by market ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_ts",
+                  "value": "<long>",
+                  "description": "Restricts the response to orders after a timestamp, formatted as a Unix Timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "max_ts",
+                  "value": "<long>",
+                  "description": "Restricts the response to orders before a timestamp, formatted as a Unix Timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Restricts the response to orders that have a certain status"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Parameter to specify the number of results per page. Defaults to 100"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "KALSHI-ACCESS-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f73882c0-5df5-4cb4-8dc4-f3c4b61e58b3",
+              "name": "Orders retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"orders\": [\n    {\n      \"order_id\": \"string\",\n      \"user_id\": \"string\",\n      \"client_order_id\": \"string\",\n      \"ticker\": \"string\",\n      \"side\": \"yes\",\n      \"action\": \"buy\",\n      \"outcome_side\": \"no\",\n      \"book_side\": \"ask\",\n      \"type\": \"limit\",\n      \"status\": \"canceled\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"fill_count_fp\": \"10.00\",\n      \"remaining_count_fp\": \"10.00\",\n      \"initial_count_fp\": \"10.00\",\n      \"taker_fees_dollars\": \"0.5600\",\n      \"maker_fees_dollars\": \"0.5600\",\n      \"taker_fill_cost_dollars\": \"0.5600\",\n      \"maker_fill_cost_dollars\": \"0.5600\",\n      \"expiration_time\": \"1965-03-31T03:50:38.704Z\",\n      \"created_time\": \"1980-08-10T16:36:23.015Z\",\n      \"last_update_time\": \"2016-04-27T23:26:50.756Z\",\n      \"self_trade_prevention_type\": \"taker_at_cross\",\n      \"order_group_id\": \"string\",\n      \"cancel_order_on_pause\": true,\n      \"subaccount_number\": 7556,\n      \"exchange_index\": 0\n    },\n    {\n      \"order_id\": \"string\",\n      \"user_id\": \"string\",\n      \"client_order_id\": \"string\",\n      \"ticker\": \"string\",\n      \"side\": \"no\",\n      \"action\": \"sell\",\n      \"outcome_side\": \"no\",\n      \"book_side\": \"bid\",\n      \"type\": \"market\",\n      \"status\": \"resting\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"fill_count_fp\": \"10.00\",\n      \"remaining_count_fp\": \"10.00\",\n      \"initial_count_fp\": \"10.00\",\n      \"taker_fees_dollars\": \"0.5600\",\n      \"maker_fees_dollars\": \"0.5600\",\n      \"taker_fill_cost_dollars\": \"0.5600\",\n      \"maker_fill_cost_dollars\": \"0.5600\",\n      \"expiration_time\": \"1986-11-23T20:03:39.022Z\",\n      \"created_time\": \"1979-04-14T06:24:31.119Z\",\n      \"last_update_time\": \"2012-01-07T06:51:50.341Z\",\n      \"self_trade_prevention_type\": \"maker\",\n      \"order_group_id\": \"string\",\n      \"cancel_order_on_pause\": true,\n      \"subaccount_number\": 212,\n      \"exchange_index\": 0\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40d70c33-2b6e-47fd-9d71-6288d7354d56",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "86550013-af5f-441f-a5fa-61779dbeed4d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a70382f9-8df3-48cb-9d47-33067861adba",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "091ee39b-7195-4f6c-b164-469438077a87",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9cd33ebf-6a55-4dbb-a8fe-cb53da13afee",
+          "name": "Get FCM Positions",
+          "request": {
+            "name": "Get FCM Positions",
+            "description": {
+              "content": "Endpoint for FCM members to get market positions filtered by subtrader ID.\nThis endpoint requires FCM member access level and allows filtering positions by subtrader ID.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "fcm",
+                "positions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "subtrader_id",
+                  "value": "<string>",
+                  "description": "(Required) Restricts the response to positions for a specific subtrader (FCM members only)"
+                },
+                {
+                  "disabled": false,
+                  "key": "ticker",
+                  "value": "<string>",
+                  "description": "Ticker of desired positions"
+                },
+                {
+                  "disabled": false,
+                  "key": "event_ticker",
+                  "value": "<string>",
+                  "description": "Event ticker of desired positions"
+                },
+                {
+                  "disabled": false,
+                  "key": "count_filter",
+                  "value": "<string>",
+                  "description": "Restricts the positions to those with any of following fields with non-zero values, as a comma separated list"
+                },
+                {
+                  "disabled": false,
+                  "key": "settlement_status",
+                  "value": "<string>",
+                  "description": "Settlement status of the markets to return. Defaults to unsettled"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Parameter to specify the number of results per page. Defaults to 100"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "The Cursor represents a pointer to the next page of records in the pagination"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "KALSHI-ACCESS-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "212fa3fb-3f1d-4794-8c69-0f78c8390bad",
+              "name": "Positions retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "count_filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "settlement_status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"market_positions\": [\n    {\n      \"ticker\": \"string\",\n      \"total_traded_dollars\": \"0.5600\",\n      \"position_fp\": \"10.00\",\n      \"market_exposure_dollars\": \"0.5600\",\n      \"realized_pnl_dollars\": \"0.5600\",\n      \"resting_orders_count\": 5797,\n      \"fees_paid_dollars\": \"0.5600\",\n      \"last_updated_ts\": \"2012-07-19T11:14:49.129Z\"\n    },\n    {\n      \"ticker\": \"string\",\n      \"total_traded_dollars\": \"0.5600\",\n      \"position_fp\": \"10.00\",\n      \"market_exposure_dollars\": \"0.5600\",\n      \"realized_pnl_dollars\": \"0.5600\",\n      \"resting_orders_count\": 9633,\n      \"fees_paid_dollars\": \"0.5600\",\n      \"last_updated_ts\": \"1991-08-17T05:11:48.287Z\"\n    }\n  ],\n  \"event_positions\": [\n    {\n      \"event_ticker\": \"string\",\n      \"total_cost_dollars\": \"0.5600\",\n      \"total_cost_shares_fp\": \"10.00\",\n      \"event_exposure_dollars\": \"0.5600\",\n      \"realized_pnl_dollars\": \"0.5600\",\n      \"fees_paid_dollars\": \"0.5600\"\n    },\n    {\n      \"event_ticker\": \"string\",\n      \"total_cost_dollars\": \"0.5600\",\n      \"total_cost_shares_fp\": \"10.00\",\n      \"event_exposure_dollars\": \"0.5600\",\n      \"realized_pnl_dollars\": \"0.5600\",\n      \"fees_paid_dollars\": \"0.5600\"\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d707749b-0974-4c79-8cd4-712814507d64",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "count_filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "settlement_status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "19860bc2-6343-4f06-ac06-e4c9fad7e6c7",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "count_filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "settlement_status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e74fbdbf-9c2d-46ac-a2c5-abcb727d7d01",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "count_filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "settlement_status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b8269ef7-04cc-4e9f-9cc8-1072f7fffefe",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "fcm",
+                    "positions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subtrader_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "count_filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "settlement_status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external-api.kalshi.com/trade-api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "7db9422d-ec42-48b5-8e3f-5c8d972f1b71",
+    "name": "Kalshi Trade API Manual Endpoints account fcm API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manually defined OpenAPI spec for endpoints being migrated to spec-first approach",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,296 @@
+{
+  "item": [
+    {
+      "id": "3817f049-8e13-40f2-aa41-1f469273e265",
+      "name": "search",
+      "description": {
+        "content": "Search and filtering endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "75caf9d6-0ee8-4027-b48e-44216916c962",
+          "name": "Get Tags for Series Categories",
+          "request": {
+            "name": "Get Tags for Series Categories",
+            "description": {
+              "content": "Retrieve tags organized by series categories.\n\nThis endpoint returns a mapping of series categories to their associated tags, which can be used for filtering and search functionality.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search",
+                "tags_by_categories"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1764392e-3ee1-4a54-9c54-6402ce55d2c2",
+              "name": "Tags retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search",
+                    "tags_by_categories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tags_by_categories\": {\n    \"key_0\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_1\": [\n      \"string\",\n      \"string\"\n    ],\n    \"key_2\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ffce26ce-23a0-42e1-9285-d3094b2d2dbf",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search",
+                    "tags_by_categories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c5c35ce9-5219-48a7-9f39-a5e72d56d137",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search",
+                    "tags_by_categories"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e84ce371-1c08-46d2-b2b1-745e439686bf",
+          "name": "Get Filters for Sports",
+          "request": {
+            "name": "Get Filters for Sports",
+            "description": {
+              "content": "Retrieve available filters organized by sport.\n\nThis endpoint returns filtering options available for each sport, including scopes and competitions. It also provides an ordered list of sports for display purposes.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "search",
+                "filters_by_sport"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4affdfe9-3b7b-49e1-83c4-aa014c311971",
+              "name": "Filters retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search",
+                    "filters_by_sport"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"filters_by_sports\": {\n    \"key_0\": {\n      \"scopes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"competitions\": {\n        \"key_0\": {\n          \"scopes\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        \"key_1\": {\n          \"scopes\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        \"key_2\": {\n          \"scopes\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      }\n    },\n    \"key_1\": {\n      \"scopes\": [\n        \"string\",\n        \"string\"\n      ],\n      \"competitions\": {\n        \"key_0\": {\n          \"scopes\": [\n            \"string\",\n            \"string\"\n          ]\n        },\n        \"key_1\": {\n          \"scopes\": [\n            \"string\",\n            \"string\"\n          ]\n        }\n      }\n    }\n  },\n  \"sport_ordering\": [\n    \"string\",\n    \"string\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f76d7090-4b58-417c-9609-bfbfb0656921",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search",
+                    "filters_by_sport"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9189f0ef-9b54-47de-be5d-a984cfbf0a34",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "search",
+                    "filters_by_sport"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external-api.kalshi.com/trade-api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "64586ce5-e9bd-4e1d-b504-3e7f8681ec37",
+    "name": "Kalshi Trade API Manual Endpoints account search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manually defined OpenAPI spec for endpoints being migrated to spec-first approach",
+      "type": "text/plain"
+    }
+  }
+}

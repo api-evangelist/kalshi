@@ -1,0 +1,46 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Account API Limits",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/account/limits",
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Endpoint to retrieve the API tier limits associated with the authenticated user."
+        },
+        {
+          "info": {
+            "name": "List Non-Default Endpoint Costs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/account/endpoint_costs"
+          },
+          "docs": "Lists API v2 endpoints whose configured token cost differs from the default cost. Endpoints that use the default cost are omitted."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,2536 @@
+{
+  "item": [
+    {
+      "id": "ddf1b8fb-1e9c-43fc-afe9-b072cd0d1ad8",
+      "name": "market",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d93224a2-6be3-4fed-8446-011d3e2795d4",
+          "name": "Get Market Candlesticks",
+          "request": {
+            "name": "Get Market Candlesticks",
+            "description": {
+              "content": "Time period length of each candlestick in minutes. Valid values: 1 (1 minute), 60 (1 hour), 1440 (1 day).\nCandlesticks for markets that settled before the historical cutoff are only available via `GET /historical/markets/{ticker}/candlesticks`. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "series",
+                ":series_ticker",
+                "markets",
+                ":ticker",
+                "candlesticks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_ts",
+                  "value": "<long>",
+                  "description": "(Required) Start timestamp (Unix timestamp). Candlesticks will include those ending on or after this time."
+                },
+                {
+                  "disabled": false,
+                  "key": "end_ts",
+                  "value": "<long>",
+                  "description": "(Required) End timestamp (Unix timestamp). Candlesticks will include those ending on or before this time."
+                },
+                {
+                  "disabled": false,
+                  "key": "period_interval",
+                  "value": "<integer>",
+                  "description": "(Required) Time period length of each candlestick in minutes. Valid values are 1 (1 minute), 60 (1 hour), or 1440 (1 day)."
+                },
+                {
+                  "disabled": false,
+                  "key": "include_latest_before_start",
+                  "value": "false",
+                  "description": "If true, prepends the latest candlestick available before the start_ts. This synthetic candlestick is created by:\n1. Finding the most recent real candlestick before start_ts\n2. Projecting it forward to the first period boundary (calculated as the next period interval after start_ts)\n3. Setting all OHLC prices to null, and `previous_price` to the close price from the real candlestick\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "series_ticker",
+                  "description": "(Required) Series ticker - the series that contains the target market"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticker",
+                  "description": "(Required) Market ticker - unique identifier for the specific market"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dd6d5c41-3801-4806-a99d-cebe8f5fb46e",
+              "name": "Candlesticks retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "markets",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include_latest_before_start",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) Series ticker - the series that contains the target market"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker - unique identifier for the specific market"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ticker\": \"string\",\n  \"candlesticks\": [\n    {\n      \"end_period_ts\": 6364,\n      \"yes_bid\": {\n        \"open_dollars\": \"0.5600\",\n        \"low_dollars\": \"0.5600\",\n        \"high_dollars\": \"0.5600\",\n        \"close_dollars\": \"0.5600\"\n      },\n      \"yes_ask\": {\n        \"open_dollars\": \"0.5600\",\n        \"low_dollars\": \"0.5600\",\n        \"high_dollars\": \"0.5600\",\n        \"close_dollars\": \"0.5600\"\n      },\n      \"price\": {\n        \"open_dollars\": \"0.5600\",\n        \"low_dollars\": \"0.5600\",\n        \"high_dollars\": \"0.5600\",\n        \"close_dollars\": \"0.5600\",\n        \"mean_dollars\": \"0.5600\",\n        \"previous_dollars\": \"0.5600\",\n        \"min_dollars\": \"0.5600\",\n        \"max_dollars\": \"0.5600\"\n      },\n      \"volume_fp\": \"10.00\",\n      \"open_interest_fp\": \"10.00\"\n    },\n    {\n      \"end_period_ts\": 1857,\n      \"yes_bid\": {\n        \"open_dollars\": \"0.5600\",\n        \"low_dollars\": \"0.5600\",\n        \"high_dollars\": \"0.5600\",\n        \"close_dollars\": \"0.5600\"\n      },\n      \"yes_ask\": {\n        \"open_dollars\": \"0.5600\",\n        \"low_dollars\": \"0.5600\",\n        \"high_dollars\": \"0.5600\",\n        \"close_dollars\": \"0.5600\"\n      },\n      \"price\": {\n        \"open_dollars\": \"0.5600\",\n        \"low_dollars\": \"0.5600\",\n        \"high_dollars\": \"0.5600\",\n        \"close_dollars\": \"0.5600\",\n        \"mean_dollars\": \"0.5600\",\n        \"previous_dollars\": \"0.5600\",\n        \"min_dollars\": \"0.5600\",\n        \"max_dollars\": \"0.5600\"\n      },\n      \"volume_fp\": \"10.00\",\n      \"open_interest_fp\": \"10.00\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78f38c87-301f-4847-898c-cc8e2864b917",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "markets",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include_latest_before_start",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) Series ticker - the series that contains the target market"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker - unique identifier for the specific market"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "51419f82-5f42-4c83-a039-d99c9d156b1b",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "markets",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include_latest_before_start",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) Series ticker - the series that contains the target market"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker - unique identifier for the specific market"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "87ea2302-1af2-478a-8bff-f8818cb7f5ce",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "markets",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include_latest_before_start",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) Series ticker - the series that contains the target market"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker - unique identifier for the specific market"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c809cdef-aff3-4376-9d9b-2fc8eac6fa25",
+          "name": "Get Trades",
+          "request": {
+            "name": "Get Trades",
+            "description": {
+              "content": "Endpoint for getting all trades for all markets. A trade represents a completed transaction between two users on a specific market. Each trade includes the market ticker, price, quantity, and timestamp information. This endpoint returns a paginated response. Use the 'limit' parameter to control page size (1-1000, defaults to 100). The response includes a 'cursor' field - pass this value in the 'cursor' parameter of your next request to get the next page. An empty cursor indicates no more pages are available.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "markets",
+                "trades"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+                },
+                {
+                  "disabled": false,
+                  "key": "ticker",
+                  "value": "<string>",
+                  "description": "Filter by market ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_ts",
+                  "value": "<long>",
+                  "description": "Filter items after this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "max_ts",
+                  "value": "<long>",
+                  "description": "Filter items before this Unix timestamp"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "32b95682-be95-44ee-aff8-45d52e476276",
+              "name": "Trades retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "trades"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"trades\": [\n    {\n      \"trade_id\": \"string\",\n      \"ticker\": \"string\",\n      \"count_fp\": \"10.00\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"taker_side\": \"yes\",\n      \"taker_outcome_side\": \"no\",\n      \"taker_book_side\": \"ask\",\n      \"created_time\": \"1968-12-08T06:36:33.231Z\"\n    },\n    {\n      \"trade_id\": \"string\",\n      \"ticker\": \"string\",\n      \"count_fp\": \"10.00\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"taker_side\": \"no\",\n      \"taker_outcome_side\": \"no\",\n      \"taker_book_side\": \"bid\",\n      \"created_time\": \"1949-01-02T22:37:48.828Z\"\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "737e10ea-b4ff-415f-b961-3fafef407fd3",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "trades"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4f7ebd7e-e02b-473e-a18f-98f69d8391f6",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "trades"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5640d45b-b75b-4418-a549-9bf1f2dcea10",
+          "name": "Get Market Orderbook",
+          "request": {
+            "name": "Get Market Orderbook",
+            "description": {
+              "content": " Endpoint for getting the current order book for a specific market.  The order book shows all active bid orders for both yes and no sides of a binary market. It returns yes bids and no bids only (no asks are returned). This is because in binary markets, a bid for yes at price X is equivalent to an ask for no at price (100-X). For example, a yes bid at 7¢ is the same as a no ask at 93¢, with identical contract sizes.  Each side shows price levels with their corresponding quantities and order counts, organized from best to worst prices.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "markets",
+                ":ticker",
+                "orderbook"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "depth",
+                  "value": "0",
+                  "description": "Depth of the orderbook to retrieve (0 or negative means all levels, 1-100 for specific depth)"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticker",
+                  "description": "(Required) Market ticker"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "KALSHI-ACCESS-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d94f5b00-0f16-4c1c-a66b-6f5705714c73",
+              "name": "Orderbook retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    ":ticker",
+                    "orderbook"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "depth",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"orderbook_fp\": {\n    \"yes_dollars\": [\n      [\n        \"0.1500\",\n        \"100.00\"\n      ],\n      [\n        \"0.1500\",\n        \"100.00\"\n      ]\n    ],\n    \"no_dollars\": [\n      [\n        \"0.1500\",\n        \"100.00\"\n      ],\n      [\n        \"0.1500\",\n        \"100.00\"\n      ]\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "80427b78-a9e2-4aee-9460-ed66312e0821",
+              "name": "Unauthorized - authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    ":ticker",
+                    "orderbook"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "depth",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f6f9251-5fb4-49fb-82a6-95e542d46e4c",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    ":ticker",
+                    "orderbook"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "depth",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6731621-01af-44a7-ae70-6692a9a913b6",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    ":ticker",
+                    "orderbook"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "depth",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bfc7b6df-f7f8-4e86-9fcf-fd588c1e6533",
+          "name": "Get Multiple Market Orderbooks",
+          "request": {
+            "name": "Get Multiple Market Orderbooks",
+            "description": {
+              "content": "Endpoint for getting the current order books for multiple markets in a single request. The order book shows all active bid orders for both yes and no sides of a binary market. It returns yes bids and no bids only (no asks are returned). This is because in binary markets, a bid for yes at price X is equivalent to an ask for no at price (100-X). For example, a yes bid at 7¢ is the same as a no ask at 93¢, with identical contract sizes. Each side shows price levels with their corresponding quantities and order counts, organized from best to worst prices. Returns one orderbook per requested market ticker.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "markets",
+                "orderbooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "tickers",
+                  "value": "<string>",
+                  "description": "(Required) List of market tickers to fetch orderbooks for"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "KALSHI-ACCESS-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0a01bb6d-2fcf-41c9-b878-d9cd02c0b395",
+              "name": "Orderbooks retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "orderbooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"orderbooks\": [\n    {\n      \"ticker\": \"string\",\n      \"orderbook_fp\": {\n        \"yes_dollars\": [\n          [\n            \"0.1500\",\n            \"100.00\"\n          ],\n          [\n            \"0.1500\",\n            \"100.00\"\n          ]\n        ],\n        \"no_dollars\": [\n          [\n            \"0.1500\",\n            \"100.00\"\n          ],\n          [\n            \"0.1500\",\n            \"100.00\"\n          ]\n        ]\n      }\n    },\n    {\n      \"ticker\": \"string\",\n      \"orderbook_fp\": {\n        \"yes_dollars\": [\n          [\n            \"0.1500\",\n            \"100.00\"\n          ],\n          [\n            \"0.1500\",\n            \"100.00\"\n          ]\n        ],\n        \"no_dollars\": [\n          [\n            \"0.1500\",\n            \"100.00\"\n          ],\n          [\n            \"0.1500\",\n            \"100.00\"\n          ]\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eeb0a44a-87fe-4e09-83ed-7409915485c1",
+              "name": "Bad request - invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "orderbooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63a73181-d0f1-476c-8346-49289ab71ab7",
+              "name": "Unauthorized - authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "orderbooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "639cb425-7e5e-46a1-8da3-6717de0bd8a2",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "orderbooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b632274-809d-4b7d-9efe-d71616ee1c83",
+          "name": "Get Series",
+          "request": {
+            "name": "Get Series",
+            "description": {
+              "content": " Endpoint for getting data about a specific series by its ticker.  A series represents a template for recurring events that follow the same format and rules (e.g., \"Monthly Jobs Report\", \"Weekly Initial Jobless Claims\", \"Daily Weather in NYC\"). Series define the structure, settlement sources, and metadata that will be applied to each recurring event instance within that series.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "series",
+                ":series_ticker"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include_volume",
+                  "value": "false",
+                  "description": "If true, includes the total volume traded across all events in this series."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "series_ticker",
+                  "description": "(Required) The ticker of the series to retrieve"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5a1f0a43-abdc-4adf-a28f-e207524116ee",
+              "name": "Series retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_volume",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The ticker of the series to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"series\": {\n    \"ticker\": \"string\",\n    \"frequency\": \"string\",\n    \"title\": \"string\",\n    \"category\": \"string\",\n    \"tags\": [\n      \"string\",\n      \"string\"\n    ],\n    \"settlement_sources\": [\n      {\n        \"name\": \"string\",\n        \"url\": \"string\"\n      },\n      {\n        \"name\": \"string\",\n        \"url\": \"string\"\n      }\n    ],\n    \"contract_url\": \"string\",\n    \"contract_terms_url\": \"string\",\n    \"fee_type\": \"flat\",\n    \"fee_multiplier\": 7468.724936857499,\n    \"additional_prohibitions\": [\n      \"string\",\n      \"string\"\n    ],\n    \"product_metadata\": {},\n    \"volume_fp\": \"10.00\",\n    \"last_updated_ts\": \"1953-05-30T06:31:05.893Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a87a69c1-83fa-40aa-95ee-f4ec7fde29ab",
+              "name": "Bad request - invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_volume",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The ticker of the series to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9908ab79-b552-4ed2-88b0-9ca15199f44b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_volume",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The ticker of the series to retrieve"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "56672a3e-d530-4b37-b9f2-ae4c223807d2",
+          "name": "Get Series List",
+          "request": {
+            "name": "Get Series List",
+            "description": {
+              "content": " Endpoint for getting data about multiple series with specified filters.  A series represents a template for recurring events that follow the same format and rules (e.g., \"Monthly Jobs Report\", \"Weekly Initial Jobless Claims\", \"Daily Weather in NYC\"). This endpoint allows you to browse and discover available series templates by category.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "series"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "category",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "tags",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_product_metadata",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_volume",
+                  "value": "false",
+                  "description": "If true, includes the total volume traded across all events in each series."
+                },
+                {
+                  "disabled": false,
+                  "key": "min_updated_ts",
+                  "value": "<long>",
+                  "description": "Filter series with metadata updated after this Unix timestamp (in seconds). Use this to efficiently poll for changes."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ded02b25-18e0-464b-a9dc-0be171211fe1",
+              "name": "Series list retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_product_metadata",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_volume",
+                      "value": "false"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"series\": [\n    {\n      \"ticker\": \"string\",\n      \"frequency\": \"string\",\n      \"title\": \"string\",\n      \"category\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"settlement_sources\": [\n        {\n          \"name\": \"string\",\n          \"url\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"url\": \"string\"\n        }\n      ],\n      \"contract_url\": \"string\",\n      \"contract_terms_url\": \"string\",\n      \"fee_type\": \"flat\",\n      \"fee_multiplier\": 7123.174625563205,\n      \"additional_prohibitions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"product_metadata\": {},\n      \"volume_fp\": \"10.00\",\n      \"last_updated_ts\": \"1977-07-04T09:36:13.239Z\"\n    },\n    {\n      \"ticker\": \"string\",\n      \"frequency\": \"string\",\n      \"title\": \"string\",\n      \"category\": \"string\",\n      \"tags\": [\n        \"string\",\n        \"string\"\n      ],\n      \"settlement_sources\": [\n        {\n          \"name\": \"string\",\n          \"url\": \"string\"\n        },\n        {\n          \"name\": \"string\",\n          \"url\": \"string\"\n        }\n      ],\n      \"contract_url\": \"string\",\n      \"contract_terms_url\": \"string\",\n      \"fee_type\": \"flat\",\n      \"fee_multiplier\": 7340.800037810928,\n      \"additional_prohibitions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"product_metadata\": {},\n      \"volume_fp\": \"10.00\",\n      \"last_updated_ts\": \"1970-01-20T03:12:20.007Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ab2c829-b861-4fd7-b9f5-d39f0fbc679b",
+              "name": "Bad request - invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_product_metadata",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_volume",
+                      "value": "false"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb3150f5-1616-4705-a1e8-b386dc6e8655",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "category",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include_product_metadata",
+                      "value": "false"
+                    },
+                    {
+                      "key": "include_volume",
+                      "value": "false"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6c235d69-57ae-4be7-83ad-52efbc75295f",
+          "name": "Get Markets",
+          "request": {
+            "name": "Get Markets",
+            "description": {
+              "content": "Filter by market status. Possible values: `unopened`, `open`, `closed`, `settled`. Leave empty to return markets with any status.\n - Only one `status` filter may be supplied at a time.\n - Timestamp filters will be mutually exclusive from other timestamp filters and certain status filters.\n\n | Compatible Timestamp Filters | Additional Status Filters| Extra Notes |\n |------------------------------|--------------------------|-------------|\n | min_created_ts, max_created_ts | `unopened`, `open`, *empty* | |\n | min_close_ts, max_close_ts | `closed`, *empty* | |\n | min_settled_ts, max_settled_ts | `settled`, *empty* | |\n | min_updated_ts | *empty* | Incompatible with all filters besides `mve_filter=exclude` |\n\n Markets that settled before the historical cutoff are only available via `GET /historical/markets`. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "markets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+                },
+                {
+                  "disabled": false,
+                  "key": "event_ticker",
+                  "value": "<string>",
+                  "description": "Event ticker to filter by. Only a single event ticker is supported."
+                },
+                {
+                  "disabled": false,
+                  "key": "series_ticker",
+                  "value": "<string>",
+                  "description": "Filter by series ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_created_ts",
+                  "value": "<long>",
+                  "description": "Filter items that created after this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "max_created_ts",
+                  "value": "<long>",
+                  "description": "Filter items that created before this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_updated_ts",
+                  "value": "<long>",
+                  "description": "Return markets with metadata updated later than this Unix timestamp. Tracks non-trading changes only. Incompatible with any other filters."
+                },
+                {
+                  "disabled": false,
+                  "key": "max_close_ts",
+                  "value": "<long>",
+                  "description": "Filter items that close before this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_close_ts",
+                  "value": "<long>",
+                  "description": "Filter items that close after this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_settled_ts",
+                  "value": "<long>",
+                  "description": "Filter items that settled after this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "max_settled_ts",
+                  "value": "<long>",
+                  "description": "Filter items that settled before this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by market status. Leave empty to return markets with any status."
+                },
+                {
+                  "disabled": false,
+                  "key": "tickers",
+                  "value": "<string>",
+                  "description": "Filter by specific market tickers. Comma-separated list of market tickers to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "mve_filter",
+                  "value": "<string>",
+                  "description": "Filter by multivariate events (combos). 'only' returns only multivariate events, 'exclude' excludes multivariate events."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dc21a587-ae90-4f9c-9781-981659925e0a",
+              "name": "Markets retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_created_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_created_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_settled_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_settled_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mve_filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"markets\": [\n    {\n      \"ticker\": \"string\",\n      \"event_ticker\": \"string\",\n      \"market_type\": \"binary\",\n      \"yes_sub_title\": \"string\",\n      \"no_sub_title\": \"string\",\n      \"created_time\": \"2017-01-22T17:44:51.714Z\",\n      \"updated_time\": \"1968-09-12T20:19:19.989Z\",\n      \"open_time\": \"1957-04-21T17:01:01.616Z\",\n      \"close_time\": \"1947-05-11T21:45:06.129Z\",\n      \"latest_expiration_time\": \"2001-06-09T00:16:57.079Z\",\n      \"settlement_timer_seconds\": 9879,\n      \"status\": \"finalized\",\n      \"notional_value_dollars\": \"0.5600\",\n      \"yes_bid_dollars\": \"0.5600\",\n      \"yes_ask_dollars\": \"0.5600\",\n      \"no_bid_dollars\": \"0.5600\",\n      \"no_ask_dollars\": \"0.5600\",\n      \"yes_bid_size_fp\": \"10.00\",\n      \"yes_ask_size_fp\": \"10.00\",\n      \"last_price_dollars\": \"0.5600\",\n      \"previous_yes_bid_dollars\": \"0.5600\",\n      \"previous_yes_ask_dollars\": \"0.5600\",\n      \"previous_price_dollars\": \"0.5600\",\n      \"volume_fp\": \"10.00\",\n      \"volume_24h_fp\": \"10.00\",\n      \"liquidity_dollars\": \"0.5600\",\n      \"open_interest_fp\": \"10.00\",\n      \"result\": \"scalar\",\n      \"can_close_early\": false,\n      \"fractional_trading_enabled\": false,\n      \"expiration_value\": \"string\",\n      \"rules_primary\": \"string\",\n      \"rules_secondary\": \"string\",\n      \"price_level_structure\": \"string\",\n      \"price_ranges\": [\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        },\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        }\n      ],\n      \"title\": \"string\",\n      \"subtitle\": \"string\",\n      \"expected_expiration_time\": \"2016-01-19T09:43:19.634Z\",\n      \"expiration_time\": \"2017-08-28T18:44:00.466Z\",\n      \"response_price_units\": \"usd_cent\",\n      \"settlement_value_dollars\": \"0.5600\",\n      \"settlement_ts\": \"1994-05-05T05:21:24.635Z\",\n      \"occurrence_datetime\": \"2024-01-18T20:37:59.952Z\",\n      \"fee_waiver_expiration_time\": \"1966-02-18T20:57:13.589Z\",\n      \"early_close_condition\": \"string\",\n      \"strike_type\": \"structured\",\n      \"floor_strike\": 4482.608483832529,\n      \"cap_strike\": 1047.0780761321053,\n      \"functional_strike\": \"string\",\n      \"custom_strike\": {},\n      \"mve_collection_ticker\": \"string\",\n      \"mve_selected_legs\": [\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        },\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        }\n      ],\n      \"primary_participant_key\": \"string\",\n      \"is_provisional\": true,\n      \"exchange_index\": 0\n    },\n    {\n      \"ticker\": \"string\",\n      \"event_ticker\": \"string\",\n      \"market_type\": \"binary\",\n      \"yes_sub_title\": \"string\",\n      \"no_sub_title\": \"string\",\n      \"created_time\": \"1965-03-13T04:41:06.632Z\",\n      \"updated_time\": \"2002-05-23T01:11:54.968Z\",\n      \"open_time\": \"1969-03-16T21:30:39.143Z\",\n      \"close_time\": \"2011-04-13T20:01:04.872Z\",\n      \"latest_expiration_time\": \"1949-07-17T20:23:48.442Z\",\n      \"settlement_timer_seconds\": 3056,\n      \"status\": \"active\",\n      \"notional_value_dollars\": \"0.5600\",\n      \"yes_bid_dollars\": \"0.5600\",\n      \"yes_ask_dollars\": \"0.5600\",\n      \"no_bid_dollars\": \"0.5600\",\n      \"no_ask_dollars\": \"0.5600\",\n      \"yes_bid_size_fp\": \"10.00\",\n      \"yes_ask_size_fp\": \"10.00\",\n      \"last_price_dollars\": \"0.5600\",\n      \"previous_yes_bid_dollars\": \"0.5600\",\n      \"previous_yes_ask_dollars\": \"0.5600\",\n      \"previous_price_dollars\": \"0.5600\",\n      \"volume_fp\": \"10.00\",\n      \"volume_24h_fp\": \"10.00\",\n      \"liquidity_dollars\": \"0.5600\",\n      \"open_interest_fp\": \"10.00\",\n      \"result\": \"scalar\",\n      \"can_close_early\": true,\n      \"fractional_trading_enabled\": false,\n      \"expiration_value\": \"string\",\n      \"rules_primary\": \"string\",\n      \"rules_secondary\": \"string\",\n      \"price_level_structure\": \"string\",\n      \"price_ranges\": [\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        },\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        }\n      ],\n      \"title\": \"string\",\n      \"subtitle\": \"string\",\n      \"expected_expiration_time\": \"1983-04-02T11:27:41.569Z\",\n      \"expiration_time\": \"2021-08-28T03:53:29.012Z\",\n      \"response_price_units\": \"usd_cent\",\n      \"settlement_value_dollars\": \"0.5600\",\n      \"settlement_ts\": \"1971-05-24T02:05:08.736Z\",\n      \"occurrence_datetime\": \"1990-01-27T01:18:08.075Z\",\n      \"fee_waiver_expiration_time\": \"1994-08-31T17:52:57.382Z\",\n      \"early_close_condition\": \"string\",\n      \"strike_type\": \"structured\",\n      \"floor_strike\": 3903.946298955482,\n      \"cap_strike\": 1197.0451058161202,\n      \"functional_strike\": \"string\",\n      \"custom_strike\": {},\n      \"mve_collection_ticker\": \"string\",\n      \"mve_selected_legs\": [\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        },\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        }\n      ],\n      \"primary_participant_key\": \"string\",\n      \"is_provisional\": true,\n      \"exchange_index\": 0\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "011d74cf-d033-4304-a64a-da0c3d2decfa",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_created_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_created_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_settled_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_settled_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mve_filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1a0774bb-3bab-4280-9476-86aad7ce9a05",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_created_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_created_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_settled_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_settled_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mve_filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "334fae34-1d35-4147-85f1-ff7d1368df8b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_created_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_created_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_settled_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_settled_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mve_filter",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "008dba20-ce95-4720-9c1b-ada5c837854e",
+          "name": "Get Market",
+          "request": {
+            "name": "Get Market",
+            "description": {
+              "content": " Endpoint for getting data about a specific market by its ticker. A market represents a specific binary outcome within an event that users can trade on (e.g., \"Will candidate X win?\"). Markets have yes/no positions, current prices, volume, and settlement rules.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "markets",
+                ":ticker"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticker",
+                  "description": "(Required) Market ticker"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3ec8fc42-4a82-4c30-94c4-db355cc0efd9",
+              "name": "Market retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    ":ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"market\": {\n    \"ticker\": \"string\",\n    \"event_ticker\": \"string\",\n    \"market_type\": \"binary\",\n    \"yes_sub_title\": \"string\",\n    \"no_sub_title\": \"string\",\n    \"created_time\": \"1965-06-04T03:07:56.264Z\",\n    \"updated_time\": \"1967-10-14T01:39:06.009Z\",\n    \"open_time\": \"1962-08-04T17:50:51.215Z\",\n    \"close_time\": \"2006-02-18T13:31:59.444Z\",\n    \"latest_expiration_time\": \"1975-01-28T13:25:28.043Z\",\n    \"settlement_timer_seconds\": 5607,\n    \"status\": \"inactive\",\n    \"notional_value_dollars\": \"0.5600\",\n    \"yes_bid_dollars\": \"0.5600\",\n    \"yes_ask_dollars\": \"0.5600\",\n    \"no_bid_dollars\": \"0.5600\",\n    \"no_ask_dollars\": \"0.5600\",\n    \"yes_bid_size_fp\": \"10.00\",\n    \"yes_ask_size_fp\": \"10.00\",\n    \"last_price_dollars\": \"0.5600\",\n    \"previous_yes_bid_dollars\": \"0.5600\",\n    \"previous_yes_ask_dollars\": \"0.5600\",\n    \"previous_price_dollars\": \"0.5600\",\n    \"volume_fp\": \"10.00\",\n    \"volume_24h_fp\": \"10.00\",\n    \"liquidity_dollars\": \"0.5600\",\n    \"open_interest_fp\": \"10.00\",\n    \"result\": \"no\",\n    \"can_close_early\": false,\n    \"fractional_trading_enabled\": true,\n    \"expiration_value\": \"string\",\n    \"rules_primary\": \"string\",\n    \"rules_secondary\": \"string\",\n    \"price_level_structure\": \"string\",\n    \"price_ranges\": [\n      {\n        \"start\": \"string\",\n        \"end\": \"string\",\n        \"step\": \"string\"\n      },\n      {\n        \"start\": \"string\",\n        \"end\": \"string\",\n        \"step\": \"string\"\n      }\n    ],\n    \"title\": \"string\",\n    \"subtitle\": \"string\",\n    \"expected_expiration_time\": \"2008-06-07T11:10:42.306Z\",\n    \"expiration_time\": \"1978-10-05T06:03:08.118Z\",\n    \"response_price_units\": \"usd_cent\",\n    \"settlement_value_dollars\": \"0.5600\",\n    \"settlement_ts\": \"1957-04-06T05:15:17.678Z\",\n    \"occurrence_datetime\": \"2018-01-25T03:29:57.208Z\",\n    \"fee_waiver_expiration_time\": \"1997-10-08T07:44:23.698Z\",\n    \"early_close_condition\": \"string\",\n    \"strike_type\": \"custom\",\n    \"floor_strike\": 2816.6122079087563,\n    \"cap_strike\": 7460.9699363232885,\n    \"functional_strike\": \"string\",\n    \"custom_strike\": {},\n    \"mve_collection_ticker\": \"string\",\n    \"mve_selected_legs\": [\n      {\n        \"event_ticker\": \"string\",\n        \"market_ticker\": \"string\",\n        \"side\": \"string\",\n        \"yes_settlement_value_dollars\": \"0.5600\"\n      },\n      {\n        \"event_ticker\": \"string\",\n        \"market_ticker\": \"string\",\n        \"side\": \"string\",\n        \"yes_settlement_value_dollars\": \"0.5600\"\n      }\n    ],\n    \"primary_participant_key\": \"string\",\n    \"is_provisional\": false,\n    \"exchange_index\": 0\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd4184b6-8b39-4d0a-a9ad-9e4006f03379",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    ":ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "06a5ca29-aa3b-43a5-80b8-c11eda7a89c0",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    ":ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c9a691f9-31dd-4d01-8797-66aafdc4f0a6",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    ":ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d6024af9-6d21-442b-8d9d-960c032a92bc",
+          "name": "Batch Get Market Candlesticks",
+          "request": {
+            "name": "Batch Get Market Candlesticks",
+            "description": {
+              "content": "Endpoint for retrieving candlestick data for multiple markets.\n\n- Accepts up to 100 market tickers per request\n- Returns up to 10,000 candlesticks total across all markets\n- Returns candlesticks grouped by market_id\n- Optionally includes a synthetic initial candlestick for price continuity (see `include_latest_before_start` parameter)\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "markets",
+                "candlesticks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "market_tickers",
+                  "value": "<string>",
+                  "description": "(Required) Comma-separated list of market tickers (maximum 100)"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_ts",
+                  "value": "<long>",
+                  "description": "(Required) Start timestamp in Unix seconds"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_ts",
+                  "value": "<long>",
+                  "description": "(Required) End timestamp in Unix seconds"
+                },
+                {
+                  "disabled": false,
+                  "key": "period_interval",
+                  "value": "<integer>",
+                  "description": "(Required) Candlestick period interval in minutes"
+                },
+                {
+                  "disabled": false,
+                  "key": "include_latest_before_start",
+                  "value": "false",
+                  "description": "If true, prepends the latest candlestick available before the start_ts. This synthetic candlestick is created by:\n1. Finding the most recent real candlestick before start_ts\n2. Projecting it forward to the first period boundary (calculated as the next period interval after start_ts)\n3. Setting all OHLC prices to null, and `previous_price` to the close price from the real candlestick\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "99ea93ea-64b7-4b8c-93b8-86c74e73d2fb",
+              "name": "Market candlesticks retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "market_tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include_latest_before_start",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"markets\": [\n    {\n      \"market_ticker\": \"string\",\n      \"candlesticks\": [\n        {\n          \"end_period_ts\": 4874,\n          \"yes_bid\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"yes_ask\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"price\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"mean_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"previous_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"min_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"max_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"volume_fp\": \"10.00\",\n          \"open_interest_fp\": \"10.00\"\n        },\n        {\n          \"end_period_ts\": 6450,\n          \"yes_bid\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"yes_ask\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"price\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"mean_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"previous_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"min_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"max_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"volume_fp\": \"10.00\",\n          \"open_interest_fp\": \"10.00\"\n        }\n      ]\n    },\n    {\n      \"market_ticker\": \"string\",\n      \"candlesticks\": [\n        {\n          \"end_period_ts\": 1147,\n          \"yes_bid\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"yes_ask\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"price\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"mean_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"previous_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"min_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"max_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"volume_fp\": \"10.00\",\n          \"open_interest_fp\": \"10.00\"\n        },\n        {\n          \"end_period_ts\": 2043,\n          \"yes_bid\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"yes_ask\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"price\": {\n            \"open_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"low_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"high_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"close_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"mean_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"previous_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"min_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"max_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          \"volume_fp\": \"10.00\",\n          \"open_interest_fp\": \"10.00\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d408f94-d4f6-4a23-9909-42f55cee32ce",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "market_tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include_latest_before_start",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cd6fe387-9fba-4496-869d-3b5c3cc9bd05",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "market_tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include_latest_before_start",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a2cda508-d714-476d-8213-ca65b1e03bc3",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "markets",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "market_tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "include_latest_before_start",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external-api.kalshi.com/trade-api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bafc38a3-7b93-4778-beac-144b6e06c3fb",
+    "name": "Kalshi Trade API Manual Endpoints account market API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manually defined OpenAPI spec for endpoints being migrated to spec-first approach",
+      "type": "text/plain"
+    }
+  }
+}

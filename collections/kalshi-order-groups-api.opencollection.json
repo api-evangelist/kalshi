@@ -1,0 +1,245 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account order-groups API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "order-groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Order Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups",
+            "params": [
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Retrieves all order groups for the authenticated user."
+        },
+        {
+          "info": {
+            "name": "Create Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/create",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Creates a new order group with a contracts limit measured over a rolling 15-second window. When the limit is hit, all orders in the group are cancelled and no new orders can be placed until reset."
+        },
+        {
+          "info": {
+            "name": "Get Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Retrieves details for a single order group including all order IDs and auto-cancel status."
+        },
+        {
+          "info": {
+            "name": "Delete Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Deletes an order group and cancels all orders within it. This permanently removes the group."
+        },
+        {
+          "info": {
+            "name": "Reset Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id/reset",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Resets the order group's matched contracts counter to zero, allowing new orders to be placed again after the limit was hit."
+        },
+        {
+          "info": {
+            "name": "Trigger Order Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id/trigger",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "subaccount",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0."
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Triggers the order group, canceling all orders in the group and preventing new orders until the group is reset."
+        },
+        {
+          "info": {
+            "name": "Update Order Group Limit",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://external-api.kalshi.com/trade-api/v2/portfolio/order_groups/:order_group_id/limit",
+            "params": [
+              {
+                "name": "order_group_id",
+                "value": "",
+                "type": "path",
+                "description": "Order group ID"
+              },
+              {
+                "name": "exchange_index",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "KALSHI-ACCESS-KEY",
+              "value": "{{KALSHI-ACCESS-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": " Updates the order group contracts limit (rolling 15-second window). If the updated limit would immediately trigger the group, all orders in the group are canceled and the group is triggered."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

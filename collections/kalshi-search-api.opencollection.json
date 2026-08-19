@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account search API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Tags for Series Categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/search/tags_by_categories"
+          },
+          "docs": "Retrieve tags organized by series categories.\n\nThis endpoint returns a mapping of series categories to their associated tags, which can be used for filtering and search functionality.\n"
+        },
+        {
+          "info": {
+            "name": "Get Filters for Sports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/search/filters_by_sport"
+          },
+          "docs": "Retrieve available filters organized by sport.\n\nThis endpoint returns filtering options available for each sport, including scopes and competitions. It also provides an ordered list of sports for display purposes.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

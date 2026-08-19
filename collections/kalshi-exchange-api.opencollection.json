@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Kalshi Trade API Manual Endpoints account exchange API",
+    "version": "3.19.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "exchange",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Exchange Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/exchange/status"
+          },
+          "docs": " Endpoint for getting the exchange status."
+        },
+        {
+          "info": {
+            "name": "Get Exchange Announcements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/exchange/announcements"
+          },
+          "docs": " Endpoint for getting all exchange-wide announcements."
+        },
+        {
+          "info": {
+            "name": "Get Series Fee Changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/series/fee_changes",
+            "params": [
+              {
+                "name": "series_ticker",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "show_historical",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get Series Fee Changes"
+        },
+        {
+          "info": {
+            "name": "Get Exchange Schedule",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/exchange/schedule"
+          },
+          "docs": " Endpoint for getting the exchange schedule."
+        },
+        {
+          "info": {
+            "name": "Get User Data Timestamp",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://external-api.kalshi.com/trade-api/v2/exchange/user_data_timestamp"
+          },
+          "docs": " There is typically a short delay before exchange events are reflected in the API endpoints. Whenever possible, combine API responses to PUT/POST/DELETE requests with websocket data to obtain the most accurate view of the exchange state. This endpoint provides an approximate indication of when the data from the following endpoints was last validated: GetBalance, GetOrder(s), GetFills, GetPositions"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,697 @@
+{
+  "item": [
+    {
+      "id": "47688db6-f879-482a-b7b0-fb6f5027d386",
+      "name": "exchange",
+      "description": {
+        "content": "Exchange status and information endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "efbf8cf8-ac3b-4afd-8424-fb7c0f7dbaa6",
+          "name": "Get Exchange Status",
+          "request": {
+            "name": "Get Exchange Status",
+            "description": {
+              "content": " Endpoint for getting the exchange status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "exchange",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b96a6b3f-42e3-48c7-9397-9da5c0bc6b19",
+              "name": "Exchange status retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"exchange_active\": true,\n  \"trading_active\": true,\n  \"exchange_estimated_resume_time\": \"1986-10-12T22:09:35.309Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a90661b4-215f-48e6-a80b-3d39395f54e9",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"exchange_active\": true,\n  \"trading_active\": true,\n  \"exchange_estimated_resume_time\": \"1986-10-12T22:09:35.309Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "589cc37d-3225-443c-ad7e-e2c17c74ff6a",
+              "name": "Service unavailable",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"exchange_active\": true,\n  \"trading_active\": true,\n  \"exchange_estimated_resume_time\": \"1986-10-12T22:09:35.309Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9b9855c-4ec5-4f2d-a65b-257594229b58",
+              "name": "Gateway timeout",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gateway Timeout",
+              "code": 504,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"exchange_active\": true,\n  \"trading_active\": true,\n  \"exchange_estimated_resume_time\": \"1986-10-12T22:09:35.309Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d90d84f6-4cee-47d3-97ac-7df21952ee68",
+          "name": "Get Exchange Announcements",
+          "request": {
+            "name": "Get Exchange Announcements",
+            "description": {
+              "content": " Endpoint for getting all exchange-wide announcements.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "exchange",
+                "announcements"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d94cfc2f-384c-410c-bf7f-1bcca429d620",
+              "name": "Exchange announcements retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "announcements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"announcements\": [\n    {\n      \"type\": \"error\",\n      \"message\": \"string\",\n      \"delivery_time\": \"2015-03-29T04:23:18.298Z\",\n      \"status\": \"active\"\n    },\n    {\n      \"type\": \"warning\",\n      \"message\": \"string\",\n      \"delivery_time\": \"2023-08-26T04:38:19.433Z\",\n      \"status\": \"inactive\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d6d3bb7c-71d5-41e6-aae1-7c65d18f0b67",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "announcements"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "adf62a91-8c63-483f-aee1-24398967848e",
+          "name": "Get Series Fee Changes",
+          "request": {
+            "name": "Get Series Fee Changes",
+            "description": {},
+            "url": {
+              "path": [
+                "series",
+                "fee_changes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "series_ticker",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "show_historical",
+                  "value": "false"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c4ea79ea-45e9-4ee2-87de-df1a30ad0099",
+              "name": "Series fee changes retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    "fee_changes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "show_historical",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"series_fee_change_arr\": [\n    {\n      \"id\": \"string\",\n      \"series_ticker\": \"string\",\n      \"fee_type\": \"flat\",\n      \"fee_multiplier\": 9351.228789499917,\n      \"scheduled_ts\": \"1967-07-17T14:55:26.397Z\"\n    },\n    {\n      \"id\": \"string\",\n      \"series_ticker\": \"string\",\n      \"fee_type\": \"flat\",\n      \"fee_multiplier\": 5323.333978638236,\n      \"scheduled_ts\": \"1980-06-25T14:29:40.408Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e67ad521-20d7-41b3-b4dd-d267bf45f7a5",
+              "name": "Bad request - invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    "fee_changes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "show_historical",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f462d04d-5a76-4b63-bc4b-cf753cdad5f7",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    "fee_changes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "show_historical",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7b216934-f1b8-44c3-8134-8517b7b13154",
+          "name": "Get Exchange Schedule",
+          "request": {
+            "name": "Get Exchange Schedule",
+            "description": {
+              "content": " Endpoint for getting the exchange schedule.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "exchange",
+                "schedule"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "94544d56-c8cc-4cde-8643-9b09c3ff4972",
+              "name": "Exchange schedule retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "schedule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"schedule\": {\n    \"standard_hours\": [\n      {\n        \"start_time\": \"2005-05-24T14:00:04.741Z\",\n        \"end_time\": \"1967-03-22T08:42:12.304Z\",\n        \"monday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"tuesday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"wednesday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"thursday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"friday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"saturday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"sunday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ]\n      },\n      {\n        \"start_time\": \"1975-10-06T02:14:28.908Z\",\n        \"end_time\": \"2009-06-30T01:31:41.086Z\",\n        \"monday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"tuesday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"wednesday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"thursday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"friday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"saturday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ],\n        \"sunday\": [\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          },\n          {\n            \"open_time\": \"string\",\n            \"close_time\": \"string\"\n          }\n        ]\n      }\n    ],\n    \"maintenance_windows\": [\n      {\n        \"start_datetime\": \"2022-03-05T21:39:59.729Z\",\n        \"end_datetime\": \"2026-07-18T13:04:26.886Z\"\n      },\n      {\n        \"start_datetime\": \"2014-11-23T21:05:43.159Z\",\n        \"end_datetime\": \"2014-07-26T06:13:50.851Z\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "054559f9-38db-4d15-b811-465b7e0be93a",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "schedule"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f6e6c670-a4a4-4e12-bb9b-be7ca87c60a5",
+          "name": "Get User Data Timestamp",
+          "request": {
+            "name": "Get User Data Timestamp",
+            "description": {
+              "content": " There is typically a short delay before exchange events are reflected in the API endpoints. Whenever possible, combine API responses to PUT/POST/DELETE requests with websocket data to obtain the most accurate view of the exchange state. This endpoint provides an approximate indication of when the data from the following endpoints was last validated: GetBalance, GetOrder(s), GetFills, GetPositions",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "exchange",
+                "user_data_timestamp"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "395b5a4d-ebd5-4532-a30d-99f5de758027",
+              "name": "User data timestamp retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "user_data_timestamp"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"as_of_time\": \"2014-03-31T05:26:37.161Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f323d16f-9cdd-4045-a60b-a97fb99640e5",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "exchange",
+                    "user_data_timestamp"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external-api.kalshi.com/trade-api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a577acca-4fbf-4c08-a5e8-e3bff1ea549d",
+    "name": "Kalshi Trade API Manual Endpoints account exchange API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manually defined OpenAPI spec for endpoints being migrated to spec-first approach",
+      "type": "text/plain"
+    }
+  }
+}

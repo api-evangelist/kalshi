@@ -1,0 +1,1909 @@
+{
+  "item": [
+    {
+      "id": "c1f01c0c-7f1d-4a03-a418-9b71ff34e3e7",
+      "name": "events",
+      "description": {
+        "content": "Event endpoints",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bef92c6b-eb78-4c7d-a3bd-0db11d88f148",
+          "name": "Get Event Candlesticks",
+          "request": {
+            "name": "Get Event Candlesticks",
+            "description": {
+              "content": " End-point for returning aggregated data across all markets corresponding to an event.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "series",
+                ":series_ticker",
+                "events",
+                ":ticker",
+                "candlesticks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_ts",
+                  "value": "<long>",
+                  "description": "(Required) Start timestamp for the range"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_ts",
+                  "value": "<long>",
+                  "description": "(Required) End timestamp for the range"
+                },
+                {
+                  "disabled": false,
+                  "key": "period_interval",
+                  "value": "<integer>",
+                  "description": "(Required) Specifies the length of each candlestick period, in minutes. Must be one minute, one hour, or one day."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticker",
+                  "description": "(Required) The event ticker"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "series_ticker",
+                  "description": "(Required) The series ticker"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6ce64f1f-a748-471d-b651-0d1bbe863ff1",
+              "name": "Event candlesticks retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "events",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) The event ticker"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The series ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"market_tickers\": [\n    \"string\",\n    \"string\"\n  ],\n  \"market_candlesticks\": [\n    [\n      {\n        \"end_period_ts\": 7833,\n        \"yes_bid\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\"\n        },\n        \"yes_ask\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\"\n        },\n        \"price\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\",\n          \"mean_dollars\": \"0.5600\",\n          \"previous_dollars\": \"0.5600\",\n          \"min_dollars\": \"0.5600\",\n          \"max_dollars\": \"0.5600\"\n        },\n        \"volume_fp\": \"10.00\",\n        \"open_interest_fp\": \"10.00\"\n      },\n      {\n        \"end_period_ts\": 9194,\n        \"yes_bid\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\"\n        },\n        \"yes_ask\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\"\n        },\n        \"price\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\",\n          \"mean_dollars\": \"0.5600\",\n          \"previous_dollars\": \"0.5600\",\n          \"min_dollars\": \"0.5600\",\n          \"max_dollars\": \"0.5600\"\n        },\n        \"volume_fp\": \"10.00\",\n        \"open_interest_fp\": \"10.00\"\n      }\n    ],\n    [\n      {\n        \"end_period_ts\": 2213,\n        \"yes_bid\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\"\n        },\n        \"yes_ask\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\"\n        },\n        \"price\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\",\n          \"mean_dollars\": \"0.5600\",\n          \"previous_dollars\": \"0.5600\",\n          \"min_dollars\": \"0.5600\",\n          \"max_dollars\": \"0.5600\"\n        },\n        \"volume_fp\": \"10.00\",\n        \"open_interest_fp\": \"10.00\"\n      },\n      {\n        \"end_period_ts\": 1148,\n        \"yes_bid\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\"\n        },\n        \"yes_ask\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\"\n        },\n        \"price\": {\n          \"open_dollars\": \"0.5600\",\n          \"low_dollars\": \"0.5600\",\n          \"high_dollars\": \"0.5600\",\n          \"close_dollars\": \"0.5600\",\n          \"mean_dollars\": \"0.5600\",\n          \"previous_dollars\": \"0.5600\",\n          \"min_dollars\": \"0.5600\",\n          \"max_dollars\": \"0.5600\"\n        },\n        \"volume_fp\": \"10.00\",\n        \"open_interest_fp\": \"10.00\"\n      }\n    ]\n  ],\n  \"adjusted_end_ts\": 5602\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f3e05f2-2a8d-49c9-bb2d-bd9128e20570",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "events",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) The event ticker"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The series ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "407f59cd-d001-4a5a-aa86-a205c2105be8",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "events",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) The event ticker"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The series ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "57402b35-6954-4613-a88d-36032e23ce86",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "events",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) The event ticker"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The series ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e1287629-79b4-49a2-90b4-3b831c73ad35",
+          "name": "Get Events",
+          "request": {
+            "name": "Get Events",
+            "description": {
+              "content": "Get all events. This endpoint excludes multivariate events.\nTo retrieve multivariate events, use the GET /events/multivariate endpoint.\nAll events are accessible through this endpoint, even if their associated markets are older than the historical cutoff.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "200",
+                  "description": "Parameter to specify the number of results per page. Defaults to 200. Maximum value is 200."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Parameter to specify the pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+                },
+                {
+                  "disabled": false,
+                  "key": "with_nested_markets",
+                  "value": "false",
+                  "description": "Parameter to specify if nested markets should be included in the response. When true, each event will include a 'markets' field containing a list of Market objects associated with that event. Historical markets settled before the historical cutoff will not be included."
+                },
+                {
+                  "disabled": false,
+                  "key": "with_milestones",
+                  "value": "false",
+                  "description": "If true, includes related milestones as a field alongside events."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by event status. Possible values are 'unopened', 'open', 'closed', 'settled'. Leave empty to return events with any status."
+                },
+                {
+                  "disabled": false,
+                  "key": "series_ticker",
+                  "value": "<string>",
+                  "description": "Filter by series ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_close_ts",
+                  "value": "<long>",
+                  "description": "Filter events with at least one market with close timestamp greater than this Unix timestamp (in seconds)."
+                },
+                {
+                  "disabled": false,
+                  "key": "min_updated_ts",
+                  "value": "<long>",
+                  "description": "Filter events with metadata updated after this Unix timestamp (in seconds). Use this to efficiently poll for changes."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9ba338da-ce8a-44c4-bf3e-649ca3f1224a",
+              "name": "Events retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    },
+                    {
+                      "key": "with_milestones",
+                      "value": "false"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"events\": [\n    {\n      \"event_ticker\": \"string\",\n      \"series_ticker\": \"string\",\n      \"sub_title\": \"string\",\n      \"title\": \"string\",\n      \"collateral_return_type\": \"string\",\n      \"mutually_exclusive\": true,\n      \"available_on_brokers\": false,\n      \"product_metadata\": {},\n      \"category\": \"string\",\n      \"strike_date\": \"1958-04-14T05:35:53.421Z\",\n      \"strike_period\": \"string\",\n      \"markets\": [\n        {\n          \"ticker\": \"string\",\n          \"event_ticker\": \"string\",\n          \"market_type\": \"binary\",\n          \"yes_sub_title\": \"string\",\n          \"no_sub_title\": \"string\",\n          \"created_time\": \"1953-04-12T09:32:17.668Z\",\n          \"updated_time\": \"1955-10-28T14:52:17.197Z\",\n          \"open_time\": \"2007-07-29T15:13:49.035Z\",\n          \"close_time\": \"1963-04-17T17:11:44.490Z\",\n          \"latest_expiration_time\": \"2024-09-10T23:10:57.706Z\",\n          \"settlement_timer_seconds\": 6754,\n          \"status\": \"active\",\n          \"notional_value_dollars\": \"0.5600\",\n          \"yes_bid_dollars\": \"0.5600\",\n          \"yes_ask_dollars\": \"0.5600\",\n          \"no_bid_dollars\": \"0.5600\",\n          \"no_ask_dollars\": \"0.5600\",\n          \"yes_bid_size_fp\": \"10.00\",\n          \"yes_ask_size_fp\": \"10.00\",\n          \"last_price_dollars\": \"0.5600\",\n          \"previous_yes_bid_dollars\": \"0.5600\",\n          \"previous_yes_ask_dollars\": \"0.5600\",\n          \"previous_price_dollars\": \"0.5600\",\n          \"volume_fp\": \"10.00\",\n          \"volume_24h_fp\": \"10.00\",\n          \"liquidity_dollars\": \"0.5600\",\n          \"open_interest_fp\": \"10.00\",\n          \"result\": \"scalar\",\n          \"can_close_early\": false,\n          \"fractional_trading_enabled\": true,\n          \"expiration_value\": \"string\",\n          \"rules_primary\": \"string\",\n          \"rules_secondary\": \"string\",\n          \"price_level_structure\": \"string\",\n          \"price_ranges\": [\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"title\": \"string\",\n          \"subtitle\": \"string\",\n          \"expected_expiration_time\": \"1990-01-25T13:49:02.224Z\",\n          \"expiration_time\": \"2020-02-05T06:43:18.122Z\",\n          \"response_price_units\": \"usd_cent\",\n          \"settlement_value_dollars\": \"0.5600\",\n          \"settlement_ts\": \"1986-04-19T18:01:33.423Z\",\n          \"occurrence_datetime\": \"1965-09-23T12:49:18.385Z\",\n          \"fee_waiver_expiration_time\": \"1974-08-27T20:54:09.662Z\",\n          \"early_close_condition\": \"string\",\n          \"strike_type\": \"less_or_equal\",\n          \"floor_strike\": 5626.086931600816,\n          \"cap_strike\": 9543.595406027654,\n          \"functional_strike\": \"string\",\n          \"custom_strike\": {},\n          \"mve_collection_ticker\": \"string\",\n          \"mve_selected_legs\": [\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"primary_participant_key\": \"string\",\n          \"is_provisional\": false,\n          \"exchange_index\": 0\n        },\n        {\n          \"ticker\": \"string\",\n          \"event_ticker\": \"string\",\n          \"market_type\": \"scalar\",\n          \"yes_sub_title\": \"string\",\n          \"no_sub_title\": \"string\",\n          \"created_time\": \"1980-12-05T09:41:13.332Z\",\n          \"updated_time\": \"1973-12-09T11:54:20.403Z\",\n          \"open_time\": \"2021-11-08T00:07:52.747Z\",\n          \"close_time\": \"2005-11-12T05:03:35.652Z\",\n          \"latest_expiration_time\": \"1997-10-31T14:32:06.261Z\",\n          \"settlement_timer_seconds\": 9476,\n          \"status\": \"initialized\",\n          \"notional_value_dollars\": \"0.5600\",\n          \"yes_bid_dollars\": \"0.5600\",\n          \"yes_ask_dollars\": \"0.5600\",\n          \"no_bid_dollars\": \"0.5600\",\n          \"no_ask_dollars\": \"0.5600\",\n          \"yes_bid_size_fp\": \"10.00\",\n          \"yes_ask_size_fp\": \"10.00\",\n          \"last_price_dollars\": \"0.5600\",\n          \"previous_yes_bid_dollars\": \"0.5600\",\n          \"previous_yes_ask_dollars\": \"0.5600\",\n          \"previous_price_dollars\": \"0.5600\",\n          \"volume_fp\": \"10.00\",\n          \"volume_24h_fp\": \"10.00\",\n          \"liquidity_dollars\": \"0.5600\",\n          \"open_interest_fp\": \"10.00\",\n          \"result\": \"no\",\n          \"can_close_early\": false,\n          \"fractional_trading_enabled\": true,\n          \"expiration_value\": \"string\",\n          \"rules_primary\": \"string\",\n          \"rules_secondary\": \"string\",\n          \"price_level_structure\": \"string\",\n          \"price_ranges\": [\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"title\": \"string\",\n          \"subtitle\": \"string\",\n          \"expected_expiration_time\": \"2021-12-25T19:59:42.583Z\",\n          \"expiration_time\": \"2007-09-10T06:38:24.656Z\",\n          \"response_price_units\": \"usd_cent\",\n          \"settlement_value_dollars\": \"0.5600\",\n          \"settlement_ts\": \"2020-08-06T00:34:16.526Z\",\n          \"occurrence_datetime\": \"1969-01-24T15:23:49.516Z\",\n          \"fee_waiver_expiration_time\": \"1969-03-02T09:46:24.181Z\",\n          \"early_close_condition\": \"string\",\n          \"strike_type\": \"functional\",\n          \"floor_strike\": 808.311746170397,\n          \"cap_strike\": 2032.065191610969,\n          \"functional_strike\": \"string\",\n          \"custom_strike\": {},\n          \"mve_collection_ticker\": \"string\",\n          \"mve_selected_legs\": [\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"primary_participant_key\": \"string\",\n          \"is_provisional\": false,\n          \"exchange_index\": 0\n        }\n      ],\n      \"last_updated_ts\": \"1950-09-09T05:19:21.868Z\",\n      \"fee_type_override\": \"string\",\n      \"fee_multiplier_override\": 7952.744938145176,\n      \"exchange_index\": 0\n    },\n    {\n      \"event_ticker\": \"string\",\n      \"series_ticker\": \"string\",\n      \"sub_title\": \"string\",\n      \"title\": \"string\",\n      \"collateral_return_type\": \"string\",\n      \"mutually_exclusive\": true,\n      \"available_on_brokers\": true,\n      \"product_metadata\": {},\n      \"category\": \"string\",\n      \"strike_date\": \"2009-02-13T17:51:33.095Z\",\n      \"strike_period\": \"string\",\n      \"markets\": [\n        {\n          \"ticker\": \"string\",\n          \"event_ticker\": \"string\",\n          \"market_type\": \"scalar\",\n          \"yes_sub_title\": \"string\",\n          \"no_sub_title\": \"string\",\n          \"created_time\": \"1987-12-19T15:50:15.314Z\",\n          \"updated_time\": \"2005-03-20T22:58:00.497Z\",\n          \"open_time\": \"1965-03-26T05:01:15.538Z\",\n          \"close_time\": \"2002-05-26T09:40:13.198Z\",\n          \"latest_expiration_time\": \"1949-01-24T02:09:28.558Z\",\n          \"settlement_timer_seconds\": 7490,\n          \"status\": \"amended\",\n          \"notional_value_dollars\": \"0.5600\",\n          \"yes_bid_dollars\": \"0.5600\",\n          \"yes_ask_dollars\": \"0.5600\",\n          \"no_bid_dollars\": \"0.5600\",\n          \"no_ask_dollars\": \"0.5600\",\n          \"yes_bid_size_fp\": \"10.00\",\n          \"yes_ask_size_fp\": \"10.00\",\n          \"last_price_dollars\": \"0.5600\",\n          \"previous_yes_bid_dollars\": \"0.5600\",\n          \"previous_yes_ask_dollars\": \"0.5600\",\n          \"previous_price_dollars\": \"0.5600\",\n          \"volume_fp\": \"10.00\",\n          \"volume_24h_fp\": \"10.00\",\n          \"liquidity_dollars\": \"0.5600\",\n          \"open_interest_fp\": \"10.00\",\n          \"result\": \"no\",\n          \"can_close_early\": true,\n          \"fractional_trading_enabled\": false,\n          \"expiration_value\": \"string\",\n          \"rules_primary\": \"string\",\n          \"rules_secondary\": \"string\",\n          \"price_level_structure\": \"string\",\n          \"price_ranges\": [\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"title\": \"string\",\n          \"subtitle\": \"string\",\n          \"expected_expiration_time\": \"1967-06-19T06:45:15.636Z\",\n          \"expiration_time\": \"1953-02-12T12:07:43.735Z\",\n          \"response_price_units\": \"usd_cent\",\n          \"settlement_value_dollars\": \"0.5600\",\n          \"settlement_ts\": \"1966-11-27T20:25:08.217Z\",\n          \"occurrence_datetime\": \"1951-03-31T15:55:08.217Z\",\n          \"fee_waiver_expiration_time\": \"2018-01-13T16:23:11.267Z\",\n          \"early_close_condition\": \"string\",\n          \"strike_type\": \"greater_or_equal\",\n          \"floor_strike\": 7892.23538497777,\n          \"cap_strike\": 4106.632631841547,\n          \"functional_strike\": \"string\",\n          \"custom_strike\": {},\n          \"mve_collection_ticker\": \"string\",\n          \"mve_selected_legs\": [\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"primary_participant_key\": \"string\",\n          \"is_provisional\": true,\n          \"exchange_index\": 0\n        },\n        {\n          \"ticker\": \"string\",\n          \"event_ticker\": \"string\",\n          \"market_type\": \"scalar\",\n          \"yes_sub_title\": \"string\",\n          \"no_sub_title\": \"string\",\n          \"created_time\": \"1990-12-28T16:23:52.830Z\",\n          \"updated_time\": \"2023-03-11T08:22:41.860Z\",\n          \"open_time\": \"1990-01-26T18:32:58.698Z\",\n          \"close_time\": \"2014-01-14T05:09:50.613Z\",\n          \"latest_expiration_time\": \"1982-05-24T20:39:43.793Z\",\n          \"settlement_timer_seconds\": 826,\n          \"status\": \"amended\",\n          \"notional_value_dollars\": \"0.5600\",\n          \"yes_bid_dollars\": \"0.5600\",\n          \"yes_ask_dollars\": \"0.5600\",\n          \"no_bid_dollars\": \"0.5600\",\n          \"no_ask_dollars\": \"0.5600\",\n          \"yes_bid_size_fp\": \"10.00\",\n          \"yes_ask_size_fp\": \"10.00\",\n          \"last_price_dollars\": \"0.5600\",\n          \"previous_yes_bid_dollars\": \"0.5600\",\n          \"previous_yes_ask_dollars\": \"0.5600\",\n          \"previous_price_dollars\": \"0.5600\",\n          \"volume_fp\": \"10.00\",\n          \"volume_24h_fp\": \"10.00\",\n          \"liquidity_dollars\": \"0.5600\",\n          \"open_interest_fp\": \"10.00\",\n          \"result\": \"yes\",\n          \"can_close_early\": false,\n          \"fractional_trading_enabled\": false,\n          \"expiration_value\": \"string\",\n          \"rules_primary\": \"string\",\n          \"rules_secondary\": \"string\",\n          \"price_level_structure\": \"string\",\n          \"price_ranges\": [\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"title\": \"string\",\n          \"subtitle\": \"string\",\n          \"expected_expiration_time\": \"2023-07-04T09:54:30.285Z\",\n          \"expiration_time\": \"1973-11-27T22:38:38.798Z\",\n          \"response_price_units\": \"usd_cent\",\n          \"settlement_value_dollars\": \"0.5600\",\n          \"settlement_ts\": \"1996-07-03T14:16:59.395Z\",\n          \"occurrence_datetime\": \"2013-07-22T23:06:17.701Z\",\n          \"fee_waiver_expiration_time\": \"1970-12-18T10:00:54.086Z\",\n          \"early_close_condition\": \"string\",\n          \"strike_type\": \"less\",\n          \"floor_strike\": 5882.288672264561,\n          \"cap_strike\": 1986.653943249229,\n          \"functional_strike\": \"string\",\n          \"custom_strike\": {},\n          \"mve_collection_ticker\": \"string\",\n          \"mve_selected_legs\": [\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"primary_participant_key\": \"string\",\n          \"is_provisional\": true,\n          \"exchange_index\": 0\n        }\n      ],\n      \"last_updated_ts\": \"1959-10-14T16:30:29.875Z\",\n      \"fee_type_override\": \"string\",\n      \"fee_multiplier_override\": 8517.10063215196,\n      \"exchange_index\": 0\n    }\n  ],\n  \"cursor\": \"string\",\n  \"milestones\": [\n    {\n      \"id\": \"string\",\n      \"category\": \"Sports\",\n      \"type\": \"football_game\",\n      \"start_date\": \"1957-05-22T12:47:27.381Z\",\n      \"related_event_tickers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"title\": \"string\",\n      \"notification_message\": \"string\",\n      \"details\": {\n        \"key_0\": 9919.7088989079,\n        \"key_1\": \"string\"\n      },\n      \"primary_event_tickers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"last_updated_ts\": \"1954-08-18T13:08:04.305Z\",\n      \"end_date\": \"1976-11-15T23:13:20.929Z\",\n      \"source_id\": \"string\",\n      \"source_ids\": {\n        \"key_0\": \"string\"\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"category\": \"Sports\",\n      \"type\": \"football_game\",\n      \"start_date\": \"2013-05-06T10:50:52.187Z\",\n      \"related_event_tickers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"title\": \"string\",\n      \"notification_message\": \"string\",\n      \"details\": {\n        \"key_0\": 5873.965086322336\n      },\n      \"primary_event_tickers\": [\n        \"string\",\n        \"string\"\n      ],\n      \"last_updated_ts\": \"1958-10-04T20:15:03.480Z\",\n      \"end_date\": \"2012-11-30T13:52:03.320Z\",\n      \"source_id\": \"string\",\n      \"source_ids\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9074c22b-2a1d-453f-b126-8600278a1347",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    },
+                    {
+                      "key": "with_milestones",
+                      "value": "false"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e45d3054-d6e3-4c04-a5d8-16a20875e526",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    },
+                    {
+                      "key": "with_milestones",
+                      "value": "false"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1dbb3019-45b5-47ce-a410-43d7a039a5d7",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "200"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    },
+                    {
+                      "key": "with_milestones",
+                      "value": "false"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_close_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "min_updated_ts",
+                      "value": "<long>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7ef23320-4e77-4d96-a649-b489f6662758",
+          "name": "Get Multivariate Events",
+          "request": {
+            "name": "Get Multivariate Events",
+            "description": {
+              "content": "Retrieve multivariate (combo) events. These are dynamically created events from multivariate event collections. Supports filtering by series and collection ticker.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events",
+                "multivariate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of results per page. Defaults to 100. Maximum value is 200."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results."
+                },
+                {
+                  "disabled": false,
+                  "key": "series_ticker",
+                  "value": "<string>",
+                  "description": "Filter by series ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "collection_ticker",
+                  "value": "<string>",
+                  "description": "Filter events by collection ticker. Returns only multivariate events belonging to the specified collection. Cannot be used together with series_ticker."
+                },
+                {
+                  "disabled": false,
+                  "key": "with_nested_markets",
+                  "value": "false",
+                  "description": "Parameter to specify if nested markets should be included in the response. When true, each event will include a 'markets' field containing a list of Market objects associated with that event."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4b42a718-14cd-4ed8-9d7e-7d2471311f0a",
+              "name": "Multivariate events retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "multivariate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "collection_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"events\": [\n    {\n      \"event_ticker\": \"string\",\n      \"series_ticker\": \"string\",\n      \"sub_title\": \"string\",\n      \"title\": \"string\",\n      \"collateral_return_type\": \"string\",\n      \"mutually_exclusive\": false,\n      \"available_on_brokers\": true,\n      \"product_metadata\": {},\n      \"category\": \"string\",\n      \"strike_date\": \"2000-01-28T21:47:41.691Z\",\n      \"strike_period\": \"string\",\n      \"markets\": [\n        {\n          \"ticker\": \"string\",\n          \"event_ticker\": \"string\",\n          \"market_type\": \"scalar\",\n          \"yes_sub_title\": \"string\",\n          \"no_sub_title\": \"string\",\n          \"created_time\": \"1985-12-30T01:54:21.159Z\",\n          \"updated_time\": \"1980-10-18T18:48:25.705Z\",\n          \"open_time\": \"1994-03-17T19:17:36.957Z\",\n          \"close_time\": \"2017-07-27T04:07:43.304Z\",\n          \"latest_expiration_time\": \"1972-01-22T10:36:39.135Z\",\n          \"settlement_timer_seconds\": 8564,\n          \"status\": \"closed\",\n          \"notional_value_dollars\": \"0.5600\",\n          \"yes_bid_dollars\": \"0.5600\",\n          \"yes_ask_dollars\": \"0.5600\",\n          \"no_bid_dollars\": \"0.5600\",\n          \"no_ask_dollars\": \"0.5600\",\n          \"yes_bid_size_fp\": \"10.00\",\n          \"yes_ask_size_fp\": \"10.00\",\n          \"last_price_dollars\": \"0.5600\",\n          \"previous_yes_bid_dollars\": \"0.5600\",\n          \"previous_yes_ask_dollars\": \"0.5600\",\n          \"previous_price_dollars\": \"0.5600\",\n          \"volume_fp\": \"10.00\",\n          \"volume_24h_fp\": \"10.00\",\n          \"liquidity_dollars\": \"0.5600\",\n          \"open_interest_fp\": \"10.00\",\n          \"result\": \"\",\n          \"can_close_early\": true,\n          \"fractional_trading_enabled\": false,\n          \"expiration_value\": \"string\",\n          \"rules_primary\": \"string\",\n          \"rules_secondary\": \"string\",\n          \"price_level_structure\": \"string\",\n          \"price_ranges\": [\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"title\": \"string\",\n          \"subtitle\": \"string\",\n          \"expected_expiration_time\": \"1969-03-30T20:43:16.117Z\",\n          \"expiration_time\": \"1961-07-24T07:53:53.531Z\",\n          \"response_price_units\": \"usd_cent\",\n          \"settlement_value_dollars\": \"0.5600\",\n          \"settlement_ts\": \"2017-11-21T12:11:46.994Z\",\n          \"occurrence_datetime\": \"1974-09-12T10:02:31.921Z\",\n          \"fee_waiver_expiration_time\": \"2009-11-15T05:44:40.142Z\",\n          \"early_close_condition\": \"string\",\n          \"strike_type\": \"between\",\n          \"floor_strike\": 3002.830350140557,\n          \"cap_strike\": 633.0998924180864,\n          \"functional_strike\": \"string\",\n          \"custom_strike\": {},\n          \"mve_collection_ticker\": \"string\",\n          \"mve_selected_legs\": [\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"primary_participant_key\": \"string\",\n          \"is_provisional\": true,\n          \"exchange_index\": 0\n        },\n        {\n          \"ticker\": \"string\",\n          \"event_ticker\": \"string\",\n          \"market_type\": \"binary\",\n          \"yes_sub_title\": \"string\",\n          \"no_sub_title\": \"string\",\n          \"created_time\": \"2006-10-29T12:44:45.698Z\",\n          \"updated_time\": \"1986-06-11T18:17:33.162Z\",\n          \"open_time\": \"2009-05-19T12:57:19.721Z\",\n          \"close_time\": \"1960-07-11T15:08:04.968Z\",\n          \"latest_expiration_time\": \"1968-07-10T14:26:51.376Z\",\n          \"settlement_timer_seconds\": 6935,\n          \"status\": \"disputed\",\n          \"notional_value_dollars\": \"0.5600\",\n          \"yes_bid_dollars\": \"0.5600\",\n          \"yes_ask_dollars\": \"0.5600\",\n          \"no_bid_dollars\": \"0.5600\",\n          \"no_ask_dollars\": \"0.5600\",\n          \"yes_bid_size_fp\": \"10.00\",\n          \"yes_ask_size_fp\": \"10.00\",\n          \"last_price_dollars\": \"0.5600\",\n          \"previous_yes_bid_dollars\": \"0.5600\",\n          \"previous_yes_ask_dollars\": \"0.5600\",\n          \"previous_price_dollars\": \"0.5600\",\n          \"volume_fp\": \"10.00\",\n          \"volume_24h_fp\": \"10.00\",\n          \"liquidity_dollars\": \"0.5600\",\n          \"open_interest_fp\": \"10.00\",\n          \"result\": \"no\",\n          \"can_close_early\": true,\n          \"fractional_trading_enabled\": false,\n          \"expiration_value\": \"string\",\n          \"rules_primary\": \"string\",\n          \"rules_secondary\": \"string\",\n          \"price_level_structure\": \"string\",\n          \"price_ranges\": [\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"title\": \"string\",\n          \"subtitle\": \"string\",\n          \"expected_expiration_time\": \"2017-04-20T06:29:12.852Z\",\n          \"expiration_time\": \"1988-10-22T06:09:55.056Z\",\n          \"response_price_units\": \"usd_cent\",\n          \"settlement_value_dollars\": \"0.5600\",\n          \"settlement_ts\": \"1976-01-09T14:53:20.007Z\",\n          \"occurrence_datetime\": \"2001-10-22T18:26:53.078Z\",\n          \"fee_waiver_expiration_time\": \"2006-02-11T18:04:12.902Z\",\n          \"early_close_condition\": \"string\",\n          \"strike_type\": \"less\",\n          \"floor_strike\": 5830.138298074175,\n          \"cap_strike\": 955.6619542355327,\n          \"functional_strike\": \"string\",\n          \"custom_strike\": {},\n          \"mve_collection_ticker\": \"string\",\n          \"mve_selected_legs\": [\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"primary_participant_key\": \"string\",\n          \"is_provisional\": true,\n          \"exchange_index\": 0\n        }\n      ],\n      \"last_updated_ts\": \"1999-12-24T23:51:18.778Z\",\n      \"fee_type_override\": \"string\",\n      \"fee_multiplier_override\": 8232.84191773638,\n      \"exchange_index\": 0\n    },\n    {\n      \"event_ticker\": \"string\",\n      \"series_ticker\": \"string\",\n      \"sub_title\": \"string\",\n      \"title\": \"string\",\n      \"collateral_return_type\": \"string\",\n      \"mutually_exclusive\": false,\n      \"available_on_brokers\": true,\n      \"product_metadata\": {},\n      \"category\": \"string\",\n      \"strike_date\": \"1999-09-29T07:55:28.724Z\",\n      \"strike_period\": \"string\",\n      \"markets\": [\n        {\n          \"ticker\": \"string\",\n          \"event_ticker\": \"string\",\n          \"market_type\": \"scalar\",\n          \"yes_sub_title\": \"string\",\n          \"no_sub_title\": \"string\",\n          \"created_time\": \"1982-03-12T16:02:52.529Z\",\n          \"updated_time\": \"1985-03-25T20:12:59.702Z\",\n          \"open_time\": \"1950-08-18T07:33:33.845Z\",\n          \"close_time\": \"1974-08-29T12:45:23.661Z\",\n          \"latest_expiration_time\": \"2015-07-12T19:35:05.950Z\",\n          \"settlement_timer_seconds\": 7050,\n          \"status\": \"determined\",\n          \"notional_value_dollars\": \"0.5600\",\n          \"yes_bid_dollars\": \"0.5600\",\n          \"yes_ask_dollars\": \"0.5600\",\n          \"no_bid_dollars\": \"0.5600\",\n          \"no_ask_dollars\": \"0.5600\",\n          \"yes_bid_size_fp\": \"10.00\",\n          \"yes_ask_size_fp\": \"10.00\",\n          \"last_price_dollars\": \"0.5600\",\n          \"previous_yes_bid_dollars\": \"0.5600\",\n          \"previous_yes_ask_dollars\": \"0.5600\",\n          \"previous_price_dollars\": \"0.5600\",\n          \"volume_fp\": \"10.00\",\n          \"volume_24h_fp\": \"10.00\",\n          \"liquidity_dollars\": \"0.5600\",\n          \"open_interest_fp\": \"10.00\",\n          \"result\": \"yes\",\n          \"can_close_early\": true,\n          \"fractional_trading_enabled\": false,\n          \"expiration_value\": \"string\",\n          \"rules_primary\": \"string\",\n          \"rules_secondary\": \"string\",\n          \"price_level_structure\": \"string\",\n          \"price_ranges\": [\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"title\": \"string\",\n          \"subtitle\": \"string\",\n          \"expected_expiration_time\": \"2006-10-09T19:20:27.475Z\",\n          \"expiration_time\": \"1983-07-02T01:14:21.104Z\",\n          \"response_price_units\": \"usd_cent\",\n          \"settlement_value_dollars\": \"0.5600\",\n          \"settlement_ts\": \"1957-05-20T01:23:47.827Z\",\n          \"occurrence_datetime\": \"1986-05-28T06:31:15.718Z\",\n          \"fee_waiver_expiration_time\": \"1960-12-01T20:50:50.851Z\",\n          \"early_close_condition\": \"string\",\n          \"strike_type\": \"greater_or_equal\",\n          \"floor_strike\": 5858.881882667134,\n          \"cap_strike\": 8473.12022183023,\n          \"functional_strike\": \"string\",\n          \"custom_strike\": {},\n          \"mve_collection_ticker\": \"string\",\n          \"mve_selected_legs\": [\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"primary_participant_key\": \"string\",\n          \"is_provisional\": true,\n          \"exchange_index\": 0\n        },\n        {\n          \"ticker\": \"string\",\n          \"event_ticker\": \"string\",\n          \"market_type\": \"scalar\",\n          \"yes_sub_title\": \"string\",\n          \"no_sub_title\": \"string\",\n          \"created_time\": \"1947-04-07T22:31:06.214Z\",\n          \"updated_time\": \"1995-04-04T09:13:30.958Z\",\n          \"open_time\": \"2014-03-20T05:04:51.562Z\",\n          \"close_time\": \"1963-02-08T12:27:37.991Z\",\n          \"latest_expiration_time\": \"1975-06-23T12:10:34.284Z\",\n          \"settlement_timer_seconds\": 6836,\n          \"status\": \"inactive\",\n          \"notional_value_dollars\": \"0.5600\",\n          \"yes_bid_dollars\": \"0.5600\",\n          \"yes_ask_dollars\": \"0.5600\",\n          \"no_bid_dollars\": \"0.5600\",\n          \"no_ask_dollars\": \"0.5600\",\n          \"yes_bid_size_fp\": \"10.00\",\n          \"yes_ask_size_fp\": \"10.00\",\n          \"last_price_dollars\": \"0.5600\",\n          \"previous_yes_bid_dollars\": \"0.5600\",\n          \"previous_yes_ask_dollars\": \"0.5600\",\n          \"previous_price_dollars\": \"0.5600\",\n          \"volume_fp\": \"10.00\",\n          \"volume_24h_fp\": \"10.00\",\n          \"liquidity_dollars\": \"0.5600\",\n          \"open_interest_fp\": \"10.00\",\n          \"result\": \"scalar\",\n          \"can_close_early\": true,\n          \"fractional_trading_enabled\": true,\n          \"expiration_value\": \"string\",\n          \"rules_primary\": \"string\",\n          \"rules_secondary\": \"string\",\n          \"price_level_structure\": \"string\",\n          \"price_ranges\": [\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"start\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"end\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"step\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"title\": \"string\",\n          \"subtitle\": \"string\",\n          \"expected_expiration_time\": \"1981-09-08T13:53:45.740Z\",\n          \"expiration_time\": \"1976-06-16T03:58:37.569Z\",\n          \"response_price_units\": \"usd_cent\",\n          \"settlement_value_dollars\": \"0.5600\",\n          \"settlement_ts\": \"2010-12-21T15:06:15.188Z\",\n          \"occurrence_datetime\": \"2002-09-10T19:48:49.405Z\",\n          \"fee_waiver_expiration_time\": \"1985-01-10T13:00:15.833Z\",\n          \"early_close_condition\": \"string\",\n          \"strike_type\": \"between\",\n          \"floor_strike\": 6232.849357829604,\n          \"cap_strike\": 5961.25381121975,\n          \"functional_strike\": \"string\",\n          \"custom_strike\": {},\n          \"mve_collection_ticker\": \"string\",\n          \"mve_selected_legs\": [\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            {\n              \"event_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"market_ticker\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"side\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"yes_settlement_value_dollars\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          ],\n          \"primary_participant_key\": \"string\",\n          \"is_provisional\": false,\n          \"exchange_index\": 0\n        }\n      ],\n      \"last_updated_ts\": \"1972-09-13T18:35:28.914Z\",\n      \"fee_type_override\": \"string\",\n      \"fee_multiplier_override\": 1246.932231714173,\n      \"exchange_index\": 0\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb1c3c6e-5625-4538-a7ee-ba3150b2190b",
+              "name": "Bad request - invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "multivariate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "collection_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "501c06c3-eab6-4e63-9545-787c2395c241",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "multivariate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "collection_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "71d818a9-4fd4-4a35-aa28-e4629d3b6a61",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    "multivariate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "collection_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cbf0fd72-a149-45ad-9f88-9b4f0726befb",
+          "name": "Get Event",
+          "request": {
+            "name": "Get Event",
+            "description": {
+              "content": "Endpoint for getting data about an event by its ticker. An event represents a real-world occurrence that can be traded on, such as an election, sports game, or economic indicator release.\nEvents contain one or more markets where users can place trades on different outcomes.\nAll events are accessible through this endpoint, even if their associated markets are older than the historical cutoff.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events",
+                ":event_ticker"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "with_nested_markets",
+                  "value": "false",
+                  "description": "If true, markets are included within the event object. If false (default), markets are returned as a separate top-level field in the response. Historical markets settled before the historical cutoff will not be included."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "event_ticker",
+                  "description": "(Required) Event ticker"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "376a7e30-e576-4a68-bb9c-0cc84758d778",
+              "name": "Event retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"event\": {\n    \"event_ticker\": \"string\",\n    \"series_ticker\": \"string\",\n    \"sub_title\": \"string\",\n    \"title\": \"string\",\n    \"collateral_return_type\": \"string\",\n    \"mutually_exclusive\": true,\n    \"available_on_brokers\": true,\n    \"product_metadata\": {},\n    \"category\": \"string\",\n    \"strike_date\": \"1985-05-12T22:12:25.329Z\",\n    \"strike_period\": \"string\",\n    \"markets\": [\n      {\n        \"ticker\": \"string\",\n        \"event_ticker\": \"string\",\n        \"market_type\": \"scalar\",\n        \"yes_sub_title\": \"string\",\n        \"no_sub_title\": \"string\",\n        \"created_time\": \"2021-09-14T00:17:12.420Z\",\n        \"updated_time\": \"2000-03-18T20:48:42.560Z\",\n        \"open_time\": \"1967-09-19T16:40:24.112Z\",\n        \"close_time\": \"1992-10-06T12:18:59.687Z\",\n        \"latest_expiration_time\": \"2019-04-28T04:25:59.625Z\",\n        \"settlement_timer_seconds\": 8034,\n        \"status\": \"amended\",\n        \"notional_value_dollars\": \"0.5600\",\n        \"yes_bid_dollars\": \"0.5600\",\n        \"yes_ask_dollars\": \"0.5600\",\n        \"no_bid_dollars\": \"0.5600\",\n        \"no_ask_dollars\": \"0.5600\",\n        \"yes_bid_size_fp\": \"10.00\",\n        \"yes_ask_size_fp\": \"10.00\",\n        \"last_price_dollars\": \"0.5600\",\n        \"previous_yes_bid_dollars\": \"0.5600\",\n        \"previous_yes_ask_dollars\": \"0.5600\",\n        \"previous_price_dollars\": \"0.5600\",\n        \"volume_fp\": \"10.00\",\n        \"volume_24h_fp\": \"10.00\",\n        \"liquidity_dollars\": \"0.5600\",\n        \"open_interest_fp\": \"10.00\",\n        \"result\": \"\",\n        \"can_close_early\": true,\n        \"fractional_trading_enabled\": true,\n        \"expiration_value\": \"string\",\n        \"rules_primary\": \"string\",\n        \"rules_secondary\": \"string\",\n        \"price_level_structure\": \"string\",\n        \"price_ranges\": [\n          {\n            \"start\": \"string\",\n            \"end\": \"string\",\n            \"step\": \"string\"\n          },\n          {\n            \"start\": \"string\",\n            \"end\": \"string\",\n            \"step\": \"string\"\n          }\n        ],\n        \"title\": \"string\",\n        \"subtitle\": \"string\",\n        \"expected_expiration_time\": \"1955-09-09T10:19:42.405Z\",\n        \"expiration_time\": \"1949-08-08T20:33:19.022Z\",\n        \"response_price_units\": \"usd_cent\",\n        \"settlement_value_dollars\": \"0.5600\",\n        \"settlement_ts\": \"2013-08-29T03:00:51.767Z\",\n        \"occurrence_datetime\": \"2015-01-04T04:55:47.001Z\",\n        \"fee_waiver_expiration_time\": \"2024-01-15T04:45:18.572Z\",\n        \"early_close_condition\": \"string\",\n        \"strike_type\": \"custom\",\n        \"floor_strike\": 3374.130112069934,\n        \"cap_strike\": 772.5203783395195,\n        \"functional_strike\": \"string\",\n        \"custom_strike\": {},\n        \"mve_collection_ticker\": \"string\",\n        \"mve_selected_legs\": [\n          {\n            \"event_ticker\": \"string\",\n            \"market_ticker\": \"string\",\n            \"side\": \"string\",\n            \"yes_settlement_value_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"event_ticker\": \"string\",\n            \"market_ticker\": \"string\",\n            \"side\": \"string\",\n            \"yes_settlement_value_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"primary_participant_key\": \"string\",\n        \"is_provisional\": false,\n        \"exchange_index\": 0\n      },\n      {\n        \"ticker\": \"string\",\n        \"event_ticker\": \"string\",\n        \"market_type\": \"scalar\",\n        \"yes_sub_title\": \"string\",\n        \"no_sub_title\": \"string\",\n        \"created_time\": \"2003-08-10T17:11:55.463Z\",\n        \"updated_time\": \"1954-09-25T01:10:18.807Z\",\n        \"open_time\": \"2006-05-05T14:24:16.204Z\",\n        \"close_time\": \"1992-11-30T11:27:45.708Z\",\n        \"latest_expiration_time\": \"2008-01-10T06:15:51.967Z\",\n        \"settlement_timer_seconds\": 3641,\n        \"status\": \"active\",\n        \"notional_value_dollars\": \"0.5600\",\n        \"yes_bid_dollars\": \"0.5600\",\n        \"yes_ask_dollars\": \"0.5600\",\n        \"no_bid_dollars\": \"0.5600\",\n        \"no_ask_dollars\": \"0.5600\",\n        \"yes_bid_size_fp\": \"10.00\",\n        \"yes_ask_size_fp\": \"10.00\",\n        \"last_price_dollars\": \"0.5600\",\n        \"previous_yes_bid_dollars\": \"0.5600\",\n        \"previous_yes_ask_dollars\": \"0.5600\",\n        \"previous_price_dollars\": \"0.5600\",\n        \"volume_fp\": \"10.00\",\n        \"volume_24h_fp\": \"10.00\",\n        \"liquidity_dollars\": \"0.5600\",\n        \"open_interest_fp\": \"10.00\",\n        \"result\": \"\",\n        \"can_close_early\": true,\n        \"fractional_trading_enabled\": false,\n        \"expiration_value\": \"string\",\n        \"rules_primary\": \"string\",\n        \"rules_secondary\": \"string\",\n        \"price_level_structure\": \"string\",\n        \"price_ranges\": [\n          {\n            \"start\": \"string\",\n            \"end\": \"string\",\n            \"step\": \"string\"\n          },\n          {\n            \"start\": \"string\",\n            \"end\": \"string\",\n            \"step\": \"string\"\n          }\n        ],\n        \"title\": \"string\",\n        \"subtitle\": \"string\",\n        \"expected_expiration_time\": \"1984-09-11T10:01:21.597Z\",\n        \"expiration_time\": \"2022-04-18T06:47:21.828Z\",\n        \"response_price_units\": \"usd_cent\",\n        \"settlement_value_dollars\": \"0.5600\",\n        \"settlement_ts\": \"1969-08-17T06:33:33.958Z\",\n        \"occurrence_datetime\": \"1952-03-20T09:21:43.552Z\",\n        \"fee_waiver_expiration_time\": \"2003-01-10T11:26:33.652Z\",\n        \"early_close_condition\": \"string\",\n        \"strike_type\": \"functional\",\n        \"floor_strike\": 5876.518769058022,\n        \"cap_strike\": 2089.0893346599028,\n        \"functional_strike\": \"string\",\n        \"custom_strike\": {},\n        \"mve_collection_ticker\": \"string\",\n        \"mve_selected_legs\": [\n          {\n            \"event_ticker\": \"string\",\n            \"market_ticker\": \"string\",\n            \"side\": \"string\",\n            \"yes_settlement_value_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"event_ticker\": \"string\",\n            \"market_ticker\": \"string\",\n            \"side\": \"string\",\n            \"yes_settlement_value_dollars\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"primary_participant_key\": \"string\",\n        \"is_provisional\": false,\n        \"exchange_index\": 0\n      }\n    ],\n    \"last_updated_ts\": \"1987-07-19T08:13:53.155Z\",\n    \"fee_type_override\": \"string\",\n    \"fee_multiplier_override\": 155.8409199505295,\n    \"exchange_index\": 0\n  },\n  \"markets\": [\n    {\n      \"ticker\": \"string\",\n      \"event_ticker\": \"string\",\n      \"market_type\": \"binary\",\n      \"yes_sub_title\": \"string\",\n      \"no_sub_title\": \"string\",\n      \"created_time\": \"1980-08-21T04:31:33.465Z\",\n      \"updated_time\": \"2019-03-22T09:51:39.531Z\",\n      \"open_time\": \"1993-05-01T01:26:52.658Z\",\n      \"close_time\": \"1992-02-04T09:22:04.405Z\",\n      \"latest_expiration_time\": \"1963-01-06T08:16:46.182Z\",\n      \"settlement_timer_seconds\": 8493,\n      \"status\": \"inactive\",\n      \"notional_value_dollars\": \"0.5600\",\n      \"yes_bid_dollars\": \"0.5600\",\n      \"yes_ask_dollars\": \"0.5600\",\n      \"no_bid_dollars\": \"0.5600\",\n      \"no_ask_dollars\": \"0.5600\",\n      \"yes_bid_size_fp\": \"10.00\",\n      \"yes_ask_size_fp\": \"10.00\",\n      \"last_price_dollars\": \"0.5600\",\n      \"previous_yes_bid_dollars\": \"0.5600\",\n      \"previous_yes_ask_dollars\": \"0.5600\",\n      \"previous_price_dollars\": \"0.5600\",\n      \"volume_fp\": \"10.00\",\n      \"volume_24h_fp\": \"10.00\",\n      \"liquidity_dollars\": \"0.5600\",\n      \"open_interest_fp\": \"10.00\",\n      \"result\": \"no\",\n      \"can_close_early\": false,\n      \"fractional_trading_enabled\": true,\n      \"expiration_value\": \"string\",\n      \"rules_primary\": \"string\",\n      \"rules_secondary\": \"string\",\n      \"price_level_structure\": \"string\",\n      \"price_ranges\": [\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        },\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        }\n      ],\n      \"title\": \"string\",\n      \"subtitle\": \"string\",\n      \"expected_expiration_time\": \"2004-08-15T12:29:02.494Z\",\n      \"expiration_time\": \"2017-09-30T00:00:18.830Z\",\n      \"response_price_units\": \"usd_cent\",\n      \"settlement_value_dollars\": \"0.5600\",\n      \"settlement_ts\": \"1991-05-24T20:53:17.539Z\",\n      \"occurrence_datetime\": \"2002-05-23T02:44:39.495Z\",\n      \"fee_waiver_expiration_time\": \"2019-03-12T21:58:36.181Z\",\n      \"early_close_condition\": \"string\",\n      \"strike_type\": \"less\",\n      \"floor_strike\": 2628.215561723648,\n      \"cap_strike\": 4024.434213036041,\n      \"functional_strike\": \"string\",\n      \"custom_strike\": {},\n      \"mve_collection_ticker\": \"string\",\n      \"mve_selected_legs\": [\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        },\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        }\n      ],\n      \"primary_participant_key\": \"string\",\n      \"is_provisional\": false,\n      \"exchange_index\": 0\n    },\n    {\n      \"ticker\": \"string\",\n      \"event_ticker\": \"string\",\n      \"market_type\": \"binary\",\n      \"yes_sub_title\": \"string\",\n      \"no_sub_title\": \"string\",\n      \"created_time\": \"2012-09-10T15:55:33.720Z\",\n      \"updated_time\": \"1961-01-09T20:04:32.477Z\",\n      \"open_time\": \"2000-02-13T00:11:33.474Z\",\n      \"close_time\": \"1952-10-28T03:50:28.431Z\",\n      \"latest_expiration_time\": \"2026-05-27T18:56:54.878Z\",\n      \"settlement_timer_seconds\": 5324,\n      \"status\": \"inactive\",\n      \"notional_value_dollars\": \"0.5600\",\n      \"yes_bid_dollars\": \"0.5600\",\n      \"yes_ask_dollars\": \"0.5600\",\n      \"no_bid_dollars\": \"0.5600\",\n      \"no_ask_dollars\": \"0.5600\",\n      \"yes_bid_size_fp\": \"10.00\",\n      \"yes_ask_size_fp\": \"10.00\",\n      \"last_price_dollars\": \"0.5600\",\n      \"previous_yes_bid_dollars\": \"0.5600\",\n      \"previous_yes_ask_dollars\": \"0.5600\",\n      \"previous_price_dollars\": \"0.5600\",\n      \"volume_fp\": \"10.00\",\n      \"volume_24h_fp\": \"10.00\",\n      \"liquidity_dollars\": \"0.5600\",\n      \"open_interest_fp\": \"10.00\",\n      \"result\": \"scalar\",\n      \"can_close_early\": false,\n      \"fractional_trading_enabled\": true,\n      \"expiration_value\": \"string\",\n      \"rules_primary\": \"string\",\n      \"rules_secondary\": \"string\",\n      \"price_level_structure\": \"string\",\n      \"price_ranges\": [\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        },\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        }\n      ],\n      \"title\": \"string\",\n      \"subtitle\": \"string\",\n      \"expected_expiration_time\": \"1978-06-30T18:07:00.293Z\",\n      \"expiration_time\": \"1959-01-08T23:26:18.709Z\",\n      \"response_price_units\": \"usd_cent\",\n      \"settlement_value_dollars\": \"0.5600\",\n      \"settlement_ts\": \"1958-02-18T21:13:34.756Z\",\n      \"occurrence_datetime\": \"1951-08-28T18:42:34.898Z\",\n      \"fee_waiver_expiration_time\": \"2020-03-18T11:09:48.384Z\",\n      \"early_close_condition\": \"string\",\n      \"strike_type\": \"custom\",\n      \"floor_strike\": 6532.287195741551,\n      \"cap_strike\": 6645.827833810264,\n      \"functional_strike\": \"string\",\n      \"custom_strike\": {},\n      \"mve_collection_ticker\": \"string\",\n      \"mve_selected_legs\": [\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        },\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        }\n      ],\n      \"primary_participant_key\": \"string\",\n      \"is_provisional\": false,\n      \"exchange_index\": 0\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5bcf1d7e-dcfb-46b4-bcf3-d8bee3ea6fcb",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "122c9484-0502-4666-ab25-e871c61af852",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "85a8c35b-9787-4a9a-a6ab-2f832c4c9dfb",
+              "name": "Event not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4d6a1cb2-9bf7-4ab1-8543-6fb3e2eefa3d",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "with_nested_markets",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c7fa3e62-5d79-45f0-8ac0-627b80bb5f50",
+          "name": "Get Event Metadata",
+          "request": {
+            "name": "Get Event Metadata",
+            "description": {
+              "content": " Endpoint for getting metadata about an event by its ticker.  Returns only the metadata information for an event.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events",
+                ":event_ticker",
+                "metadata"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "event_ticker",
+                  "description": "(Required) Event ticker"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a44f9d05-72df-4362-9456-62828f5c6e2c",
+              "name": "Event metadata retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker",
+                    "metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"image_url\": \"string\",\n  \"settlement_sources\": [\n    {\n      \"name\": \"string\",\n      \"url\": \"string\"\n    },\n    {\n      \"name\": \"string\",\n      \"url\": \"string\"\n    }\n  ],\n  \"market_details\": [\n    {\n      \"market_ticker\": \"string\",\n      \"image_url\": \"string\",\n      \"color_code\": \"string\"\n    },\n    {\n      \"market_ticker\": \"string\",\n      \"image_url\": \"string\",\n      \"color_code\": \"string\"\n    }\n  ],\n  \"featured_image_url\": \"string\",\n  \"competition\": \"string\",\n  \"competition_scope\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "736a876c-2f85-4885-bac9-b5477f9477a6",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker",
+                    "metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0161d4f0-b3ee-4ab1-b3b1-bff2b4025ea2",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker",
+                    "metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "2bd5e908-e3ec-4435-a5da-28939645d092",
+              "name": "Event not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker",
+                    "metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8e1ed264-3d08-4e07-b3e9-0e4fa7508814",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events",
+                    ":event_ticker",
+                    "metadata"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_ticker",
+                      "description": "(Required) Event ticker"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "adc1f909-9689-41e5-9be8-6bf8a8b6c63f",
+          "name": "Get Event Forecast Percentile History",
+          "request": {
+            "name": "Get Event Forecast Percentile History",
+            "description": {
+              "content": "Endpoint for getting the historical raw and formatted forecast numbers for an event at specific percentiles.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "series",
+                ":series_ticker",
+                "events",
+                ":ticker",
+                "forecast_percentile_history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "percentiles",
+                  "value": "<integer>",
+                  "description": "(Required) Array of percentile values to retrieve (0-9999, max 10 values)"
+                },
+                {
+                  "disabled": false,
+                  "key": "percentiles",
+                  "value": "<integer>",
+                  "description": "(Required) Array of percentile values to retrieve (0-9999, max 10 values)"
+                },
+                {
+                  "disabled": false,
+                  "key": "start_ts",
+                  "value": "<long>",
+                  "description": "(Required) Start timestamp for the range"
+                },
+                {
+                  "disabled": false,
+                  "key": "end_ts",
+                  "value": "<long>",
+                  "description": "(Required) End timestamp for the range"
+                },
+                {
+                  "disabled": false,
+                  "key": "period_interval",
+                  "value": "<integer>",
+                  "description": "(Required) Specifies the length of each forecast period, in minutes. 0 for 5-second intervals, or 1, 60, or 1440 for minute-based intervals."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticker",
+                  "description": "(Required) The event ticker"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "series_ticker",
+                  "description": "(Required) The series ticker"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "KALSHI-ACCESS-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d8a3d7cd-1048-44af-a761-5ae4c62940b9",
+              "name": "Event forecast percentile history retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "events",
+                    ":ticker",
+                    "forecast_percentile_history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "percentiles",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "percentiles",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) The event ticker"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The series ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"forecast_history\": [\n    {\n      \"event_ticker\": \"string\",\n      \"end_period_ts\": 6640,\n      \"period_interval\": 7545,\n      \"percentile_points\": [\n        {\n          \"percentile\": 5943,\n          \"raw_numerical_forecast\": 5925.140005894226,\n          \"numerical_forecast\": 4541.598038906542,\n          \"formatted_forecast\": \"string\"\n        },\n        {\n          \"percentile\": 8530,\n          \"raw_numerical_forecast\": 6908.481936868424,\n          \"numerical_forecast\": 5299.259374818244,\n          \"formatted_forecast\": \"string\"\n        }\n      ]\n    },\n    {\n      \"event_ticker\": \"string\",\n      \"end_period_ts\": 8600,\n      \"period_interval\": 647,\n      \"percentile_points\": [\n        {\n          \"percentile\": 4963,\n          \"raw_numerical_forecast\": 2363.508580677691,\n          \"numerical_forecast\": 3357.4897077021615,\n          \"formatted_forecast\": \"string\"\n        },\n        {\n          \"percentile\": 9777,\n          \"raw_numerical_forecast\": 149.0193911367088,\n          \"numerical_forecast\": 4607.2910983425745,\n          \"formatted_forecast\": \"string\"\n        }\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8e2531bd-1d3f-4859-8b38-954988792d89",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "events",
+                    ":ticker",
+                    "forecast_percentile_history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "percentiles",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "percentiles",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) The event ticker"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The series ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "eed43b5e-27cf-424d-8b37-d7335e4e4159",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "events",
+                    ":ticker",
+                    "forecast_percentile_history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "percentiles",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "percentiles",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) The event ticker"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The series ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "5b2e5797-e49f-4650-aded-9cd6f6ac172d",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "series",
+                    ":series_ticker",
+                    "events",
+                    ":ticker",
+                    "forecast_percentile_history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "percentiles",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "percentiles",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) The event ticker"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "series_ticker",
+                      "description": "(Required) The series ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external-api.kalshi.com/trade-api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f1ed846b-bb47-47e7-accb-45605a6ad01a",
+    "name": "Kalshi Trade API Manual Endpoints account events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manually defined OpenAPI spec for endpoints being migrated to spec-first approach",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,1839 @@
+{
+  "item": [
+    {
+      "id": "b34e6f4c-71e6-49e0-b436-556714afea66",
+      "name": "historical",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e9876e06-4736-49b5-843a-7257b4583397",
+          "name": "Get Historical Cutoff Timestamps",
+          "request": {
+            "name": "Get Historical Cutoff Timestamps",
+            "description": {
+              "content": "Returns the cutoff timestamps that define the boundary between **live** and **historical** data.\n\n## Cutoff fields\n- `market_settled_ts` : Markets that **settled** before this timestamp, and their candlesticks, must be accessed via `GET /historical/markets` and `GET /historical/markets/{ticker}/candlesticks`.\n- `trades_created_ts` : Trades that were **filled** before this timestamp must be accessed via `GET /historical/fills`.\n- `orders_updated_ts` : Orders that were **canceled or fully executed** before this timestamp must be accessed via `GET /historical/orders`. Resting (active) orders are always available in `GET /portfolio/orders`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "historical",
+                "cutoff"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8d07ec35-d10c-40b1-b3e3-d5785932b66e",
+              "name": "Historical cutoff timestamps retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "cutoff"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"market_settled_ts\": \"2017-01-15T21:41:48.563Z\",\n  \"trades_created_ts\": \"1998-01-14T12:40:47.000Z\",\n  \"orders_updated_ts\": \"1951-05-15T09:57:53.857Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6fe8014-0a0f-417c-8e82-7bdc7ab17d45",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "cutoff"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "81b2b600-5127-4ca7-8e18-9c2731a20cbf",
+          "name": "Get Historical Market Candlesticks",
+          "request": {
+            "name": "Get Historical Market Candlesticks",
+            "description": {
+              "content": " Endpoint for fetching historical candlestick data for markets that have been archived from the live data set. Time period length of each candlestick in minutes. Valid values: 1 (1 minute), 60 (1 hour), 1440 (1 day).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "historical",
+                "markets",
+                ":ticker",
+                "candlesticks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start_ts",
+                  "value": "<long>",
+                  "description": "(Required) Start timestamp (Unix timestamp). Candlesticks will include those ending on or after this time."
+                },
+                {
+                  "disabled": false,
+                  "key": "end_ts",
+                  "value": "<long>",
+                  "description": "(Required) End timestamp (Unix timestamp). Candlesticks will include those ending on or before this time."
+                },
+                {
+                  "disabled": false,
+                  "key": "period_interval",
+                  "value": "<integer>",
+                  "description": "(Required) Time period length of each candlestick in minutes. Valid values are 1 (1 minute), 60 (1 hour), or 1440 (1 day)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticker",
+                  "description": "(Required) Market ticker - unique identifier for the specific market"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2baa3c1b-4a3f-49d5-8bc9-c5f47a51b4c7",
+              "name": "Candlesticks retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker - unique identifier for the specific market"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ticker\": \"string\",\n  \"candlesticks\": [\n    {\n      \"end_period_ts\": 777,\n      \"yes_bid\": {\n        \"open\": \"0.5600\",\n        \"low\": \"0.5600\",\n        \"high\": \"0.5600\",\n        \"close\": \"0.5600\"\n      },\n      \"yes_ask\": {\n        \"open\": \"0.5600\",\n        \"low\": \"0.5600\",\n        \"high\": \"0.5600\",\n        \"close\": \"0.5600\"\n      },\n      \"price\": {\n        \"open\": \"0.5600\",\n        \"low\": \"0.5600\",\n        \"high\": \"0.5600\",\n        \"close\": \"0.5600\",\n        \"mean\": \"0.5600\",\n        \"previous\": \"0.5600\"\n      },\n      \"volume\": \"10.00\",\n      \"open_interest\": \"10.00\"\n    },\n    {\n      \"end_period_ts\": 6541,\n      \"yes_bid\": {\n        \"open\": \"0.5600\",\n        \"low\": \"0.5600\",\n        \"high\": \"0.5600\",\n        \"close\": \"0.5600\"\n      },\n      \"yes_ask\": {\n        \"open\": \"0.5600\",\n        \"low\": \"0.5600\",\n        \"high\": \"0.5600\",\n        \"close\": \"0.5600\"\n      },\n      \"price\": {\n        \"open\": \"0.5600\",\n        \"low\": \"0.5600\",\n        \"high\": \"0.5600\",\n        \"close\": \"0.5600\",\n        \"mean\": \"0.5600\",\n        \"previous\": \"0.5600\"\n      },\n      \"volume\": \"10.00\",\n      \"open_interest\": \"10.00\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09b83dee-2232-4ec1-9f0c-0dadbdd47b9f",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker - unique identifier for the specific market"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fd8f99cb-5f64-48fc-b1be-635105c9abc8",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker - unique identifier for the specific market"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "305dfee3-707e-45e1-9fbe-26dfb15f78bd",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets",
+                    ":ticker",
+                    "candlesticks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "end_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "period_interval",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker - unique identifier for the specific market"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "11ac2990-412f-4ddf-94ee-8beda0f06f4b",
+          "name": "Get Historical Fills",
+          "request": {
+            "name": "Get Historical Fills",
+            "description": {
+              "content": " Endpoint for getting all historical fills for the member. A fill is when a trade you have is matched.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "historical",
+                "fills"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ticker",
+                  "value": "<string>",
+                  "description": "Filter by market ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "max_ts",
+                  "value": "<long>",
+                  "description": "Filter items before this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of results per page. Defaults to 100."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "KALSHI-ACCESS-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "369dc47c-434e-4b2f-880b-59ce733e0805",
+              "name": "Fills retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "fills"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"fills\": [\n    {\n      \"fill_id\": \"string\",\n      \"trade_id\": \"string\",\n      \"order_id\": \"string\",\n      \"ticker\": \"string\",\n      \"market_ticker\": \"string\",\n      \"side\": \"yes\",\n      \"action\": \"sell\",\n      \"outcome_side\": \"no\",\n      \"book_side\": \"ask\",\n      \"count_fp\": \"10.00\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"is_taker\": true,\n      \"fee_cost\": \"0.5600\",\n      \"created_time\": \"1966-12-21T08:14:56.860Z\",\n      \"subaccount_number\": 2875,\n      \"ts\": 6845\n    },\n    {\n      \"fill_id\": \"string\",\n      \"trade_id\": \"string\",\n      \"order_id\": \"string\",\n      \"ticker\": \"string\",\n      \"market_ticker\": \"string\",\n      \"side\": \"no\",\n      \"action\": \"buy\",\n      \"outcome_side\": \"no\",\n      \"book_side\": \"bid\",\n      \"count_fp\": \"10.00\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"is_taker\": true,\n      \"fee_cost\": \"0.5600\",\n      \"created_time\": \"1978-12-22T12:03:31.163Z\",\n      \"subaccount_number\": 5437,\n      \"ts\": 9856\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c1edc39-888e-42c1-bd1f-a77ed8e117b3",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "fills"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "366989b2-c1b9-41d2-93c0-32ed7eea3035",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "fills"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "bf4ce132-0afd-4de1-9adb-2e8b5ca2d3f3",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "fills"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ff5c4d1-d8f9-439f-89d1-fb758a740b5c",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "fills"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "560b2e39-ca23-4d85-8fbc-864eb5dfa26c",
+          "name": "Get Historical Orders",
+          "request": {
+            "name": "Get Historical Orders",
+            "description": {
+              "content": " Endpoint for getting orders that have been archived to the historical database.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "historical",
+                "orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ticker",
+                  "value": "<string>",
+                  "description": "Filter by market ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "max_ts",
+                  "value": "<long>",
+                  "description": "Filter items before this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of results per page. Defaults to 100."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "KALSHI-ACCESS-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "af4861ca-a299-4a61-85ad-27de6f632d2b",
+              "name": "Historical orders retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"orders\": [\n    {\n      \"order_id\": \"string\",\n      \"user_id\": \"string\",\n      \"client_order_id\": \"string\",\n      \"ticker\": \"string\",\n      \"side\": \"no\",\n      \"action\": \"buy\",\n      \"outcome_side\": \"no\",\n      \"book_side\": \"ask\",\n      \"type\": \"market\",\n      \"status\": \"resting\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"fill_count_fp\": \"10.00\",\n      \"remaining_count_fp\": \"10.00\",\n      \"initial_count_fp\": \"10.00\",\n      \"taker_fees_dollars\": \"0.5600\",\n      \"maker_fees_dollars\": \"0.5600\",\n      \"taker_fill_cost_dollars\": \"0.5600\",\n      \"maker_fill_cost_dollars\": \"0.5600\",\n      \"expiration_time\": \"2023-02-28T01:36:44.461Z\",\n      \"created_time\": \"1957-11-30T08:16:18.809Z\",\n      \"last_update_time\": \"2017-10-05T05:19:53.737Z\",\n      \"self_trade_prevention_type\": \"maker\",\n      \"order_group_id\": \"string\",\n      \"cancel_order_on_pause\": true,\n      \"subaccount_number\": 3506,\n      \"exchange_index\": 0\n    },\n    {\n      \"order_id\": \"string\",\n      \"user_id\": \"string\",\n      \"client_order_id\": \"string\",\n      \"ticker\": \"string\",\n      \"side\": \"no\",\n      \"action\": \"sell\",\n      \"outcome_side\": \"no\",\n      \"book_side\": \"ask\",\n      \"type\": \"market\",\n      \"status\": \"canceled\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"fill_count_fp\": \"10.00\",\n      \"remaining_count_fp\": \"10.00\",\n      \"initial_count_fp\": \"10.00\",\n      \"taker_fees_dollars\": \"0.5600\",\n      \"maker_fees_dollars\": \"0.5600\",\n      \"taker_fill_cost_dollars\": \"0.5600\",\n      \"maker_fill_cost_dollars\": \"0.5600\",\n      \"expiration_time\": \"2020-01-27T19:59:26.089Z\",\n      \"created_time\": \"2020-12-14T18:20:40.836Z\",\n      \"last_update_time\": \"2026-03-06T17:53:01.889Z\",\n      \"self_trade_prevention_type\": \"taker_at_cross\",\n      \"order_group_id\": \"string\",\n      \"cancel_order_on_pause\": false,\n      \"subaccount_number\": 2624,\n      \"exchange_index\": 0\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05d874e9-c415-4cb4-9dc2-0b872c2770b8",
+              "name": "Bad request - invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72d9d695-34da-4c18-a404-95b1cfba71ec",
+              "name": "Unauthorized - authentication required",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "50b350fb-4885-4120-b334-30c27accc339",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "KALSHI-ACCESS-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "37f69644-71eb-44dd-a158-49a9fd282240",
+          "name": "Get Historical Trades",
+          "request": {
+            "name": "Get Historical Trades",
+            "description": {
+              "content": " Endpoint for getting all historical trades for all markets. Trades that were filled before the historical cutoff are available via this endpoint. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "historical",
+                "trades"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ticker",
+                  "value": "<string>",
+                  "description": "Filter by market ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "min_ts",
+                  "value": "<long>",
+                  "description": "Filter items after this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "max_ts",
+                  "value": "<long>",
+                  "description": "Filter items before this Unix timestamp"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "003e4789-55d7-4000-bb4b-b1e32384016e",
+              "name": "Historical trades retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "trades"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"trades\": [\n    {\n      \"trade_id\": \"string\",\n      \"ticker\": \"string\",\n      \"count_fp\": \"10.00\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"taker_side\": \"yes\",\n      \"taker_outcome_side\": \"yes\",\n      \"taker_book_side\": \"ask\",\n      \"created_time\": \"1953-07-08T15:48:33.061Z\"\n    },\n    {\n      \"trade_id\": \"string\",\n      \"ticker\": \"string\",\n      \"count_fp\": \"10.00\",\n      \"yes_price_dollars\": \"0.5600\",\n      \"no_price_dollars\": \"0.5600\",\n      \"taker_side\": \"yes\",\n      \"taker_outcome_side\": \"no\",\n      \"taker_book_side\": \"ask\",\n      \"created_time\": \"1955-02-24T19:33:13.693Z\"\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f908fc02-482b-4d44-a4b2-347a07265c47",
+              "name": "Bad request - invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "trades"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f0c68476-93b4-40b1-8b94-2b3c433755c0",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "trades"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ca73ba7-8bfd-40b4-938c-67f73437b0d9",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "trades"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "min_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "max_ts",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2c5336d7-a883-448c-9ec1-90c17b7f780f",
+          "name": "Get Historical Markets",
+          "request": {
+            "name": "Get Historical Markets",
+            "description": {
+              "content": "Endpoint for getting markets that have been archived to the historical database. Filters are mutually exclusive.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "historical",
+                "markets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of results per page. Defaults to 100. Maximum value is 1000."
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page."
+                },
+                {
+                  "disabled": false,
+                  "key": "tickers",
+                  "value": "<string>",
+                  "description": "Filter by specific market tickers. Comma-separated list of market tickers to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "event_ticker",
+                  "value": "<string>",
+                  "description": "Event ticker to filter by. Only a single event ticker is supported."
+                },
+                {
+                  "disabled": false,
+                  "key": "series_ticker",
+                  "value": "<string>",
+                  "description": "Filter by series ticker"
+                },
+                {
+                  "disabled": false,
+                  "key": "mve_filter",
+                  "value": "",
+                  "description": "Filter by multivariate events (combos). By default, MVE markets are included."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8640f602-a229-425d-9c67-f5031870bffa",
+              "name": "Historical markets retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mve_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"markets\": [\n    {\n      \"ticker\": \"string\",\n      \"event_ticker\": \"string\",\n      \"market_type\": \"binary\",\n      \"yes_sub_title\": \"string\",\n      \"no_sub_title\": \"string\",\n      \"created_time\": \"1954-01-22T11:21:16.801Z\",\n      \"updated_time\": \"2010-02-19T21:41:30.685Z\",\n      \"open_time\": \"2011-03-15T10:40:28.298Z\",\n      \"close_time\": \"2020-12-17T13:56:06.443Z\",\n      \"latest_expiration_time\": \"1986-02-03T01:39:34.543Z\",\n      \"settlement_timer_seconds\": 2859,\n      \"status\": \"determined\",\n      \"notional_value_dollars\": \"0.5600\",\n      \"yes_bid_dollars\": \"0.5600\",\n      \"yes_ask_dollars\": \"0.5600\",\n      \"no_bid_dollars\": \"0.5600\",\n      \"no_ask_dollars\": \"0.5600\",\n      \"yes_bid_size_fp\": \"10.00\",\n      \"yes_ask_size_fp\": \"10.00\",\n      \"last_price_dollars\": \"0.5600\",\n      \"previous_yes_bid_dollars\": \"0.5600\",\n      \"previous_yes_ask_dollars\": \"0.5600\",\n      \"previous_price_dollars\": \"0.5600\",\n      \"volume_fp\": \"10.00\",\n      \"volume_24h_fp\": \"10.00\",\n      \"liquidity_dollars\": \"0.5600\",\n      \"open_interest_fp\": \"10.00\",\n      \"result\": \"yes\",\n      \"can_close_early\": false,\n      \"fractional_trading_enabled\": false,\n      \"expiration_value\": \"string\",\n      \"rules_primary\": \"string\",\n      \"rules_secondary\": \"string\",\n      \"price_level_structure\": \"string\",\n      \"price_ranges\": [\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        },\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        }\n      ],\n      \"title\": \"string\",\n      \"subtitle\": \"string\",\n      \"expected_expiration_time\": \"2016-09-16T08:24:09.559Z\",\n      \"expiration_time\": \"2004-02-04T06:53:52.834Z\",\n      \"response_price_units\": \"usd_cent\",\n      \"settlement_value_dollars\": \"0.5600\",\n      \"settlement_ts\": \"1980-11-11T02:10:47.513Z\",\n      \"occurrence_datetime\": \"1951-08-26T22:31:08.695Z\",\n      \"fee_waiver_expiration_time\": \"1990-10-26T04:36:49.238Z\",\n      \"early_close_condition\": \"string\",\n      \"strike_type\": \"less\",\n      \"floor_strike\": 204.99146031940364,\n      \"cap_strike\": 5408.976620056103,\n      \"functional_strike\": \"string\",\n      \"custom_strike\": {},\n      \"mve_collection_ticker\": \"string\",\n      \"mve_selected_legs\": [\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        },\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        }\n      ],\n      \"primary_participant_key\": \"string\",\n      \"is_provisional\": true,\n      \"exchange_index\": 0\n    },\n    {\n      \"ticker\": \"string\",\n      \"event_ticker\": \"string\",\n      \"market_type\": \"scalar\",\n      \"yes_sub_title\": \"string\",\n      \"no_sub_title\": \"string\",\n      \"created_time\": \"1974-02-27T15:19:09.081Z\",\n      \"updated_time\": \"1977-01-26T17:16:54.140Z\",\n      \"open_time\": \"1975-06-01T03:34:54.155Z\",\n      \"close_time\": \"1987-08-08T19:27:31.389Z\",\n      \"latest_expiration_time\": \"1982-12-05T19:24:18.228Z\",\n      \"settlement_timer_seconds\": 97,\n      \"status\": \"initialized\",\n      \"notional_value_dollars\": \"0.5600\",\n      \"yes_bid_dollars\": \"0.5600\",\n      \"yes_ask_dollars\": \"0.5600\",\n      \"no_bid_dollars\": \"0.5600\",\n      \"no_ask_dollars\": \"0.5600\",\n      \"yes_bid_size_fp\": \"10.00\",\n      \"yes_ask_size_fp\": \"10.00\",\n      \"last_price_dollars\": \"0.5600\",\n      \"previous_yes_bid_dollars\": \"0.5600\",\n      \"previous_yes_ask_dollars\": \"0.5600\",\n      \"previous_price_dollars\": \"0.5600\",\n      \"volume_fp\": \"10.00\",\n      \"volume_24h_fp\": \"10.00\",\n      \"liquidity_dollars\": \"0.5600\",\n      \"open_interest_fp\": \"10.00\",\n      \"result\": \"no\",\n      \"can_close_early\": true,\n      \"fractional_trading_enabled\": false,\n      \"expiration_value\": \"string\",\n      \"rules_primary\": \"string\",\n      \"rules_secondary\": \"string\",\n      \"price_level_structure\": \"string\",\n      \"price_ranges\": [\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        },\n        {\n          \"start\": \"string\",\n          \"end\": \"string\",\n          \"step\": \"string\"\n        }\n      ],\n      \"title\": \"string\",\n      \"subtitle\": \"string\",\n      \"expected_expiration_time\": \"1967-10-10T02:51:17.395Z\",\n      \"expiration_time\": \"1952-05-21T07:57:29.872Z\",\n      \"response_price_units\": \"usd_cent\",\n      \"settlement_value_dollars\": \"0.5600\",\n      \"settlement_ts\": \"1986-05-02T06:51:30.340Z\",\n      \"occurrence_datetime\": \"1976-02-24T21:24:19.645Z\",\n      \"fee_waiver_expiration_time\": \"1975-10-15T23:03:00.096Z\",\n      \"early_close_condition\": \"string\",\n      \"strike_type\": \"between\",\n      \"floor_strike\": 3330.961275797392,\n      \"cap_strike\": 961.7514376587344,\n      \"functional_strike\": \"string\",\n      \"custom_strike\": {},\n      \"mve_collection_ticker\": \"string\",\n      \"mve_selected_legs\": [\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        },\n        {\n          \"event_ticker\": \"string\",\n          \"market_ticker\": \"string\",\n          \"side\": \"string\",\n          \"yes_settlement_value_dollars\": \"0.5600\"\n        }\n      ],\n      \"primary_participant_key\": \"string\",\n      \"is_provisional\": false,\n      \"exchange_index\": 0\n    }\n  ],\n  \"cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d43a984-a487-4087-b621-9e34c90d2ba1",
+              "name": "Bad request - invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mve_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86fbd071-90a3-4be7-a02c-24203197047b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tickers",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "event_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "series_ticker",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "mve_filter",
+                      "value": ""
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a79f8d46-5681-4159-9fd8-78385389bf52",
+          "name": "Get Historical Market",
+          "request": {
+            "name": "Get Historical Market",
+            "description": {
+              "content": " Endpoint for getting data about a specific market by its ticker from the historical database.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "historical",
+                "markets",
+                ":ticker"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "ticker",
+                  "description": "(Required) Market ticker"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e336a003-5b92-4835-a48d-22783acb8073",
+              "name": "Historical market retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets",
+                    ":ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"market\": {\n    \"ticker\": \"string\",\n    \"event_ticker\": \"string\",\n    \"market_type\": \"scalar\",\n    \"yes_sub_title\": \"string\",\n    \"no_sub_title\": \"string\",\n    \"created_time\": \"1974-11-25T04:37:20.135Z\",\n    \"updated_time\": \"1996-03-04T03:49:15.625Z\",\n    \"open_time\": \"1978-09-10T23:15:37.890Z\",\n    \"close_time\": \"2026-02-14T19:37:51.963Z\",\n    \"latest_expiration_time\": \"2011-08-20T05:42:53.615Z\",\n    \"settlement_timer_seconds\": 2349,\n    \"status\": \"finalized\",\n    \"notional_value_dollars\": \"0.5600\",\n    \"yes_bid_dollars\": \"0.5600\",\n    \"yes_ask_dollars\": \"0.5600\",\n    \"no_bid_dollars\": \"0.5600\",\n    \"no_ask_dollars\": \"0.5600\",\n    \"yes_bid_size_fp\": \"10.00\",\n    \"yes_ask_size_fp\": \"10.00\",\n    \"last_price_dollars\": \"0.5600\",\n    \"previous_yes_bid_dollars\": \"0.5600\",\n    \"previous_yes_ask_dollars\": \"0.5600\",\n    \"previous_price_dollars\": \"0.5600\",\n    \"volume_fp\": \"10.00\",\n    \"volume_24h_fp\": \"10.00\",\n    \"liquidity_dollars\": \"0.5600\",\n    \"open_interest_fp\": \"10.00\",\n    \"result\": \"scalar\",\n    \"can_close_early\": false,\n    \"fractional_trading_enabled\": true,\n    \"expiration_value\": \"string\",\n    \"rules_primary\": \"string\",\n    \"rules_secondary\": \"string\",\n    \"price_level_structure\": \"string\",\n    \"price_ranges\": [\n      {\n        \"start\": \"string\",\n        \"end\": \"string\",\n        \"step\": \"string\"\n      },\n      {\n        \"start\": \"string\",\n        \"end\": \"string\",\n        \"step\": \"string\"\n      }\n    ],\n    \"title\": \"string\",\n    \"subtitle\": \"string\",\n    \"expected_expiration_time\": \"1997-08-03T15:55:24.122Z\",\n    \"expiration_time\": \"1973-04-17T02:52:25.348Z\",\n    \"response_price_units\": \"usd_cent\",\n    \"settlement_value_dollars\": \"0.5600\",\n    \"settlement_ts\": \"1964-01-04T11:47:30.200Z\",\n    \"occurrence_datetime\": \"2007-12-01T23:39:19.412Z\",\n    \"fee_waiver_expiration_time\": \"1952-05-30T14:57:29.290Z\",\n    \"early_close_condition\": \"string\",\n    \"strike_type\": \"greater\",\n    \"floor_strike\": 1429.1151280507963,\n    \"cap_strike\": 5643.613851520433,\n    \"functional_strike\": \"string\",\n    \"custom_strike\": {},\n    \"mve_collection_ticker\": \"string\",\n    \"mve_selected_legs\": [\n      {\n        \"event_ticker\": \"string\",\n        \"market_ticker\": \"string\",\n        \"side\": \"string\",\n        \"yes_settlement_value_dollars\": \"0.5600\"\n      },\n      {\n        \"event_ticker\": \"string\",\n        \"market_ticker\": \"string\",\n        \"side\": \"string\",\n        \"yes_settlement_value_dollars\": \"0.5600\"\n      }\n    ],\n    \"primary_participant_key\": \"string\",\n    \"is_provisional\": false,\n    \"exchange_index\": 0\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2dcd93c-9cd5-4c7c-b7a1-fe0d1d59a3f0",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets",
+                    ":ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f98a4176-b2d5-4ce1-a816-9f279b5285c2",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "historical",
+                    "markets",
+                    ":ticker"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "ticker",
+                      "description": "(Required) Market ticker"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"details\": \"string\",\n  \"service\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://external-api.kalshi.com/trade-api/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "594f70da-6d15-499d-8995-4c71c2f0f189",
+    "name": "Kalshi Trade API Manual Endpoints account historical API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manually defined OpenAPI spec for endpoints being migrated to spec-first approach",
+      "type": "text/plain"
+    }
+  }
+}
