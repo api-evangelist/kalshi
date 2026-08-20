@@ -103,6 +103,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Account
+  tags_raw:
   - account
   properties:
   - type: OpenAPI
@@ -115,6 +117,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - APIKeys
+  tags_raw:
   - api-keys
   properties:
   - type: OpenAPI
@@ -127,6 +131,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Communications
+  tags_raw:
   - communications
   properties:
   - type: OpenAPI
@@ -139,6 +145,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Event
+  tags_raw:
   - events
   properties:
   - type: OpenAPI
@@ -151,6 +159,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Exchange
+  tags_raw:
   - exchange
   properties:
   - type: OpenAPI
@@ -175,6 +185,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Historical
+  tags_raw:
   - historical
   properties:
   - type: OpenAPI
@@ -199,6 +211,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Live Data
+  tags_raw:
   - live-data
   properties:
   - type: OpenAPI
@@ -211,6 +225,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Market
+  tags_raw:
   - market
   properties:
   - type: OpenAPI
@@ -235,6 +251,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Multivariate
+  tags_raw:
   - multivariate
   properties:
   - type: OpenAPI
@@ -259,6 +277,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Order
+  tags_raw:
   - orders
   properties:
   - type: OpenAPI
@@ -271,6 +291,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Portfolio
+  tags_raw:
   - portfolio
   properties:
   - type: OpenAPI
@@ -283,6 +305,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Search
+  tags_raw:
   - search
   properties:
   - type: OpenAPI
