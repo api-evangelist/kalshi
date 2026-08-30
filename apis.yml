@@ -142,7 +142,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - Communications
+  - communications
   tags_raw:
   - communications
   properties:
@@ -170,7 +170,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - Exchange
+  - exchange
   tags_raw:
   - exchange
   properties:
@@ -196,7 +196,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - Historical
+  - historical
   tags_raw:
   - historical
   properties:
@@ -210,6 +210,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Incentive Programs
+  tags_raw:
   - incentive-programs
   properties:
   - type: OpenAPI
@@ -222,7 +224,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - Live Data
+  - live-data
   tags_raw:
   - live-data
   properties:
@@ -262,7 +264,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - Multivariate
+  - multivariate
   tags_raw:
   - multivariate
   properties:
