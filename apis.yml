@@ -142,7 +142,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - communications
+  - Communications
   tags_raw:
   - communications
   properties:
@@ -170,7 +170,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - exchange
+  - Exchange
   tags_raw:
   - exchange
   properties:
@@ -184,6 +184,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - FCM
+  tags_raw:
   - fcm
   properties:
   - type: OpenAPI
@@ -196,7 +198,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - historical
+  - Historical
   tags_raw:
   - historical
   properties:
@@ -224,7 +226,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - live-data
+  - Live Data
   tags_raw:
   - live-data
   properties:
@@ -252,6 +254,8 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
+  - Milestone
+  tags_raw:
   - milestone
   properties:
   - type: OpenAPI
@@ -264,7 +268,7 @@ apis:
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
   tags:
-  - multivariate
+  - Multivariate
   tags_raw:
   - multivariate
   properties:
