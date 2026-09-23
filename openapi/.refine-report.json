@@ -1,23 +1,7 @@
 {
   "provider": "kalshi",
   "sources": [
-    "kalshi-account-api-openapi.yml",
-    "kalshi-api-keys-api-openapi.yml",
-    "kalshi-communications-api-openapi.yml",
-    "kalshi-events-api-openapi.yml",
-    "kalshi-exchange-api-openapi.yml",
-    "kalshi-fcm-api-openapi.yml",
-    "kalshi-historical-api-openapi.yml",
-    "kalshi-incentive-programs-api-openapi.yml",
-    "kalshi-live-data-api-openapi.yml",
-    "kalshi-market-api-openapi.yml",
-    "kalshi-milestone-api-openapi.yml",
-    "kalshi-multivariate-api-openapi.yml",
-    "kalshi-order-groups-api-openapi.yml",
-    "kalshi-orders-api-openapi.yml",
-    "kalshi-portfolio-api-openapi.yml",
-    "kalshi-search-api-openapi.yml",
-    "kalshi-structured-targets-api-openapi.yml"
+    "_original/kalshi-openapi.yml"
   ],
   "outputs": [
     "kalshi-account-api-openapi.yml",
@@ -41,6 +25,31 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "kalshi-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "kalshi-openapi.yml: declared missing tag: account",
+    "kalshi-openapi.yml: declared missing tag: historical",
+    "kalshi-openapi.yml: declared missing tag: market",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "kalshi-account-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-api-keys-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-communications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-exchange-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-fcm-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-historical-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-incentive-programs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-live-data-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-market-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-milestone-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-multivariate-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-order-groups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-portfolio-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-search-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "kalshi-structured-targets-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

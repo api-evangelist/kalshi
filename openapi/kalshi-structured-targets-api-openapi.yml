@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Kalshi Trade API Manual Endpoints account structured-targets API
+  title: Kalshi Trade API Manual Endpoints Structured Targets API
   version: 3.19.0
   description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
 servers:
@@ -80,7 +80,7 @@ paths:
     get:
       operationId: GetStructuredTarget
       summary: Get Structured Target
-      description: ' Endpoint for getting data about a specific structured target by its ID.'
+      description: Endpoint for getting data about a specific structured target by its ID.
       tags:
       - structured-targets
       parameters:
@@ -105,21 +105,6 @@ paths:
           description: Internal server error
 components:
   schemas:
-    GetStructuredTargetResponse:
-      type: object
-      properties:
-        structured_target:
-          $ref: '#/components/schemas/StructuredTarget'
-    GetStructuredTargetsResponse:
-      type: object
-      properties:
-        structured_targets:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructuredTarget'
-        cursor:
-          type: string
-          description: Pagination cursor for the next page. Empty if there are no more results.
     StructuredTarget:
       type: object
       properties:
@@ -147,6 +132,21 @@ components:
           type: string
           format: date-time
           description: Timestamp when this structured target was last updated.
+    GetStructuredTargetsResponse:
+      type: object
+      properties:
+        structured_targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructuredTarget'
+        cursor:
+          type: string
+          description: Pagination cursor for the next page. Empty if there are no more results.
+    GetStructuredTargetResponse:
+      type: object
+      properties:
+        structured_target:
+          $ref: '#/components/schemas/StructuredTarget'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

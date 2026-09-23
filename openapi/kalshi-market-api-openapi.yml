@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Kalshi Trade API Manual Endpoints account market API
+  title: Kalshi Trade API Manual Endpoints Market API
   version: 3.19.0
   description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
 servers:
@@ -13,7 +13,7 @@ servers:
 - url: https://demo-api.kalshi.co/trade-api/v2
   description: Demo shared API server, also supported
 tags:
-- name: market
+- name: Market
 paths:
   /series/{series_ticker}/markets/{ticker}/candlesticks:
     get:
@@ -21,11 +21,9 @@ paths:
       summary: Get Market Candlesticks
       description: 'Time period length of each candlestick in minutes. Valid values: 1 (1 minute), 60 (1 hour), 1440 (1 day).
 
-        Candlesticks for markets that settled before the historical cutoff are only available via `GET /historical/markets/{ticker}/candlesticks`. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.
-
-        '
+        Candlesticks for markets that settled before the historical cutoff are only available via `GET /historical/markets/{ticker}/candlesticks`. See Historical Data for details.'
       tags:
-      - market
+      - Market
       parameters:
       - name: series_ticker
         in: path
@@ -97,11 +95,9 @@ paths:
     get:
       operationId: GetTrades
       summary: Get Trades
-      description: 'Endpoint for getting all trades for all markets. A trade represents a completed transaction between two users on a specific market. Each trade includes the market ticker, price, quantity, and timestamp information. This endpoint returns a paginated response. Use the ''limit'' parameter to control page size (1-1000, defaults to 100). The response includes a ''cursor'' field - pass this value in the ''cursor'' parameter of your next request to get the next page. An empty cursor indicates no more pages are available.
-
-        '
+      description: Endpoint for getting all trades for all markets. A trade represents a completed transaction between two users on a specific market. Each trade includes the market ticker, price, quantity, and timestamp information. This endpoint returns a paginated response. Use the 'limit' parameter to control page size (1-1000, defaults to 100). The response includes a 'cursor' field - pass this value in the 'cursor' parameter of your next request to get the next page. An empty cursor indicates no more pages are available.
       tags:
-      - market
+      - Market
       parameters:
       - $ref: '#/components/parameters/MarketLimitQuery'
       - $ref: '#/components/parameters/CursorQuery'
@@ -123,9 +119,9 @@ paths:
     get:
       operationId: GetMarketOrderbook
       summary: Get Market Orderbook
-      description: ' Endpoint for getting the current order book for a specific market.  The order book shows all active bid orders for both yes and no sides of a binary market. It returns yes bids and no bids only (no asks are returned). This is because in binary markets, a bid for yes at price X is equivalent to an ask for no at price (100-X). For example, a yes bid at 7¢ is the same as a no ask at 93¢, with identical contract sizes.  Each side shows price levels with their corresponding quantities and order counts, organized from best to worst prices.'
+      description: Endpoint for getting the current order book for a specific market. The order book shows all active bid orders for both yes and no sides of a binary market. It returns yes bids and no bids only (no asks are returned). This is because in binary markets, a bid for yes at price X is equivalent to an ask for no at price (100-X). For example, a yes bid at 7¢ is the same as a no ask at 93¢, with identical contract sizes. Each side shows price levels with their corresponding quantities and order counts, organized from best to worst prices.
       tags:
-      - market
+      - Market
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -162,7 +158,7 @@ paths:
       summary: Get Multiple Market Orderbooks
       description: Endpoint for getting the current order books for multiple markets in a single request. The order book shows all active bid orders for both yes and no sides of a binary market. It returns yes bids and no bids only (no asks are returned). This is because in binary markets, a bid for yes at price X is equivalent to an ask for no at price (100-X). For example, a yes bid at 7¢ is the same as a no ask at 93¢, with identical contract sizes. Each side shows price levels with their corresponding quantities and order counts, organized from best to worst prices. Returns one orderbook per requested market ticker.
       tags:
-      - market
+      - Market
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -200,9 +196,9 @@ paths:
     get:
       operationId: GetSeries
       summary: Get Series
-      description: ' Endpoint for getting data about a specific series by its ticker.  A series represents a template for recurring events that follow the same format and rules (e.g., "Monthly Jobs Report", "Weekly Initial Jobless Claims", "Daily Weather in NYC"). Series define the structure, settlement sources, and metadata that will be applied to each recurring event instance within that series.'
+      description: Endpoint for getting data about a specific series by its ticker. A series represents a template for recurring events that follow the same format and rules (e.g., "Monthly Jobs Report", "Weekly Initial Jobless Claims", "Daily Weather in NYC"). Series define the structure, settlement sources, and metadata that will be applied to each recurring event instance within that series.
       tags:
-      - market
+      - Market
       parameters:
       - name: series_ticker
         in: path
@@ -233,9 +229,9 @@ paths:
     get:
       operationId: GetSeriesList
       summary: Get Series List
-      description: ' Endpoint for getting data about multiple series with specified filters.  A series represents a template for recurring events that follow the same format and rules (e.g., "Monthly Jobs Report", "Weekly Initial Jobless Claims", "Daily Weather in NYC"). This endpoint allows you to browse and discover available series templates by category.'
+      description: Endpoint for getting data about multiple series with specified filters. A series represents a template for recurring events that follow the same format and rules (e.g., "Monthly Jobs Report", "Weekly Initial Jobless Claims", "Daily Weather in NYC"). This endpoint allows you to browse and discover available series templates by category.
       tags:
-      - market
+      - Market
       parameters:
       - name: category
         in: query
@@ -286,9 +282,29 @@ paths:
     get:
       operationId: GetMarkets
       summary: Get Markets
-      description: "Filter by market status. Possible values: `unopened`, `open`, `closed`, `settled`. Leave empty to return markets with any status.\n - Only one `status` filter may be supplied at a time.\n - Timestamp filters will be mutually exclusive from other timestamp filters and certain status filters.\n\n | Compatible Timestamp Filters | Additional Status Filters| Extra Notes |\n |------------------------------|--------------------------|-------------|\n | min_created_ts, max_created_ts | `unopened`, `open`, *empty* | |\n | min_close_ts, max_close_ts | `closed`, *empty* | |\n | min_settled_ts, max_settled_ts | `settled`, *empty* | |\n | min_updated_ts | *empty* | Incompatible with all filters besides `mve_filter=exclude` |\n\n Markets that settled before the historical cutoff are only available via `GET /historical/markets`. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.\n"
+      description: 'Filter by market status. Possible values: `unopened`, `open`, `closed`, `settled`. Leave empty to return markets with any status.
+
+        - Only one `status` filter may be supplied at a time.
+
+        - Timestamp filters will be mutually exclusive from other timestamp filters and certain status filters.
+
+
+        | Compatible Timestamp Filters | Additional Status Filters| Extra Notes |
+
+        |------------------------------|--------------------------|-------------|
+
+        | min_created_ts, max_created_ts | `unopened`, `open`, *empty* | |
+
+        | min_close_ts, max_close_ts | `closed`, *empty* | |
+
+        | min_settled_ts, max_settled_ts | `settled`, *empty* | |
+
+        | min_updated_ts | *empty* | Incompatible with all filters besides `mve_filter=exclude` |
+
+
+        Markets that settled before the historical cutoff are only available via `GET /historical/markets`. See Historical Data for details.'
       tags:
-      - market
+      - Market
       parameters:
       - $ref: '#/components/parameters/MarketLimitQuery'
       - $ref: '#/components/parameters/CursorQuery'
@@ -321,9 +337,9 @@ paths:
     get:
       operationId: GetMarket
       summary: Get Market
-      description: ' Endpoint for getting data about a specific market by its ticker. A market represents a specific binary outcome within an event that users can trade on (e.g., "Will candidate X win?"). Markets have yes/no positions, current prices, volume, and settlement rules.'
+      description: Endpoint for getting data about a specific market by its ticker. A market represents a specific binary outcome within an event that users can trade on (e.g., "Will candidate X win?"). Markets have yes/no positions, current prices, volume, and settlement rules.
       tags:
-      - market
+      - Market
       parameters:
       - $ref: '#/components/parameters/TickerPath'
       responses:
@@ -352,11 +368,9 @@ paths:
 
         - Returns candlesticks grouped by market_id
 
-        - Optionally includes a synthetic initial candlestick for price continuity (see `include_latest_before_start` parameter)
-
-        '
+        - Optionally includes a synthetic initial candlestick for price continuity (see `include_latest_before_start` parameter)'
       tags:
-      - market
+      - Market
       parameters:
       - name: market_tickers
         in: query
@@ -415,46 +429,7 @@ paths:
         '500':
           description: Internal server error
 components:
-  responses:
-    UnauthorizedError:
-      description: Unauthorized - authentication required
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFoundError:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequestError:
-      description: Bad request - invalid input
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    MarketCandlesticksResponse:
-      type: object
-      required:
-      - market_ticker
-      - candlesticks
-      properties:
-        market_ticker:
-          type: string
-          description: Market ticker string (e.g., 'INXD-24JAN01').
-        candlesticks:
-          type: array
-          description: Array of candlestick data points for the market. Includes an initial data point at the start timestamp when available.
-          items:
-            $ref: '#/components/schemas/MarketCandlestick'
     GetMarketCandlesticksResponse:
       type: object
       required:
@@ -469,6 +444,21 @@ components:
           description: Array of candlestick data points for the specified time range.
           items:
             $ref: '#/components/schemas/MarketCandlestick'
+    OrderbookCountFp:
+      type: object
+      required:
+      - yes_dollars
+      - no_dollars
+      properties:
+        yes_dollars:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceLevelDollarsCountFp'
+        no_dollars:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceLevelDollarsCountFp'
+      description: Orderbook with fixed-point contract counts (fp) in all dollar price levels.
     PriceRange:
       type: object
       required:
@@ -485,6 +475,39 @@ components:
         step:
           type: string
           description: Price step/tick size for this range in dollars
+    GetMarketResponse:
+      type: object
+      required:
+      - market
+      properties:
+        market:
+          $ref: '#/components/schemas/Market'
+    GetSeriesResponse:
+      type: object
+      required:
+      - series
+      properties:
+        series:
+          $ref: '#/components/schemas/Series'
+    SettlementSource:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the settlement source
+          x-go-type-skip-optional-pointer: true
+        url:
+          type: string
+          description: URL to the settlement source
+          x-go-type-skip-optional-pointer: true
+    GetMarketOrderbookResponse:
+      type: object
+      required:
+      - orderbook_fp
+      properties:
+        orderbook_fp:
+          $ref: '#/components/schemas/OrderbookCountFp'
+          description: Orderbook with fixed-point contract counts (fp) in all price levels.
     Trade:
       type: object
       required:
@@ -554,18 +577,186 @@ components:
           type: string
           format: date-time
           description: Timestamp when this trade was executed
-    GetMarketsResponse:
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
+    Series:
       type: object
       required:
-      - markets
-      - cursor
+      - ticker
+      - frequency
+      - title
+      - category
+      - tags
+      - settlement_sources
+      - contract_url
+      - contract_terms_url
+      - fee_type
+      - fee_multiplier
+      - additional_prohibitions
       properties:
-        markets:
+        ticker:
+          type: string
+          description: Ticker that identifies this series.
+        frequency:
+          type: string
+          description: Description of the frequency of the series. There is no fixed value set here, but will be something human-readable like weekly, daily, one-off.
+        title:
+          type: string
+          description: Title describing the series. For full context use you should use this field with the title field of the events belonging to this series.
+        category:
+          type: string
+          description: Category specifies the category which this series belongs to.
+        tags:
           type: array
           items:
-            $ref: '#/components/schemas/Market'
-        cursor:
+            type: string
+          description: Tags specifies the subjects that this series relates to, multiple series from different categories can have the same tags.
+        settlement_sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SettlementSource'
+          description: SettlementSources specifies the official sources used for the determination of markets within the series. Methodology is defined in the rulebook.
+        contract_url:
           type: string
+          description: ContractUrl provides a direct link to the original filing of the contract which underlies the series.
+        contract_terms_url:
+          type: string
+          description: ContractTermsUrl is the URL to the current terms of the contract underlying the series.
+        product_metadata:
+          type:
+          - object
+          - 'null'
+          x-omitempty: true
+          description: Internal product metadata of the series.
+        fee_type:
+          type: string
+          enum:
+          - quadratic
+          - quadratic_with_maker_fees
+          - flat
+          description: FeeType is a string representing the series' fee structure. Fee structures can be found at https://kalshi.com/docs/kalshi-fee-schedule.pdf. 'quadratic' is described by the General Trading Fees Table, 'quadratic_with_maker_fees' is described by the General Trading Fees Table with maker fees described in the Maker Fees section, 'flat' is described by the Specific Trading Fees Table.
+        fee_multiplier:
+          type: number
+          format: double
+          description: FeeMultiplier is a floating point multiplier applied to the fee calculations.
+        additional_prohibitions:
+          type: array
+          items:
+            type: string
+          description: AdditionalProhibitions is a list of additional trading prohibitions for this series.
+        volume_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the total number of contracts traded across all events in this series.
+        last_updated_ts:
+          type: string
+          format: date-time
+          description: Timestamp of when this series' metadata was last updated.
+    MarketCandlesticksResponse:
+      type: object
+      required:
+      - market_ticker
+      - candlesticks
+      properties:
+        market_ticker:
+          type: string
+          description: Market ticker string (e.g., 'INXD-24JAN01').
+        candlesticks:
+          type: array
+          description: Array of candlestick data points for the market. Includes an initial data point at the start timestamp when available.
+          items:
+            $ref: '#/components/schemas/MarketCandlestick'
+    BookSide:
+      type: string
+      enum:
+      - bid
+      - ask
+      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
+    PriceDistribution:
+      type: object
+      properties:
+        open_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: First traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        low_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Lowest traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        high_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Highest traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        close_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Last traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        mean_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Mean traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        previous_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Last traded YES contract price on the market before the candlestick period (in dollars). May be null if there were no trades before the period.
+        min_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Minimum close price of any market during the candlestick period (in dollars).
+        max_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Maximum close price of any market during the candlestick period (in dollars).
+    PriceLevelDollarsCountFp:
+      type: array
+      minItems: 2
+      maxItems: 2
+      example:
+      - '0.1500'
+      - '100.00'
+      items:
+        type: string
+      description: Price level in dollars represented as [dollars_string, fp] where dollars_string is like "0.1500" and fp is a FixedPointCount string (fixed-point contract count). The second element is the contract quantity (not price).
+    FixedPointDollars:
+      type: string
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
+    BidAskDistribution:
+      type: object
+      required:
+      - open_dollars
+      - low_dollars
+      - high_dollars
+      - close_dollars
+      properties:
+        open_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Offer price on the market at the start of the candlestick period (in dollars).
+        low_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Lowest offer price on the market during the candlestick period (in dollars).
+        high_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Highest offer price on the market during the candlestick period (in dollars).
+        close_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Offer price on the market at the end of the candlestick period (in dollars).
+    MveSelectedLeg:
+      type: object
+      properties:
+        event_ticker:
+          type: string
+          description: Unique identifier for the selected event
+          x-go-type-skip-optional-pointer: true
+        market_ticker:
+          type: string
+          description: Unique identifier for the selected market
+          x-go-type-skip-optional-pointer: true
+        side:
+          type: string
+          description: The side of the selected market
+          x-go-type-skip-optional-pointer: true
+        yes_settlement_value_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          x-omitempty: true
+          description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
     MarketCandlestick:
       type: object
       required:
@@ -595,40 +786,16 @@ components:
         open_interest_fp:
           $ref: '#/components/schemas/FixedPointCount'
           description: String representation of the number of contracts bought on the market by end of the candlestick period (end_period_ts).
-    BidAskDistribution:
+    BatchGetMarketCandlesticksResponse:
       type: object
       required:
-      - open_dollars
-      - low_dollars
-      - high_dollars
-      - close_dollars
+      - markets
       properties:
-        open_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Offer price on the market at the start of the candlestick period (in dollars).
-        low_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Lowest offer price on the market during the candlestick period (in dollars).
-        high_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Highest offer price on the market during the candlestick period (in dollars).
-        close_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Offer price on the market at the end of the candlestick period (in dollars).
-    ExchangeIndex:
-      type: integer
-      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
-      example: 0
-    MarketOrderbookFp:
-      type: object
-      required:
-      - ticker
-      - orderbook_fp
-      properties:
-        ticker:
-          type: string
-        orderbook_fp:
-          $ref: '#/components/schemas/OrderbookCountFp'
+        markets:
+          type: array
+          description: Array of market candlestick data, one entry per requested market.
+          items:
+            $ref: '#/components/schemas/MarketCandlesticksResponse'
     ErrorResponse:
       type: object
       properties:
@@ -644,51 +811,16 @@ components:
         service:
           type: string
           description: The name of the service that generated the error
-    PriceDistribution:
-      type: object
-      properties:
-        open_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: First traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        low_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Lowest traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        high_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Highest traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        close_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Last traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        mean_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Mean traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        previous_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Last traded YES contract price on the market before the candlestick period (in dollars). May be null if there were no trades before the period.
-        min_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Minimum close price of any market during the candlestick period (in dollars).
-        max_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Maximum close price of any market during the candlestick period (in dollars).
-    GetTradesResponse:
+    GetMarketsResponse:
       type: object
       required:
-      - trades
+      - markets
       - cursor
       properties:
-        trades:
+        markets:
           type: array
           items:
-            $ref: '#/components/schemas/Trade'
+            $ref: '#/components/schemas/Market'
         cursor:
           type: string
     Market:
@@ -768,9 +900,10 @@ components:
           type: string
           format: date-time
         expected_expiration_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: true
           description: Time when this market is expected to expire
         expiration_time:
@@ -865,32 +998,35 @@ components:
           description: 'DEPRECATED: This field is deprecated and will always return "0.0000".'
         settlement_value_dollars:
           $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
           x-omitempty: true
           description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
         settlement_ts:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: true
           description: Timestamp when the market was settled. Only filled for settled markets
         expiration_value:
           type: string
           description: The value that was considered for the settlement
         occurrence_datetime:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: The recorded datetime when the underlying event occurred, if available
         fee_waiver_expiration_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: true
           description: Time when this market's fee waiver expires
         early_close_condition:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           x-omitempty: true
           description: The condition under which the market can close early
           x-go-type-skip-optional-pointer: true
@@ -909,25 +1045,29 @@ components:
           description: Strike type defines how the market strike is defined and evaluated
           x-go-type-skip-optional-pointer: true
         floor_strike:
-          type: number
+          type:
+          - number
+          - 'null'
           format: double
-          nullable: true
           x-omitempty: true
           description: Minimum expiration value that leads to a YES settlement
         cap_strike:
-          type: number
+          type:
+          - number
+          - 'null'
           format: double
-          nullable: true
           x-omitempty: true
           description: Maximum expiration value that leads to a YES settlement
         functional_strike:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           x-omitempty: true
           description: Mapping from expiration values to settlement values
         custom_strike:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           x-omitempty: true
           description: Expiration value for each target that leads to a YES settlement
         rules_primary:
@@ -948,8 +1088,9 @@ components:
             $ref: '#/components/schemas/MveSelectedLeg'
           x-go-type-skip-optional-pointer: true
         primary_participant_key:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           x-omitempty: true
         price_level_structure:
           type: string
@@ -968,46 +1109,18 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
-    PriceLevelDollarsCountFp:
-      type: array
-      minItems: 2
-      maxItems: 2
-      example:
-      - '0.1500'
-      - '100.00'
-      items:
-        type: string
-      description: Price level in dollars represented as [dollars_string, fp] where dollars_string is like "0.1500" and fp is a FixedPointCount string (fixed-point contract count). The second element is the contract quantity (not price).
-    BookSide:
-      type: string
-      enum:
-      - bid
-      - ask
-      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
-    GetSeriesResponse:
+    GetTradesResponse:
       type: object
       required:
-      - series
+      - trades
+      - cursor
       properties:
-        series:
-          $ref: '#/components/schemas/Series'
-    GetSeriesListResponse:
-      type: object
-      required:
-      - series
-      properties:
-        series:
+        trades:
           type: array
           items:
-            $ref: '#/components/schemas/Series'
-    FixedPointDollars:
-      type: string
-      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
-      example: '0.5600'
+            $ref: '#/components/schemas/Trade'
+        cursor:
+          type: string
     GetMarketOrderbooksResponse:
       type: object
       required:
@@ -1017,153 +1130,65 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MarketOrderbookFp'
-    SettlementSource:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the settlement source
-          x-go-type-skip-optional-pointer: true
-        url:
-          type: string
-          description: URL to the settlement source
-          x-go-type-skip-optional-pointer: true
-    GetMarketOrderbookResponse:
+    GetSeriesListResponse:
       type: object
       required:
-      - orderbook_fp
+      - series
       properties:
-        orderbook_fp:
-          $ref: '#/components/schemas/OrderbookCountFp'
-          description: Orderbook with fixed-point contract counts (fp) in all price levels.
-    BatchGetMarketCandlesticksResponse:
-      type: object
-      required:
-      - markets
-      properties:
-        markets:
+        series:
           type: array
-          description: Array of market candlestick data, one entry per requested market.
           items:
-            $ref: '#/components/schemas/MarketCandlesticksResponse'
-    GetMarketResponse:
-      type: object
-      required:
-      - market
-      properties:
-        market:
-          $ref: '#/components/schemas/Market'
-    MveSelectedLeg:
-      type: object
-      properties:
-        event_ticker:
-          type: string
-          description: Unique identifier for the selected event
-          x-go-type-skip-optional-pointer: true
-        market_ticker:
-          type: string
-          description: Unique identifier for the selected market
-          x-go-type-skip-optional-pointer: true
-        side:
-          type: string
-          description: The side of the selected market
-          x-go-type-skip-optional-pointer: true
-        yes_settlement_value_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          x-omitempty: true
-          description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
-    Series:
+            $ref: '#/components/schemas/Series'
+    MarketOrderbookFp:
       type: object
       required:
       - ticker
-      - frequency
-      - title
-      - category
-      - tags
-      - settlement_sources
-      - contract_url
-      - contract_terms_url
-      - fee_type
-      - fee_multiplier
-      - additional_prohibitions
+      - orderbook_fp
       properties:
         ticker:
           type: string
-          description: Ticker that identifies this series.
-        frequency:
-          type: string
-          description: Description of the frequency of the series. There is no fixed value set here, but will be something human-readable like weekly, daily, one-off.
-        title:
-          type: string
-          description: Title describing the series. For full context use you should use this field with the title field of the events belonging to this series.
-        category:
-          type: string
-          description: Category specifies the category which this series belongs to.
-        tags:
-          type: array
-          items:
-            type: string
-          description: Tags specifies the subjects that this series relates to, multiple series from different categories can have the same tags.
-        settlement_sources:
-          type: array
-          items:
-            $ref: '#/components/schemas/SettlementSource'
-          description: SettlementSources specifies the official sources used for the determination of markets within the series. Methodology is defined in the rulebook.
-        contract_url:
-          type: string
-          description: ContractUrl provides a direct link to the original filing of the contract which underlies the series.
-        contract_terms_url:
-          type: string
-          description: ContractTermsUrl is the URL to the current terms of the contract underlying the series.
-        product_metadata:
-          type: object
-          nullable: true
-          x-omitempty: true
-          description: Internal product metadata of the series.
-        fee_type:
-          type: string
-          enum:
-          - quadratic
-          - quadratic_with_maker_fees
-          - flat
-          description: FeeType is a string representing the series' fee structure. Fee structures can be found at https://kalshi.com/docs/kalshi-fee-schedule.pdf. 'quadratic' is described by the General Trading Fees Table, 'quadratic_with_maker_fees' is described by the General Trading Fees Table with maker fees described in the Maker Fees section, 'flat' is described by the Specific Trading Fees Table.
-        fee_multiplier:
-          type: number
-          format: double
-          description: FeeMultiplier is a floating point multiplier applied to the fee calculations.
-        additional_prohibitions:
-          type: array
-          items:
-            type: string
-          description: AdditionalProhibitions is a list of additional trading prohibitions for this series.
-        volume_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the total number of contracts traded across all events in this series.
-        last_updated_ts:
-          type: string
-          format: date-time
-          description: Timestamp of when this series' metadata was last updated.
-    OrderbookCountFp:
-      type: object
-      required:
-      - yes_dollars
-      - no_dollars
-      properties:
-        yes_dollars:
-          type: array
-          items:
-            $ref: '#/components/schemas/PriceLevelDollarsCountFp'
-        no_dollars:
-          type: array
-          items:
-            $ref: '#/components/schemas/PriceLevelDollarsCountFp'
-      description: Orderbook with fixed-point contract counts (fp) in all dollar price levels.
+        orderbook_fp:
+          $ref: '#/components/schemas/OrderbookCountFp'
   parameters:
     MaxCreatedTsQuery:
       name: max_created_ts
       in: query
       description: Filter items that created before this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    TickerPath:
+      name: ticker
+      in: path
+      required: true
+      description: Market ticker
+      schema:
+        type: string
+    MaxTsQuery:
+      name: max_ts
+      in: query
+      description: Filter items before this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    MinUpdatedTsQuery:
+      name: min_updated_ts
+      in: query
+      description: Return markets with metadata updated later than this Unix timestamp. Tracks non-trading changes only. Incompatible with any other filters.
+      schema:
+        type: integer
+        format: int64
+    MaxSettledTsQuery:
+      name: max_settled_ts
+      in: query
+      description: Filter items that settled before this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    MinCloseTsQuery:
+      name: min_close_ts
+      in: query
+      description: Filter items that close after this Unix timestamp
       schema:
         type: integer
         format: int64
@@ -1174,57 +1199,23 @@ components:
       schema:
         type: integer
         format: int64
-    TickerQuery:
-      name: ticker
-      in: query
-      description: Filter by market ticker
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
-    MinSettledTsQuery:
-      name: min_settled_ts
-      in: query
-      description: Filter items that settled after this Unix timestamp
-      schema:
-        type: integer
-        format: int64
-    SeriesTickerQuery:
-      name: series_ticker
-      in: query
-      description: Filter by series ticker
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
-    MaxTsQuery:
-      name: max_ts
-      in: query
-      description: Filter items before this Unix timestamp
-      schema:
-        type: integer
-        format: int64
-    MarketLimitQuery:
-      name: limit
-      in: query
-      description: Number of results per page. Defaults to 100. Maximum value is 1000.
-      schema:
-        type: integer
-        format: int64
-        minimum: 0
-        maximum: 1000
-        default: 100
-        x-oapi-codegen-extra-tags:
-          validate: omitempty,gte=0,lte=1000
-    CursorQuery:
-      name: cursor
-      in: query
-      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
     SingleEventTickerQuery:
       name: event_ticker
       in: query
       description: Event ticker to filter by. Only a single event ticker is supported.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    TickersQuery:
+      name: tickers
+      in: query
+      description: Filter by specific market tickers. Comma-separated list of market tickers to retrieve.
+      schema:
+        type: string
+    TickerQuery:
+      name: ticker
+      in: query
+      description: Filter by market ticker
       schema:
         type: string
         x-go-type-skip-optional-pointer: true
@@ -1240,26 +1231,20 @@ components:
         - paused
         - closed
         - settled
-    TickerPath:
-      name: ticker
-      in: path
-      required: true
-      description: Market ticker
-      schema:
-        type: string
-    TickersQuery:
-      name: tickers
+    MinCreatedTsQuery:
+      name: min_created_ts
       in: query
-      description: Filter by specific market tickers. Comma-separated list of market tickers to retrieve.
-      schema:
-        type: string
-    MaxSettledTsQuery:
-      name: max_settled_ts
-      in: query
-      description: Filter items that settled before this Unix timestamp
+      description: Filter items that created after this Unix timestamp
       schema:
         type: integer
         format: int64
+    SeriesTickerQuery:
+      name: series_ticker
+      in: query
+      description: Filter by series ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
     MveFilterQuery:
       name: mve_filter
       in: query
@@ -1269,27 +1254,6 @@ components:
         enum:
         - only
         - exclude
-    MinCloseTsQuery:
-      name: min_close_ts
-      in: query
-      description: Filter items that close after this Unix timestamp
-      schema:
-        type: integer
-        format: int64
-    MinCreatedTsQuery:
-      name: min_created_ts
-      in: query
-      description: Filter items that created after this Unix timestamp
-      schema:
-        type: integer
-        format: int64
-    MinUpdatedTsQuery:
-      name: min_updated_ts
-      in: query
-      description: Return markets with metadata updated later than this Unix timestamp. Tracks non-trading changes only. Incompatible with any other filters.
-      schema:
-        type: integer
-        format: int64
     MaxCloseTsQuery:
       name: max_close_ts
       in: query
@@ -1297,6 +1261,57 @@ components:
       schema:
         type: integer
         format: int64
+    MarketLimitQuery:
+      name: limit
+      in: query
+      description: Number of results per page. Defaults to 100. Maximum value is 1000.
+      schema:
+        type: integer
+        format: int64
+        minimum: 0
+        maximum: 1000
+        default: 100
+        x-oapi-codegen-extra-tags:
+          validate: omitempty,gte=0,lte=1000
+    MinSettledTsQuery:
+      name: min_settled_ts
+      in: query
+      description: Filter items that settled after this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    CursorQuery:
+      name: cursor
+      in: query
+      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnauthorizedError:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

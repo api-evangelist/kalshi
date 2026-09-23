@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Kalshi Trade API Manual Endpoints account fcm API
+  title: Kalshi Trade API Manual Endpoints Fcm API
   version: 3.19.0
   description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
 servers:
@@ -22,9 +22,7 @@ paths:
       summary: Get FCM Orders
       description: 'Endpoint for FCM members to get orders filtered by subtrader ID.
 
-        This endpoint requires FCM member access level and allows filtering orders by subtrader ID.
-
-        '
+        This endpoint requires FCM member access level and allows filtering orders by subtrader ID.'
       tags:
       - fcm
       security:
@@ -90,9 +88,7 @@ paths:
       summary: Get FCM Positions
       description: 'Endpoint for FCM members to get market positions filtered by subtrader ID.
 
-        This endpoint requires FCM member access level and allows filtering positions by subtrader ID.
-
-        '
+        This endpoint requires FCM member access level and allows filtering positions by subtrader ID.'
       tags:
       - fcm
       security:
@@ -161,41 +157,12 @@ paths:
           description: Internal server error
 components:
   schemas:
-    GetOrdersResponse:
-      type: object
-      required:
-      - orders
-      - cursor
-      properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/Order'
-        cursor:
-          type: string
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
-    SelfTradePreventionType:
+    BookSide:
       type: string
       enum:
-      - taker_at_cross
-      - maker
-      description: 'The self-trade prevention type for orders. `taker_at_cross` cancels the taker order when it would trade against another order from the same user; execution stops and any partial fills already matched are executed. `maker` cancels the resting maker order and continues matching.
-
-        '
-    ExchangeIndex:
-      type: integer
-      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
-      example: 0
-    OrderStatus:
-      type: string
-      enum:
-      - resting
-      - canceled
-      - executed
-      description: The status of an order
+      - bid
+      - ask
+      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
     GetPositionsResponse:
       type: object
       required:
@@ -215,6 +182,13 @@ components:
           items:
             $ref: '#/components/schemas/EventPosition'
           description: List of event positions
+    OrderStatus:
+      type: string
+      enum:
+      - resting
+      - canceled
+      - executed
+      description: The status of an order
     Order:
       type: object
       required:
@@ -322,46 +296,104 @@ components:
           $ref: '#/components/schemas/FixedPointDollars'
           description: Fees paid on filled maker contracts, in dollars
         expiration_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         created_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: false
         last_update_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: true
           description: The last update to an order (modify, cancel, fill)
         self_trade_prevention_type:
           $ref: '#/components/schemas/SelfTradePreventionType'
-          nullable: true
           x-omitempty: false
         order_group_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The order group this order is part of
         cancel_order_on_pause:
           type: boolean
           description: If this flag is set to true, the order will be canceled if the order is open and trading on the exchange is paused for any reason.
         subaccount_number:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           x-omitempty: true
           description: Subaccount number (0 for primary, 1-32 for subaccounts).
         exchange_index:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
-    BookSide:
+    GetOrdersResponse:
+      type: object
+      required:
+      - orders
+      - cursor
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        cursor:
+          type: string
+    FixedPointDollars:
+      type: string
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
+    SelfTradePreventionType:
       type: string
       enum:
-      - bid
-      - ask
-      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
+      - taker_at_cross
+      - maker
+      description: 'The self-trade prevention type for orders. `taker_at_cross` cancels the taker order when it would trade against another order from the same user; execution stops and any partial fills already matched are executed. `maker` cancels the resting maker order and continues matching.
+
+        '
+    EventPosition:
+      type: object
+      required:
+      - event_ticker
+      - total_cost_dollars
+      - total_cost_shares_fp
+      - event_exposure_dollars
+      - realized_pnl_dollars
+      - fees_paid_dollars
+      properties:
+        event_ticker:
+          type: string
+          description: Unique identifier for events
+        total_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Total spent on this event in dollars
+        total_cost_shares_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the total number of shares traded on this event (including both YES and NO contracts)
+        event_exposure_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Cost of the aggregate event position in dollars
+        realized_pnl_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Locked in profit and loss, in dollars
+        fees_paid_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fees paid on fill orders, in dollars
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
     MarketPosition:
       type: object
       required:
@@ -402,46 +434,7 @@ components:
           type: string
           format: date-time
           description: Last time the position is updated
-    EventPosition:
-      type: object
-      required:
-      - event_ticker
-      - total_cost_dollars
-      - total_cost_shares_fp
-      - event_exposure_dollars
-      - realized_pnl_dollars
-      - fees_paid_dollars
-      properties:
-        event_ticker:
-          type: string
-          description: Unique identifier for events
-        total_cost_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Total spent on this event in dollars
-        total_cost_shares_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the total number of shares traded on this event (including both YES and NO contracts)
-        event_exposure_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Cost of the aggregate event position in dollars
-        realized_pnl_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Locked in profit and loss, in dollars
-        fees_paid_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Fees paid on fill orders, in dollars
-    FixedPointDollars:
-      type: string
-      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
-      example: '0.5600'
   parameters:
-    CursorQuery:
-      name: cursor
-      in: query
-      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
     SingleEventTickerQuery:
       name: event_ticker
       in: query
@@ -453,6 +446,13 @@ components:
       name: ticker
       in: query
       description: Filter by market ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    CursorQuery:
+      name: cursor
+      in: query
+      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
       schema:
         type: string
         x-go-type-skip-optional-pointer: true

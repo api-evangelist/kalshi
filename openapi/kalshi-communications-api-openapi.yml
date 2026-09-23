@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Kalshi Trade API Manual Endpoints account communications API
+  title: Kalshi Trade API Manual Endpoints Communications API
   version: 3.19.0
   description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
 servers:
@@ -13,16 +13,16 @@ servers:
 - url: https://demo-api.kalshi.co/trade-api/v2
   description: Demo shared API server, also supported
 tags:
-- name: communications
+- name: Communications
   description: Request-for-quote (RFQ) endpoints
 paths:
   /communications/id:
     get:
       operationId: GetCommunicationsID
       summary: Get Communications ID
-      description: ' Endpoint for getting the communications ID of the logged-in user.'
+      description: Endpoint for getting the communications ID of the logged-in user.
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -42,9 +42,9 @@ paths:
     get:
       operationId: GetRFQs
       summary: Get RFQs
-      description: ' Endpoint for getting RFQs'
+      description: Endpoint for getting RFQs
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -96,9 +96,9 @@ paths:
     post:
       operationId: CreateRFQ
       summary: Create RFQ
-      description: ' Endpoint for creating a new RFQ. You can have a maximum of 100 open RFQs at a time.'
+      description: Endpoint for creating a new RFQ. You can have a maximum of 100 open RFQs at a time.
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -128,9 +128,9 @@ paths:
     get:
       operationId: GetRFQ
       summary: Get RFQ
-      description: ' Endpoint for getting a single RFQ by id'
+      description: Endpoint for getting a single RFQ by id
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -153,9 +153,9 @@ paths:
     delete:
       operationId: DeleteRFQ
       summary: Delete RFQ
-      description: ' Endpoint for deleting an RFQ by ID'
+      description: Endpoint for deleting an RFQ by ID
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -175,9 +175,9 @@ paths:
     get:
       operationId: GetQuotes
       summary: Get Quotes
-      description: ' Endpoint for getting quotes'
+      description: Endpoint for getting quotes
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -259,7 +259,7 @@ paths:
     post:
       operationId: CreateQuote
       summary: Create Quote
-      description: ' Endpoint for creating a quote in response to an RFQ'
+      description: Endpoint for creating a quote in response to an RFQ
       x-mint:
         content: '<Note>
 
@@ -269,7 +269,7 @@ paths:
 
           '
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -297,9 +297,9 @@ paths:
     get:
       operationId: GetQuote
       summary: Get Quote
-      description: ' Endpoint for getting a particular quote'
+      description: Endpoint for getting a particular quote
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -322,7 +322,7 @@ paths:
     delete:
       operationId: DeleteQuote
       summary: Delete Quote
-      description: ' Endpoint for deleting a quote, which means it can no longer be accepted.'
+      description: Endpoint for deleting a quote, which means it can no longer be accepted.
       x-mint:
         content: '<Note>
 
@@ -332,7 +332,7 @@ paths:
 
           '
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -352,9 +352,9 @@ paths:
     put:
       operationId: AcceptQuote
       summary: Accept Quote
-      description: ' Endpoint for accepting a quote. This will require the quoter to confirm'
+      description: Endpoint for accepting a quote. This will require the quoter to confirm
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -382,9 +382,9 @@ paths:
     put:
       operationId: ConfirmQuote
       summary: Confirm Quote
-      description: ' Endpoint for confirming a quote. This will start a timer for order execution'
+      description: Endpoint for confirming a quote. This will start a timer for order execution
       tags:
-      - communications
+      - Communications
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -407,74 +407,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
-  responses:
-    UnauthorizedError:
-      description: Unauthorized - authentication required
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFoundError:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequestError:
-      description: Bad request - invalid input
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    ConflictError:
-      description: Conflict - resource already exists or cannot be modified
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    CreateQuoteRequest:
-      type: object
-      required:
-      - rfq_id
-      - yes_bid
-      - no_bid
-      - rest_remainder
-      properties:
-        rfq_id:
-          type: string
-          description: The ID of the RFQ to quote on
-        yes_bid:
-          type: string
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: The bid price for YES contracts, in dollars
-        no_bid:
-          type: string
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: The bid price for NO contracts, in dollars
-        rest_remainder:
-          type: boolean
-          description: Whether to rest the remainder of the quote after execution
-        post_only:
-          type: boolean
-          description: If true, the quote creator's resting order will be cancelled rather than crossed if it would take liquidity. Defaults to false.
-        subaccount:
-          type: integer
-          description: Optional subaccount number to place the quote under (0 for primary, 1-32 for subaccounts)
-    GetRFQResponse:
-      type: object
-      required:
-      - rfq
-      properties:
-        rfq:
-          $ref: '#/components/schemas/RFQ'
-          description: The details of the requested RFQ
     Quote:
       type: object
       required:
@@ -595,85 +528,6 @@ components:
         no_contracts_fp:
           $ref: '#/components/schemas/FixedPointCount'
           description: Number of NO contracts offered in the quote (fixed-point)
-    EmptyResponse:
-      type: object
-      description: An empty response body
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: string
-          description: Additional details about the error, if available
-        service:
-          type: string
-          description: The name of the service that generated the error
-    CreateRFQRequest:
-      type: object
-      required:
-      - market_ticker
-      - rest_remainder
-      properties:
-        market_ticker:
-          type: string
-          description: The ticker of the market for which to create an RFQ
-        contracts:
-          type: integer
-          description: The number of contracts for the RFQ. Whole contracts only. Contracts may be provided via contracts or contracts_fp; if both provided they must match.
-          x-go-type-skip-optional-pointer: true
-        contracts_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          nullable: true
-          description: String representation of the number of contracts for the RFQ. Contracts may be provided via contracts or contracts_fp; if both provided they must match.
-        target_cost_centi_cents:
-          type: integer
-          format: int64
-          description: 'DEPRECATED: The target cost for the RFQ in centi-cents. Use target_cost_dollars instead.'
-          deprecated: true
-          x-go-type-skip-optional-pointer: true
-        target_cost_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: The target cost for the RFQ in dollars
-          x-go-type-skip-optional-pointer: true
-        rest_remainder:
-          type: boolean
-          description: Whether to rest the remainder of the RFQ after execution
-        replace_existing:
-          type: boolean
-          description: Whether to delete existing RFQs as part of this RFQ's creation
-          default: false
-          x-go-type-skip-optional-pointer: true
-        subtrader_id:
-          type: string
-          description: The subtrader to create the RFQ for (FCM members only)
-          x-go-type-skip-optional-pointer: true
-        subaccount:
-          type: integer
-          description: The subaccount number to create the RFQ for (direct members only; 0 for primary, 1-32 for subaccounts)
-          x-go-type-skip-optional-pointer: true
-    GetRFQsResponse:
-      type: object
-      required:
-      - rfqs
-      properties:
-        rfqs:
-          type: array
-          items:
-            $ref: '#/components/schemas/RFQ'
-          description: List of RFQs matching the query criteria
-        cursor:
-          type: string
-          description: Cursor for pagination to get the next page of results
-          x-go-type-skip-optional-pointer: true
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
     UserFilter:
       type: string
       enum:
@@ -681,22 +535,6 @@ components:
       x-enum-varnames:
       - UserFilterSelf
       description: Omit or leave empty to return all results. Use `self` to filter by the authenticated user.
-    CreateRFQResponse:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: The ID of the newly created RFQ
-    CreateQuoteResponse:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: The ID of the newly created quote
     RFQ:
       type: object
       required:
@@ -765,29 +603,75 @@ components:
           type: string
           format: date-time
           description: Timestamp when the RFQ was last updated
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
+    CreateRFQRequest:
+      type: object
+      required:
+      - market_ticker
+      - rest_remainder
+      properties:
+        market_ticker:
+          type: string
+          description: The ticker of the market for which to create an RFQ
+        contracts:
+          type: integer
+          description: The number of contracts for the RFQ. Whole contracts only. Contracts may be provided via contracts or contracts_fp; if both provided they must match.
+          x-go-type-skip-optional-pointer: true
+        contracts_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts for the RFQ. Contracts may be provided via contracts or contracts_fp; if both provided they must match.
+        target_cost_centi_cents:
+          type: integer
+          format: int64
+          description: 'DEPRECATED: The target cost for the RFQ in centi-cents. Use target_cost_dollars instead.'
+          deprecated: true
+          x-go-type-skip-optional-pointer: true
+        target_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: The target cost for the RFQ in dollars
+          x-go-type-skip-optional-pointer: true
+        rest_remainder:
+          type: boolean
+          description: Whether to rest the remainder of the RFQ after execution
+        replace_existing:
+          type: boolean
+          description: Whether to delete existing RFQs as part of this RFQ's creation
+          default: false
+          x-go-type-skip-optional-pointer: true
+        subtrader_id:
+          type: string
+          description: The subtrader to create the RFQ for (FCM members only)
+          x-go-type-skip-optional-pointer: true
+        subaccount:
+          type: integer
+          description: The subaccount number to create the RFQ for (direct members only; 0 for primary, 1-32 for subaccounts)
+          x-go-type-skip-optional-pointer: true
+    EmptyResponse:
+      type: object
+      description: An empty response body
     FixedPointDollars:
       type: string
       description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
       example: '0.5600'
-    GetCommunicationsIDResponse:
+    GetQuoteResponse:
       type: object
       required:
-      - communications_id
+      - quote
       properties:
-        communications_id:
-          type: string
-          description: A public communications ID which is used to identify the user
-    AcceptQuoteRequest:
+        quote:
+          $ref: '#/components/schemas/Quote'
+          description: The details of the requested quote
+    CreateQuoteResponse:
       type: object
       required:
-      - accepted_side
+      - id
       properties:
-        accepted_side:
+        id:
           type: string
-          description: The side of the quote to accept (yes or no)
-          enum:
-          - 'yes'
-          - 'no'
+          description: The ID of the newly created quote
     GetQuotesResponse:
       type: object
       required:
@@ -798,6 +682,87 @@ components:
           items:
             $ref: '#/components/schemas/Quote'
           description: List of quotes matching the query criteria
+        cursor:
+          type: string
+          description: Cursor for pagination to get the next page of results
+          x-go-type-skip-optional-pointer: true
+    GetCommunicationsIDResponse:
+      type: object
+      required:
+      - communications_id
+      properties:
+        communications_id:
+          type: string
+          description: A public communications ID which is used to identify the user
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
+    CreateRFQResponse:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: The ID of the newly created RFQ
+    GetRFQResponse:
+      type: object
+      required:
+      - rfq
+      properties:
+        rfq:
+          $ref: '#/components/schemas/RFQ'
+          description: The details of the requested RFQ
+    CreateQuoteRequest:
+      type: object
+      required:
+      - rfq_id
+      - yes_bid
+      - no_bid
+      - rest_remainder
+      properties:
+        rfq_id:
+          type: string
+          description: The ID of the RFQ to quote on
+        yes_bid:
+          type: string
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: The bid price for YES contracts, in dollars
+        no_bid:
+          type: string
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: The bid price for NO contracts, in dollars
+        rest_remainder:
+          type: boolean
+          description: Whether to rest the remainder of the quote after execution
+        post_only:
+          type: boolean
+          description: If true, the quote creator's resting order will be cancelled rather than crossed if it would take liquidity. Defaults to false.
+        subaccount:
+          type: integer
+          description: Optional subaccount number to place the quote under (0 for primary, 1-32 for subaccounts)
+    GetRFQsResponse:
+      type: object
+      required:
+      - rfqs
+      properties:
+        rfqs:
+          type: array
+          items:
+            $ref: '#/components/schemas/RFQ'
+          description: List of RFQs matching the query criteria
         cursor:
           type: string
           description: Cursor for pagination to get the next page of results
@@ -819,17 +784,50 @@ components:
           x-go-type-skip-optional-pointer: true
         yes_settlement_value_dollars:
           $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
           x-omitempty: true
           description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
-    GetQuoteResponse:
+    AcceptQuoteRequest:
       type: object
       required:
-      - quote
+      - accepted_side
       properties:
-        quote:
-          $ref: '#/components/schemas/Quote'
-          description: The details of the requested quote
+        accepted_side:
+          type: string
+          description: The side of the quote to accept (yes or no)
+          enum:
+          - 'yes'
+          - 'no'
+  responses:
+    ConflictError:
+      description: Conflict - resource already exists or cannot be modified
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnauthorizedError:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
     SubaccountQuery:
       name: subaccount
@@ -837,20 +835,6 @@ components:
       description: Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts.
       schema:
         type: integer
-    CursorQuery:
-      name: cursor
-      in: query
-      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
-    SingleEventTickerQuery:
-      name: event_ticker
-      in: query
-      description: Event ticker to filter by. Only a single event ticker is supported.
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
     QuoteIdPath:
       name: quote_id
       in: path
@@ -858,6 +842,20 @@ components:
       description: Quote ID
       schema:
         type: string
+    SingleEventTickerQuery:
+      name: event_ticker
+      in: query
+      description: Event ticker to filter by. Only a single event ticker is supported.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    MarketTickerQuery:
+      name: market_ticker
+      in: query
+      description: Filter by market ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
     RfqIdPath:
       name: rfq_id
       in: path
@@ -865,10 +863,10 @@ components:
       description: RFQ ID
       schema:
         type: string
-    MarketTickerQuery:
-      name: market_ticker
+    CursorQuery:
+      name: cursor
       in: query
-      description: Filter by market ticker
+      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
       schema:
         type: string
         x-go-type-skip-optional-pointer: true

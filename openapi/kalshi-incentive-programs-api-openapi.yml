@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Kalshi Trade API Manual Endpoints account incentive-programs API
+  title: Kalshi Trade API Manual Endpoints Incentive Programs API
   version: 3.19.0
   description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
 servers:
@@ -13,16 +13,16 @@ servers:
 - url: https://demo-api.kalshi.co/trade-api/v2
   description: Demo shared API server, also supported
 tags:
-- name: incentive-programs
+- name: Incentive Programs
   description: Incentive program endpoints
 paths:
   /incentive_programs:
     get:
       operationId: GetIncentivePrograms
       summary: Get Incentives
-      description: ' List incentives with optional filters. Incentives are rewards programs for trading activity on specific markets.'
+      description: List incentives with optional filters. Incentives are rewards programs for trading activity on specific markets.
       tags:
-      - incentive-programs
+      - Incentive Programs
       parameters:
       - name: status
         in: query
@@ -87,21 +87,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: string
-          description: Additional details about the error, if available
-        service:
-          type: string
-          description: The name of the service that generated the error
     IncentiveProgram:
       type: object
       required:
@@ -149,13 +134,13 @@ components:
           type: boolean
           description: Whether the incentive has been paid out
         discount_factor_bps:
-          type: integer
+          type:
+          - integer
+          - 'null'
           format: int32
-          nullable: true
           description: Discount factor in basis points (optional)
         target_size_fp:
           $ref: '#/components/schemas/FixedPointCount'
-          nullable: true
           description: String representation of the target size for the incentive program (optional)
     FixedPointCount:
       type: string
@@ -173,6 +158,21 @@ components:
         next_cursor:
           type: string
           description: Cursor for pagination to get the next page of results
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

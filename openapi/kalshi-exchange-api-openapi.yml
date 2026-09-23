@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Kalshi Trade API Manual Endpoints account exchange API
+  title: Kalshi Trade API Manual Endpoints Exchange API
   version: 3.19.0
   description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
 servers:
@@ -13,16 +13,16 @@ servers:
 - url: https://demo-api.kalshi.co/trade-api/v2
   description: Demo shared API server, also supported
 tags:
-- name: exchange
+- name: Exchange
   description: Exchange status and information endpoints
 paths:
   /exchange/status:
     get:
       operationId: GetExchangeStatus
       summary: Get Exchange Status
-      description: ' Endpoint for getting the exchange status.'
+      description: Endpoint for getting the exchange status.
       tags:
-      - exchange
+      - Exchange
       responses:
         '200':
           description: Exchange status retrieved successfully
@@ -52,9 +52,9 @@ paths:
     get:
       operationId: GetExchangeAnnouncements
       summary: Get Exchange Announcements
-      description: ' Endpoint for getting all exchange-wide announcements.'
+      description: Endpoint for getting all exchange-wide announcements.
       tags:
-      - exchange
+      - Exchange
       responses:
         '200':
           description: Exchange announcements retrieved successfully
@@ -69,7 +69,7 @@ paths:
       operationId: GetSeriesFeeChanges
       summary: Get Series Fee Changes
       tags:
-      - exchange
+      - Exchange
       parameters:
       - name: series_ticker
         in: query
@@ -99,9 +99,9 @@ paths:
     get:
       operationId: GetExchangeSchedule
       summary: Get Exchange Schedule
-      description: ' Endpoint for getting the exchange schedule.'
+      description: Endpoint for getting the exchange schedule.
       tags:
-      - exchange
+      - Exchange
       responses:
         '200':
           description: Exchange schedule retrieved successfully
@@ -115,9 +115,9 @@ paths:
     get:
       operationId: GetUserDataTimestamp
       summary: Get User Data Timestamp
-      description: ' There is typically a short delay before exchange events are reflected in the API endpoints. Whenever possible, combine API responses to PUT/POST/DELETE requests with websocket data to obtain the most accurate view of the exchange state. This endpoint provides an approximate indication of when the data from the following endpoints was last validated: GetBalance, GetOrder(s), GetFills, GetPositions'
+      description: 'There is typically a short delay before exchange events are reflected in the API endpoints. Whenever possible, combine API responses to PUT/POST/DELETE requests with websocket data to obtain the most accurate view of the exchange state. This endpoint provides an approximate indication of when the data from the following endpoints was last validated: GetBalance, GetOrder(s), GetFills, GetPositions'
       tags:
-      - exchange
+      - Exchange
       responses:
         '200':
           description: User data timestamp retrieved successfully
@@ -129,6 +129,98 @@ paths:
           description: Internal server error
 components:
   schemas:
+    GetExchangeAnnouncementsResponse:
+      type: object
+      required:
+      - announcements
+      properties:
+        announcements:
+          type: array
+          description: A list of exchange-wide announcements.
+          items:
+            $ref: '#/components/schemas/Announcement'
+    ExchangeStatus:
+      type: object
+      required:
+      - exchange_active
+      - trading_active
+      properties:
+        exchange_active:
+          type: boolean
+          description: False if the core Kalshi exchange is no longer taking any state changes at all. This includes but is not limited to trading, new users, and transfers. True unless we are under maintenance.
+        trading_active:
+          type: boolean
+          description: True if we are currently permitting trading on the exchange. This is true during trading hours and false outside exchange hours. Kalshi reserves the right to pause at any time in case issues are detected.
+        exchange_estimated_resume_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Estimated downtime for the current exchange maintenance window. However, this is not guaranteed and can be extended.
+    DailySchedule:
+      type: object
+      required:
+      - open_time
+      - close_time
+      properties:
+        open_time:
+          type: string
+          description: Opening time in ET (Eastern Time) format HH:MM.
+        close_time:
+          type: string
+          description: Closing time in ET (Eastern Time) format HH:MM.
+    GetUserDataTimestampResponse:
+      type: object
+      required:
+      - as_of_time
+      properties:
+        as_of_time:
+          type: string
+          format: date-time
+          description: Timestamp when user data was last updated.
+    Announcement:
+      type: object
+      required:
+      - type
+      - message
+      - delivery_time
+      - status
+      properties:
+        type:
+          type: string
+          enum:
+          - info
+          - warning
+          - error
+          description: The type of the announcement.
+        message:
+          type: string
+          description: The message contained within the announcement.
+        delivery_time:
+          type: string
+          format: date-time
+          description: The time the announcement was delivered.
+        status:
+          type: string
+          enum:
+          - active
+          - inactive
+          description: The current status of this announcement.
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
     GetSeriesFeeChangesResponse:
       type: object
       required:
@@ -138,6 +230,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SeriesFeeChange'
+    SeriesFeeChange:
+      type: object
+      required:
+      - id
+      - series_ticker
+      - fee_type
+      - fee_multiplier
+      - scheduled_ts
+      properties:
+        id:
+          type: string
+          description: Unique identifier for this fee change
+        series_ticker:
+          type: string
+          description: Series ticker this fee change applies to
+        fee_type:
+          type: string
+          enum:
+          - quadratic
+          - quadratic_with_maker_fees
+          - flat
+          description: New fee type for the series
+        fee_multiplier:
+          type: number
+          format: double
+          description: New fee multiplier for the series
+        scheduled_ts:
+          type: string
+          format: date-time
+          description: Timestamp when this fee change is scheduled to take effect
     WeeklySchedule:
       type: object
       required:
@@ -201,60 +323,20 @@ components:
       properties:
         schedule:
           $ref: '#/components/schemas/Schedule'
-    SeriesFeeChange:
+    MaintenanceWindow:
       type: object
       required:
-      - id
-      - series_ticker
-      - fee_type
-      - fee_multiplier
-      - scheduled_ts
+      - start_datetime
+      - end_datetime
       properties:
-        id:
-          type: string
-          description: Unique identifier for this fee change
-        series_ticker:
-          type: string
-          description: Series ticker this fee change applies to
-        fee_type:
-          type: string
-          enum:
-          - quadratic
-          - quadratic_with_maker_fees
-          - flat
-          description: New fee type for the series
-        fee_multiplier:
-          type: number
-          format: double
-          description: New fee multiplier for the series
-        scheduled_ts:
+        start_datetime:
           type: string
           format: date-time
-          description: Timestamp when this fee change is scheduled to take effect
-    GetUserDataTimestampResponse:
-      type: object
-      required:
-      - as_of_time
-      properties:
-        as_of_time:
+          description: Start date and time of the maintenance window.
+        end_datetime:
           type: string
           format: date-time
-          description: Timestamp when user data was last updated.
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: string
-          description: Additional details about the error, if available
-        service:
-          type: string
-          description: The name of the service that generated the error
+          description: End date and time of the maintenance window.
     Schedule:
       type: object
       required:
@@ -271,87 +353,6 @@ components:
           description: Scheduled maintenance windows, during which the exchange may be unavailable.
           items:
             $ref: '#/components/schemas/MaintenanceWindow'
-    MaintenanceWindow:
-      type: object
-      required:
-      - start_datetime
-      - end_datetime
-      properties:
-        start_datetime:
-          type: string
-          format: date-time
-          description: Start date and time of the maintenance window.
-        end_datetime:
-          type: string
-          format: date-time
-          description: End date and time of the maintenance window.
-    Announcement:
-      type: object
-      required:
-      - type
-      - message
-      - delivery_time
-      - status
-      properties:
-        type:
-          type: string
-          enum:
-          - info
-          - warning
-          - error
-          description: The type of the announcement.
-        message:
-          type: string
-          description: The message contained within the announcement.
-        delivery_time:
-          type: string
-          format: date-time
-          description: The time the announcement was delivered.
-        status:
-          type: string
-          enum:
-          - active
-          - inactive
-          description: The current status of this announcement.
-    DailySchedule:
-      type: object
-      required:
-      - open_time
-      - close_time
-      properties:
-        open_time:
-          type: string
-          description: Opening time in ET (Eastern Time) format HH:MM.
-        close_time:
-          type: string
-          description: Closing time in ET (Eastern Time) format HH:MM.
-    ExchangeStatus:
-      type: object
-      required:
-      - exchange_active
-      - trading_active
-      properties:
-        exchange_active:
-          type: boolean
-          description: False if the core Kalshi exchange is no longer taking any state changes at all. This includes but is not limited to trading, new users, and transfers. True unless we are under maintenance.
-        trading_active:
-          type: boolean
-          description: True if we are currently permitting trading on the exchange. This is true during trading hours and false outside exchange hours. Kalshi reserves the right to pause at any time in case issues are detected.
-        exchange_estimated_resume_time:
-          type: string
-          format: date-time
-          description: Estimated downtime for the current exchange maintenance window. However, this is not guaranteed and can be extended.
-          nullable: true
-    GetExchangeAnnouncementsResponse:
-      type: object
-      required:
-      - announcements
-      properties:
-        announcements:
-          type: array
-          description: A list of exchange-wide announcements.
-          items:
-            $ref: '#/components/schemas/Announcement'
   responses:
     BadRequestError:
       description: Bad request - invalid input

@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Kalshi Trade API Manual Endpoints account API
+  title: Kalshi Trade API Manual Endpoints Account API
   version: 3.19.0
   description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
 servers:
@@ -13,15 +13,15 @@ servers:
 - url: https://demo-api.kalshi.co/trade-api/v2
   description: Demo shared API server, also supported
 tags:
-- name: account
+- name: Account
 paths:
   /account/limits:
     get:
       operationId: GetAccountApiLimits
       summary: Get Account API Limits
-      description: ' Endpoint to retrieve the API tier limits associated with the authenticated user.'
+      description: Endpoint to retrieve the API tier limits associated with the authenticated user.
       tags:
-      - account
+      - Account
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -43,7 +43,7 @@ paths:
       summary: List Non-Default Endpoint Costs
       description: Lists API v2 endpoints whose configured token cost differs from the default cost. Endpoints that use the default cost are omitted.
       tags:
-      - account
+      - Account
       responses:
         '200':
           description: Non-default endpoint costs retrieved successfully
@@ -55,20 +55,6 @@ paths:
           description: Internal server error
 components:
   schemas:
-    GetAccountEndpointCostsResponse:
-      type: object
-      required:
-      - default_cost
-      - endpoint_costs
-      properties:
-        default_cost:
-          type: integer
-          description: Default token cost applied to endpoints that are not listed in `endpoint_costs`. This is currently 10.
-        endpoint_costs:
-          type: array
-          description: API v2 endpoints whose configured token cost differs from `default_cost`. Endpoints that use the default cost are omitted.
-          items:
-            $ref: '#/components/schemas/EndpointTokenCost'
     GetAccountApiLimitsResponse:
       type: object
       required:
@@ -83,6 +69,22 @@ components:
           $ref: '#/components/schemas/BucketLimit'
         write:
           $ref: '#/components/schemas/BucketLimit'
+    EndpointTokenCost:
+      type: object
+      required:
+      - method
+      - path
+      - cost
+      properties:
+        method:
+          type: string
+          description: HTTP method for the endpoint.
+        path:
+          type: string
+          description: API route path for the endpoint.
+        cost:
+          type: integer
+          description: Configured token cost for an endpoint whose cost differs from the default cost.
     BucketLimit:
       type: object
       description: 'Token-bucket budget for one rate-limit bucket. Each request deducts
@@ -116,22 +118,20 @@ components:
             budget).
 
             '
-    EndpointTokenCost:
+    GetAccountEndpointCostsResponse:
       type: object
       required:
-      - method
-      - path
-      - cost
+      - default_cost
+      - endpoint_costs
       properties:
-        method:
-          type: string
-          description: HTTP method for the endpoint.
-        path:
-          type: string
-          description: API route path for the endpoint.
-        cost:
+        default_cost:
           type: integer
-          description: Configured token cost for an endpoint whose cost differs from the default cost.
+          description: Default token cost applied to endpoints that are not listed in `endpoint_costs`. This is currently 10.
+        endpoint_costs:
+          type: array
+          description: API v2 endpoints whose configured token cost differs from `default_cost`. Endpoints that use the default cost are omitted.
+          items:
+            $ref: '#/components/schemas/EndpointTokenCost'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

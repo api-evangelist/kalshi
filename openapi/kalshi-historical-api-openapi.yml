@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: Kalshi Trade API Manual Endpoints account historical API
+  title: Kalshi Trade API Manual Endpoints Historical API
   version: 3.19.0
   description: Manually defined OpenAPI spec for endpoints being migrated to spec-first approach
 servers:
@@ -13,7 +13,7 @@ servers:
 - url: https://demo-api.kalshi.co/trade-api/v2
   description: Demo shared API server, also supported
 tags:
-- name: historical
+- name: Historical
 paths:
   /historical/cutoff:
     get:
@@ -28,11 +28,9 @@ paths:
 
         - `trades_created_ts` : Trades that were **filled** before this timestamp must be accessed via `GET /historical/fills`.
 
-        - `orders_updated_ts` : Orders that were **canceled or fully executed** before this timestamp must be accessed via `GET /historical/orders`. Resting (active) orders are always available in `GET /portfolio/orders`.
-
-        '
+        - `orders_updated_ts` : Orders that were **canceled or fully executed** before this timestamp must be accessed via `GET /historical/orders`. Resting (active) orders are always available in `GET /portfolio/orders`.'
       tags:
-      - historical
+      - Historical
       responses:
         '200':
           description: Historical cutoff timestamps retrieved successfully
@@ -46,9 +44,9 @@ paths:
     get:
       operationId: GetMarketCandlesticksHistorical
       summary: Get Historical Market Candlesticks
-      description: ' Endpoint for fetching historical candlestick data for markets that have been archived from the live data set. Time period length of each candlestick in minutes. Valid values: 1 (1 minute), 60 (1 hour), 1440 (1 day).'
+      description: 'Endpoint for fetching historical candlestick data for markets that have been archived from the live data set. Time period length of each candlestick in minutes. Valid values: 1 (1 minute), 60 (1 hour), 1440 (1 day).'
       tags:
-      - historical
+      - Historical
       parameters:
       - name: ticker
         in: path
@@ -99,9 +97,9 @@ paths:
     get:
       operationId: GetFillsHistorical
       summary: Get Historical Fills
-      description: ' Endpoint for getting all historical fills for the member. A fill is when a trade you have is matched.'
+      description: Endpoint for getting all historical fills for the member. A fill is when a trade you have is matched.
       tags:
-      - historical
+      - Historical
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -130,9 +128,9 @@ paths:
     get:
       operationId: GetHistoricalOrders
       summary: Get Historical Orders
-      description: ' Endpoint for getting orders that have been archived to the historical database.'
+      description: Endpoint for getting orders that have been archived to the historical database.
       tags:
-      - historical
+      - Historical
       security:
       - kalshiAccessKey: []
         kalshiAccessSignature: []
@@ -159,9 +157,9 @@ paths:
     get:
       operationId: GetTradesHistorical
       summary: Get Historical Trades
-      description: ' Endpoint for getting all historical trades for all markets. Trades that were filled before the historical cutoff are available via this endpoint. See [Historical Data](https://docs.kalshi.com/getting_started/historical_data) for details.'
+      description: Endpoint for getting all historical trades for all markets. Trades that were filled before the historical cutoff are available via this endpoint. See Historical Data for details.
       tags:
-      - historical
+      - Historical
       parameters:
       - $ref: '#/components/parameters/TickerQuery'
       - $ref: '#/components/parameters/MinTsQuery'
@@ -185,11 +183,9 @@ paths:
     get:
       operationId: GetHistoricalMarkets
       summary: Get Historical Markets
-      description: 'Endpoint for getting markets that have been archived to the historical database. Filters are mutually exclusive.
-
-        '
+      description: Endpoint for getting markets that have been archived to the historical database. Filters are mutually exclusive.
       tags:
-      - historical
+      - Historical
       parameters:
       - $ref: '#/components/parameters/MarketLimitQuery'
       - $ref: '#/components/parameters/CursorQuery'
@@ -212,9 +208,9 @@ paths:
     get:
       operationId: GetHistoricalMarket
       summary: Get Historical Market
-      description: ' Endpoint for getting data about a specific market by its ticker from the historical database.'
+      description: Endpoint for getting data about a specific market by its ticker from the historical database.
       tags:
-      - historical
+      - Historical
       parameters:
       - $ref: '#/components/parameters/TickerPath'
       responses:
@@ -229,57 +225,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
-  responses:
-    UnauthorizedError:
-      description: Unauthorized - authentication required
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFoundError:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequestError:
-      description: Bad request - invalid input
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    GetHistoricalCutoffResponse:
-      type: object
-      required:
-      - market_settled_ts
-      - trades_created_ts
-      - orders_updated_ts
-      properties:
-        market_settled_ts:
-          type: string
-          format: date-time
-          description: 'Cutoff based on **market settlement time**. Markets and their candlesticks that settled before this timestamp must be accessed via `GET /historical/markets` and `GET /historical/markets/{ticker}/candlesticks`.
-
-            '
-        trades_created_ts:
-          type: string
-          format: date-time
-          description: 'Cutoff based on **trade fill time**. Fills that occurred before this timestamp must be accessed via `GET /historical/fills`.
-
-            '
-        orders_updated_ts:
-          type: string
-          format: date-time
-          description: 'Cutoff based on **order cancellation or execution time**. Orders canceled or fully executed before this timestamp must be accessed via `GET /historical/orders`. Resting (active) orders are always available in `GET /portfolio/orders`.
-
-            '
     PriceRange:
       type: object
       required:
@@ -296,35 +242,21 @@ components:
         step:
           type: string
           description: Price step/tick size for this range in dollars
-    MarketCandlestickHistorical:
+    GetMarketResponse:
       type: object
       required:
-      - end_period_ts
-      - yes_bid
-      - yes_ask
-      - price
-      - volume
-      - open_interest
+      - market
       properties:
-        end_period_ts:
-          type: integer
-          format: int64
-          description: Unix timestamp for the inclusive end of the candlestick period.
-        yes_bid:
-          $ref: '#/components/schemas/BidAskDistributionHistorical'
-          description: Open, high, low, close (OHLC) data for YES buy offers on the market during the candlestick period.
-        yes_ask:
-          $ref: '#/components/schemas/BidAskDistributionHistorical'
-          description: Open, high, low, close (OHLC) data for YES sell offers on the market during the candlestick period.
-        price:
-          $ref: '#/components/schemas/PriceDistributionHistorical'
-          description: Open, high, low, close (OHLC) and more data for trade YES contract prices on the market during the candlestick period.
-        volume:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts bought on the market during the candlestick period.
-        open_interest:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts bought on the market by end of the candlestick period (end_period_ts).
+        market:
+          $ref: '#/components/schemas/Market'
+    SelfTradePreventionType:
+      type: string
+      enum:
+      - taker_at_cross
+      - maker
+      description: 'The self-trade prevention type for orders. `taker_at_cross` cancels the taker order when it would trade against another order from the same user; execution stops and any partial fills already matched are executed. `maker` cancels the resting maker order and continues matching.
+
+        '
     Trade:
       type: object
       required:
@@ -394,18 +326,30 @@ components:
           type: string
           format: date-time
           description: Timestamp when this trade was executed
-    GetMarketsResponse:
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
+    GetMarketCandlesticksHistoricalResponse:
       type: object
       required:
-      - markets
-      - cursor
+      - ticker
+      - candlesticks
       properties:
-        markets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Market'
-        cursor:
+        ticker:
           type: string
+          description: Unique identifier for the market.
+        candlesticks:
+          type: array
+          description: Array of candlestick data points for the specified time range.
+          items:
+            $ref: '#/components/schemas/MarketCandlestickHistorical'
+    BookSide:
+      type: string
+      enum:
+      - bid
+      - ask
+      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
     Fill:
       type: object
       required:
@@ -499,53 +443,22 @@ components:
           $ref: '#/components/schemas/FixedPointDollars'
           description: Fee cost in fixed-point dollars
         subaccount_number:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           x-omitempty: true
           description: Subaccount number (0 for primary, 1-32 for subaccounts). Present for direct users.
         ts:
           type: integer
           format: int64
           description: Unix timestamp when this fill was executed (legacy field name)
-    GetOrdersResponse:
-      type: object
-      required:
-      - orders
-      - cursor
-      properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/Order'
-        cursor:
-          type: string
-    ExchangeIndex:
-      type: integer
-      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
-      example: 0
-    SelfTradePreventionType:
+    OrderStatus:
       type: string
       enum:
-      - taker_at_cross
-      - maker
-      description: 'The self-trade prevention type for orders. `taker_at_cross` cancels the taker order when it would trade against another order from the same user; execution stops and any partial fills already matched are executed. `maker` cancels the resting maker order and continues matching.
-
-        '
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: string
-          description: Additional details about the error, if available
-        service:
-          type: string
-          description: The name of the service that generated the error
+      - resting
+      - canceled
+      - executed
+      description: The status of an order
     Order:
       type: object
       required:
@@ -653,40 +566,64 @@ components:
           $ref: '#/components/schemas/FixedPointDollars'
           description: Fees paid on filled maker contracts, in dollars
         expiration_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         created_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: false
         last_update_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: true
           description: The last update to an order (modify, cancel, fill)
         self_trade_prevention_type:
           $ref: '#/components/schemas/SelfTradePreventionType'
-          nullable: true
           x-omitempty: false
         order_group_id:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           description: The order group this order is part of
         cancel_order_on_pause:
           type: boolean
           description: If this flag is set to true, the order will be canceled if the order is open and trading on the exchange is paused for any reason.
         subaccount_number:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
           x-omitempty: true
           description: Subaccount number (0 for primary, 1-32 for subaccounts).
         exchange_index:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
+    GetOrdersResponse:
+      type: object
+      required:
+      - orders
+      - cursor
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        cursor:
+          type: string
+    FixedPointDollars:
+      type: string
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
     BidAskDistributionHistorical:
       type: object
       required:
@@ -707,16 +644,72 @@ components:
         close:
           $ref: '#/components/schemas/FixedPointDollars'
           description: Offer price on the market at the end of the candlestick period (in dollars).
-    GetTradesResponse:
+    GetFillsResponse:
       type: object
       required:
-      - trades
+      - fills
       - cursor
       properties:
-        trades:
+        fills:
           type: array
           items:
-            $ref: '#/components/schemas/Trade'
+            $ref: '#/components/schemas/Fill'
+        cursor:
+          type: string
+    MarketCandlestickHistorical:
+      type: object
+      required:
+      - end_period_ts
+      - yes_bid
+      - yes_ask
+      - price
+      - volume
+      - open_interest
+      properties:
+        end_period_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp for the inclusive end of the candlestick period.
+        yes_bid:
+          $ref: '#/components/schemas/BidAskDistributionHistorical'
+          description: Open, high, low, close (OHLC) data for YES buy offers on the market during the candlestick period.
+        yes_ask:
+          $ref: '#/components/schemas/BidAskDistributionHistorical'
+          description: Open, high, low, close (OHLC) data for YES sell offers on the market during the candlestick period.
+        price:
+          $ref: '#/components/schemas/PriceDistributionHistorical'
+          description: Open, high, low, close (OHLC) and more data for trade YES contract prices on the market during the candlestick period.
+        volume:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought on the market during the candlestick period.
+        open_interest:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought on the market by end of the candlestick period (end_period_ts).
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
+    GetMarketsResponse:
+      type: object
+      required:
+      - markets
+      - cursor
+      properties:
+        markets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Market'
         cursor:
           type: string
     Market:
@@ -796,9 +789,10 @@ components:
           type: string
           format: date-time
         expected_expiration_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: true
           description: Time when this market is expected to expire
         expiration_time:
@@ -893,32 +887,35 @@ components:
           description: 'DEPRECATED: This field is deprecated and will always return "0.0000".'
         settlement_value_dollars:
           $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
           x-omitempty: true
           description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
         settlement_ts:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: true
           description: Timestamp when the market was settled. Only filled for settled markets
         expiration_value:
           type: string
           description: The value that was considered for the settlement
         occurrence_datetime:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           description: The recorded datetime when the underlying event occurred, if available
         fee_waiver_expiration_time:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
           x-omitempty: true
           description: Time when this market's fee waiver expires
         early_close_condition:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           x-omitempty: true
           description: The condition under which the market can close early
           x-go-type-skip-optional-pointer: true
@@ -937,25 +934,29 @@ components:
           description: Strike type defines how the market strike is defined and evaluated
           x-go-type-skip-optional-pointer: true
         floor_strike:
-          type: number
+          type:
+          - number
+          - 'null'
           format: double
-          nullable: true
           x-omitempty: true
           description: Minimum expiration value that leads to a YES settlement
         cap_strike:
-          type: number
+          type:
+          - number
+          - 'null'
           format: double
-          nullable: true
           x-omitempty: true
           description: Maximum expiration value that leads to a YES settlement
         functional_strike:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           x-omitempty: true
           description: Mapping from expiration values to settlement values
         custom_strike:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           x-omitempty: true
           description: Expiration value for each target that leads to a YES settlement
         rules_primary:
@@ -976,8 +977,9 @@ components:
             $ref: '#/components/schemas/MveSelectedLeg'
           x-go-type-skip-optional-pointer: true
         primary_participant_key:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           x-omitempty: true
         price_level_structure:
           type: string
@@ -996,100 +998,43 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
-    PriceDistributionHistorical:
+    GetHistoricalCutoffResponse:
       type: object
       required:
-      - open
-      - low
-      - high
-      - close
-      - mean
-      - previous
+      - market_settled_ts
+      - trades_created_ts
+      - orders_updated_ts
       properties:
-        open:
-          allOf:
-          - $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Price of the first trade during the candlestick period (in dollars). Null if no trades occurred.
-        low:
-          allOf:
-          - $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Lowest trade price during the candlestick period (in dollars). Null if no trades occurred.
-        high:
-          allOf:
-          - $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Highest trade price during the candlestick period (in dollars). Null if no trades occurred.
-        close:
-          allOf:
-          - $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Price of the last trade during the candlestick period (in dollars). Null if no trades occurred.
-        mean:
-          allOf:
-          - $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Volume-weighted average price during the candlestick period (in dollars). Null if no trades occurred.
-        previous:
-          allOf:
-          - $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
-          description: Close price from the previous candlestick period (in dollars). Null if this is the first candlestick or no prior trade exists.
-    GetFillsResponse:
+        market_settled_ts:
+          type: string
+          format: date-time
+          description: 'Cutoff based on **market settlement time**. Markets and their candlesticks that settled before this timestamp must be accessed via `GET /historical/markets` and `GET /historical/markets/{ticker}/candlesticks`.
+
+            '
+        trades_created_ts:
+          type: string
+          format: date-time
+          description: 'Cutoff based on **trade fill time**. Fills that occurred before this timestamp must be accessed via `GET /historical/fills`.
+
+            '
+        orders_updated_ts:
+          type: string
+          format: date-time
+          description: 'Cutoff based on **order cancellation or execution time**. Orders canceled or fully executed before this timestamp must be accessed via `GET /historical/orders`. Resting (active) orders are always available in `GET /portfolio/orders`.
+
+            '
+    GetTradesResponse:
       type: object
       required:
-      - fills
+      - trades
       - cursor
       properties:
-        fills:
+        trades:
           type: array
           items:
-            $ref: '#/components/schemas/Fill'
+            $ref: '#/components/schemas/Trade'
         cursor:
           type: string
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
-    OrderStatus:
-      type: string
-      enum:
-      - resting
-      - canceled
-      - executed
-      description: The status of an order
-    GetMarketCandlesticksHistoricalResponse:
-      type: object
-      required:
-      - ticker
-      - candlesticks
-      properties:
-        ticker:
-          type: string
-          description: Unique identifier for the market.
-        candlesticks:
-          type: array
-          description: Array of candlestick data points for the specified time range.
-          items:
-            $ref: '#/components/schemas/MarketCandlestickHistorical'
-    BookSide:
-      type: string
-      enum:
-      - bid
-      - ask
-      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
-    FixedPointDollars:
-      type: string
-      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
-      example: '0.5600'
-    GetMarketResponse:
-      type: object
-      required:
-      - market
-      properties:
-        market:
-          $ref: '#/components/schemas/Market'
     MveSelectedLeg:
       type: object
       properties:
@@ -1107,31 +1052,62 @@ components:
           x-go-type-skip-optional-pointer: true
         yes_settlement_value_dollars:
           $ref: '#/components/schemas/FixedPointDollars'
-          nullable: true
           x-omitempty: true
           description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
+    PriceDistributionHistorical:
+      type: object
+      required:
+      - open
+      - low
+      - high
+      - close
+      - mean
+      - previous
+      properties:
+        open:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          description: Price of the first trade during the candlestick period (in dollars). Null if no trades occurred.
+        low:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          description: Lowest trade price during the candlestick period (in dollars). Null if no trades occurred.
+        high:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          description: Highest trade price during the candlestick period (in dollars). Null if no trades occurred.
+        close:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          description: Price of the last trade during the candlestick period (in dollars). Null if no trades occurred.
+        mean:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          description: Volume-weighted average price during the candlestick period (in dollars). Null if no trades occurred.
+        previous:
+          allOf:
+          - $ref: '#/components/schemas/FixedPointDollars'
+          description: Close price from the previous candlestick period (in dollars). Null if this is the first candlestick or no prior trade exists.
   parameters:
-    MinTsQuery:
-      name: min_ts
+    TickerPath:
+      name: ticker
+      in: path
+      required: true
+      description: Market ticker
+      schema:
+        type: string
+    LimitQuery:
+      name: limit
       in: query
-      description: Filter items after this Unix timestamp
+      description: Number of results per page. Defaults to 100.
       schema:
         type: integer
         format: int64
-    TickerQuery:
-      name: ticker
-      in: query
-      description: Filter by market ticker
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
-    SeriesTickerQuery:
-      name: series_ticker
-      in: query
-      description: Filter by series ticker
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
+        minimum: 1
+        maximum: 1000
+        default: 100
+        x-oapi-codegen-extra-tags:
+          validate: omitempty,min=1,max=1000
     MaxTsQuery:
       name: max_ts
       in: query
@@ -1139,6 +1115,51 @@ components:
       schema:
         type: integer
         format: int64
+    MinTsQuery:
+      name: min_ts
+      in: query
+      description: Filter items after this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    SingleEventTickerQuery:
+      name: event_ticker
+      in: query
+      description: Event ticker to filter by. Only a single event ticker is supported.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    TickerQuery:
+      name: ticker
+      in: query
+      description: Filter by market ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    TickersQuery:
+      name: tickers
+      in: query
+      description: Filter by specific market tickers. Comma-separated list of market tickers to retrieve.
+      schema:
+        type: string
+    SeriesTickerQuery:
+      name: series_ticker
+      in: query
+      description: Filter by series ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    MveHistoricalFilterQuery:
+      name: mve_filter
+      in: query
+      description: Filter by multivariate events (combos). By default, MVE markets are included.
+      schema:
+        type:
+        - string
+        - 'null'
+        enum:
+        - exclude
+        default: null
     MarketLimitQuery:
       name: limit
       in: query
@@ -1158,48 +1179,31 @@ components:
       schema:
         type: string
         x-go-type-skip-optional-pointer: true
-    SingleEventTickerQuery:
-      name: event_ticker
-      in: query
-      description: Event ticker to filter by. Only a single event ticker is supported.
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
-    LimitQuery:
-      name: limit
-      in: query
-      description: Number of results per page. Defaults to 100.
-      schema:
-        type: integer
-        format: int64
-        minimum: 1
-        maximum: 1000
-        default: 100
-        x-oapi-codegen-extra-tags:
-          validate: omitempty,min=1,max=1000
-    TickerPath:
-      name: ticker
-      in: path
-      required: true
-      description: Market ticker
-      schema:
-        type: string
-    TickersQuery:
-      name: tickers
-      in: query
-      description: Filter by specific market tickers. Comma-separated list of market tickers to retrieve.
-      schema:
-        type: string
-    MveHistoricalFilterQuery:
-      name: mve_filter
-      in: query
-      description: Filter by multivariate events (combos). By default, MVE markets are included.
-      schema:
-        type: string
-        enum:
-        - exclude
-        nullable: true
-        default: null
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnauthorizedError:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey
