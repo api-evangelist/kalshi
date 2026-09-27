@@ -129,27 +129,6 @@ paths:
           description: Internal Server Error
 components:
   schemas:
-    GetMilestonesResponse:
-      type: object
-      required:
-      - milestones
-      properties:
-        milestones:
-          type: array
-          items:
-            $ref: '#/components/schemas/Milestone'
-          description: List of milestones.
-        cursor:
-          type: string
-          description: Cursor for pagination.
-    GetMilestoneResponse:
-      type: object
-      required:
-      - milestone
-      properties:
-        milestone:
-          $ref: '#/components/schemas/Milestone'
-          description: The milestone data.
     Milestone:
       type: object
       required:
@@ -219,6 +198,27 @@ components:
           type: string
           format: date-time
           description: Last time this structured target was updated.
+    GetMilestonesResponse:
+      type: object
+      required:
+      - milestones
+      properties:
+        milestones:
+          type: array
+          items:
+            $ref: '#/components/schemas/Milestone'
+          description: List of milestones.
+        cursor:
+          type: string
+          description: Cursor for pagination.
+    GetMilestoneResponse:
+      type: object
+      required:
+      - milestone
+      properties:
+        milestone:
+          $ref: '#/components/schemas/Milestone'
+          description: The milestone data.
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

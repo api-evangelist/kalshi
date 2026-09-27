@@ -155,6 +155,23 @@ components:
       properties:
         live_data:
           $ref: '#/components/schemas/LiveData'
+    LiveData:
+      type: object
+      required:
+      - type
+      - details
+      - milestone_id
+      properties:
+        type:
+          type: string
+          description: Type of live data
+        details:
+          type: object
+          additionalProperties: true
+          description: Live data details as a flexible object
+        milestone_id:
+          type: string
+          description: Milestone ID
     GetGameStatsResponse:
       type: object
       properties:
@@ -183,23 +200,6 @@ components:
                 items:
                   type: object
                   additionalProperties: true
-    LiveData:
-      type: object
-      required:
-      - type
-      - details
-      - milestone_id
-      properties:
-        type:
-          type: string
-          description: Type of live data
-        details:
-          type: object
-          additionalProperties: true
-          description: Live data details as a flexible object
-        milestone_id:
-          type: string
-          description: Milestone ID
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

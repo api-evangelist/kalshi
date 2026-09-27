@@ -129,16 +129,20 @@ paths:
           description: Internal server error
 components:
   schemas:
-    GetExchangeAnnouncementsResponse:
+    MaintenanceWindow:
       type: object
       required:
-      - announcements
+      - start_datetime
+      - end_datetime
       properties:
-        announcements:
-          type: array
-          description: A list of exchange-wide announcements.
-          items:
-            $ref: '#/components/schemas/Announcement'
+        start_datetime:
+          type: string
+          format: date-time
+          description: Start date and time of the maintenance window.
+        end_datetime:
+          type: string
+          format: date-time
+          description: End date and time of the maintenance window.
     ExchangeStatus:
       type: object
       required:
@@ -157,109 +161,6 @@ components:
           - 'null'
           format: date-time
           description: Estimated downtime for the current exchange maintenance window. However, this is not guaranteed and can be extended.
-    DailySchedule:
-      type: object
-      required:
-      - open_time
-      - close_time
-      properties:
-        open_time:
-          type: string
-          description: Opening time in ET (Eastern Time) format HH:MM.
-        close_time:
-          type: string
-          description: Closing time in ET (Eastern Time) format HH:MM.
-    GetUserDataTimestampResponse:
-      type: object
-      required:
-      - as_of_time
-      properties:
-        as_of_time:
-          type: string
-          format: date-time
-          description: Timestamp when user data was last updated.
-    Announcement:
-      type: object
-      required:
-      - type
-      - message
-      - delivery_time
-      - status
-      properties:
-        type:
-          type: string
-          enum:
-          - info
-          - warning
-          - error
-          description: The type of the announcement.
-        message:
-          type: string
-          description: The message contained within the announcement.
-        delivery_time:
-          type: string
-          format: date-time
-          description: The time the announcement was delivered.
-        status:
-          type: string
-          enum:
-          - active
-          - inactive
-          description: The current status of this announcement.
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: string
-          description: Additional details about the error, if available
-        service:
-          type: string
-          description: The name of the service that generated the error
-    GetSeriesFeeChangesResponse:
-      type: object
-      required:
-      - series_fee_change_arr
-      properties:
-        series_fee_change_arr:
-          type: array
-          items:
-            $ref: '#/components/schemas/SeriesFeeChange'
-    SeriesFeeChange:
-      type: object
-      required:
-      - id
-      - series_ticker
-      - fee_type
-      - fee_multiplier
-      - scheduled_ts
-      properties:
-        id:
-          type: string
-          description: Unique identifier for this fee change
-        series_ticker:
-          type: string
-          description: Series ticker this fee change applies to
-        fee_type:
-          type: string
-          enum:
-          - quadratic
-          - quadratic_with_maker_fees
-          - flat
-          description: New fee type for the series
-        fee_multiplier:
-          type: number
-          format: double
-          description: New fee multiplier for the series
-        scheduled_ts:
-          type: string
-          format: date-time
-          description: Timestamp when this fee change is scheduled to take effect
     WeeklySchedule:
       type: object
       required:
@@ -323,20 +224,104 @@ components:
       properties:
         schedule:
           $ref: '#/components/schemas/Schedule'
-    MaintenanceWindow:
+    GetSeriesFeeChangesResponse:
       type: object
       required:
-      - start_datetime
-      - end_datetime
+      - series_fee_change_arr
       properties:
-        start_datetime:
+        series_fee_change_arr:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeriesFeeChange'
+    Announcement:
+      type: object
+      required:
+      - type
+      - message
+      - delivery_time
+      - status
+      properties:
+        type:
+          type: string
+          enum:
+          - info
+          - warning
+          - error
+          description: The type of the announcement.
+        message:
+          type: string
+          description: The message contained within the announcement.
+        delivery_time:
           type: string
           format: date-time
-          description: Start date and time of the maintenance window.
-        end_datetime:
+          description: The time the announcement was delivered.
+        status:
+          type: string
+          enum:
+          - active
+          - inactive
+          description: The current status of this announcement.
+    SeriesFeeChange:
+      type: object
+      required:
+      - id
+      - series_ticker
+      - fee_type
+      - fee_multiplier
+      - scheduled_ts
+      properties:
+        id:
+          type: string
+          description: Unique identifier for this fee change
+        series_ticker:
+          type: string
+          description: Series ticker this fee change applies to
+        fee_type:
+          type: string
+          enum:
+          - quadratic
+          - quadratic_with_maker_fees
+          - flat
+          description: New fee type for the series
+        fee_multiplier:
+          type: number
+          format: double
+          description: New fee multiplier for the series
+        scheduled_ts:
           type: string
           format: date-time
-          description: End date and time of the maintenance window.
+          description: Timestamp when this fee change is scheduled to take effect
+    GetExchangeAnnouncementsResponse:
+      type: object
+      required:
+      - announcements
+      properties:
+        announcements:
+          type: array
+          description: A list of exchange-wide announcements.
+          items:
+            $ref: '#/components/schemas/Announcement'
+    DailySchedule:
+      type: object
+      required:
+      - open_time
+      - close_time
+      properties:
+        open_time:
+          type: string
+          description: Opening time in ET (Eastern Time) format HH:MM.
+        close_time:
+          type: string
+          description: Closing time in ET (Eastern Time) format HH:MM.
+    GetUserDataTimestampResponse:
+      type: object
+      required:
+      - as_of_time
+      properties:
+        as_of_time:
+          type: string
+          format: date-time
+          description: Timestamp when user data was last updated.
     Schedule:
       type: object
       required:
@@ -353,15 +338,30 @@ components:
           description: Scheduled maintenance windows, during which the exchange may be unavailable.
           items:
             $ref: '#/components/schemas/MaintenanceWindow'
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
   responses:
-    BadRequestError:
-      description: Bad request - invalid input
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: Internal server error
+    BadRequestError:
+      description: Bad request - invalid input
       content:
         application/json:
           schema:

@@ -12,14 +12,18 @@ description: >-
   community SDKs are provided.
 deliveryModel:
   model: unknown
-  open_source: false
+  license_evidence:
+    not_product:
+    - kalshi/kalshi-starter-code-python
+  open_source: unknown
   commercial: false
   callable_host: true
   label: Delivery model not determined — needs a product licence on record
   confidence: low
   source:
   - openapi
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: free
@@ -43,6 +47,7 @@ tags:
   - CFTC
   - Trading
   - Markets
+  - Real-Time
 created: '2026-05-23'
 modified: '2026-05-29'
 specificationVersion: '0.23'
@@ -110,7 +115,7 @@ apis:
   - type: Repository
     url: https://github.com/Kalshi/kalshi-starter-code-python
 - aid: kalshi:kalshi-account-api
-  name: Kalshi account API
+  name: Kalshi Account API
   description: The account API from Kalshi — 2 operation(s) for account.
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -124,7 +129,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-api-keys-api
-  name: Kalshi api-keys API
+  name: Kalshi API Keys API
   description: API key management endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -138,7 +143,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-communications-api
-  name: Kalshi communications API
+  name: Kalshi Communications API
   description: Request-for-quote (RFQ) endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -152,7 +157,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-events-api
-  name: Kalshi events API
+  name: Kalshi Events API
   description: Event endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -166,7 +171,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-exchange-api
-  name: Kalshi exchange API
+  name: Kalshi Exchange API
   description: Exchange status and information endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -180,7 +185,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-fcm-api
-  name: Kalshi fcm API
+  name: Kalshi Fcm API
   description: FCM member specific endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -194,7 +199,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-historical-api
-  name: Kalshi historical API
+  name: Kalshi Historical API
   description: The historical API from Kalshi — 7 operation(s) for historical.
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -208,7 +213,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-incentive-programs-api
-  name: Kalshi incentive-programs API
+  name: Kalshi Incentive Programs API
   description: Incentive program endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -222,7 +227,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-live-data-api
-  name: Kalshi live-data API
+  name: Kalshi Live Data API
   description: Live data endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -236,7 +241,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-market-api
-  name: Kalshi market API
+  name: Kalshi Market API
   description: The market API from Kalshi — 9 operation(s) for market.
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -250,7 +255,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-milestone-api
-  name: Kalshi milestone API
+  name: Kalshi Milestone API
   description: Milestone endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -264,7 +269,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-multivariate-api
-  name: Kalshi multivariate API
+  name: Kalshi Multivariate API
   description: Multivariate event collection endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -278,7 +283,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-order-groups-api
-  name: Kalshi order-groups API
+  name: Kalshi Order Groups API
   description: Order group management endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -290,7 +295,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-orders-api
-  name: Kalshi orders API
+  name: Kalshi Orders API
   description: Order management endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -304,7 +309,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-portfolio-api
-  name: Kalshi portfolio API
+  name: Kalshi Portfolio API
   description: Portfolio and balance information endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -318,7 +323,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-search-api
-  name: Kalshi search API
+  name: Kalshi Search API
   description: Search and filtering endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2
@@ -332,7 +337,7 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 - aid: kalshi:kalshi-structured-targets-api
-  name: Kalshi structured-targets API
+  name: Kalshi Structured Targets API
   description: Structured targets endpoints
   humanURL: https://docs.kalshi.com/api-reference
   baseURL: https://api.elections.kalshi.com/trade-api/v2

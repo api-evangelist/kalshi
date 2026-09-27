@@ -234,78 +234,16 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    LookupTickersForMarketInMultivariateEventCollectionRequest:
+    GetMultivariateEventCollectionLookupHistoryResponse:
       type: object
       required:
-      - selected_markets
+      - lookup_points
       properties:
-        selected_markets:
+        lookup_points:
           type: array
           items:
-            $ref: '#/components/schemas/TickerPair'
-          description: List of selected markets that act as parameters to determine which market is produced.
-    PriceRange:
-      type: object
-      required:
-      - start
-      - end
-      - step
-      properties:
-        start:
-          type: string
-          description: Starting price for this range in dollars
-        end:
-          type: string
-          description: Ending price for this range in dollars
-        step:
-          type: string
-          description: Price step/tick size for this range in dollars
-    CreateMarketInMultivariateEventCollectionResponse:
-      type: object
-      required:
-      - event_ticker
-      - market_ticker
-      properties:
-        event_ticker:
-          type: string
-          description: Event ticker for the created market.
-        market_ticker:
-          type: string
-          description: Market ticker for the created market.
-        market:
-          $ref: '#/components/schemas/Market'
-          description: Market payload of the created market.
-    GetMultivariateEventCollectionResponse:
-      type: object
-      required:
-      - multivariate_contract
-      properties:
-        multivariate_contract:
-          $ref: '#/components/schemas/MultivariateEventCollection'
-          description: The multivariate event collection.
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
-    TickerPair:
-      type: object
-      required:
-      - market_ticker
-      - event_ticker
-      - side
-      properties:
-        market_ticker:
-          type: string
-          description: Market ticker identifier.
-        event_ticker:
-          type: string
-          description: Event ticker identifier.
-        side:
-          type: string
-          enum:
-          - 'yes'
-          - 'no'
-          description: Side of the market (yes or no).
+            $ref: '#/components/schemas/LookupPoint'
+          description: List of recent lookup points in the collection.
     LookupPoint:
       type: object
       required:
@@ -329,85 +267,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when this lookup was last queried.
-    FixedPointDollars:
-      type: string
-      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
-      example: '0.5600'
-    ExchangeIndex:
-      type: integer
-      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
-      example: 0
-    AssociatedEvent:
-      type: object
-      required:
-      - ticker
-      - is_yes_only
-      - active_quoters
-      properties:
-        ticker:
-          type: string
-          description: The event ticker.
-        is_yes_only:
-          type: boolean
-          description: Whether only the 'yes' side can be used for this event.
-        size_max:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Maximum number of markets from this event (inclusive). Null means no limit.
-        size_min:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Minimum number of markets from this event (inclusive). Null means no limit.
-        active_quoters:
-          type: array
-          items:
-            type: string
-          description: List of active quoters for this event.
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: string
-          description: Additional details about the error, if available
-        service:
-          type: string
-          description: The name of the service that generated the error
-    GetMultivariateEventCollectionsResponse:
-      type: object
-      required:
-      - multivariate_contracts
-      properties:
-        multivariate_contracts:
-          type: array
-          items:
-            $ref: '#/components/schemas/MultivariateEventCollection'
-          description: List of multivariate event collections.
-        cursor:
-          type: string
-          description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned here in the cursor query parameter for this end-point to get the next page containing limit records. An empty value of this field indicates there is no next page.
-          x-go-type-skip-optional-pointer: true
-    LookupTickersForMarketInMultivariateEventCollectionResponse:
-      type: object
-      required:
-      - event_ticker
-      - market_ticker
-      properties:
-        event_ticker:
-          type: string
-          description: Event ticker for the looked up market.
-        market_ticker:
-          type: string
-          description: Market ticker for the looked up market.
     Market:
       type: object
       required:
@@ -694,19 +553,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
-    CreateMarketInMultivariateEventCollectionRequest:
-      type: object
-      required:
-      - selected_markets
-      properties:
-        selected_markets:
-          type: array
-          items:
-            $ref: '#/components/schemas/TickerPair'
-          description: List of selected markets that act as parameters to determine which market is created.
-        with_market_payload:
-          type: boolean
-          description: Whether to include the market payload in the response.
     MultivariateEventCollection:
       type: object
       required:
@@ -775,16 +621,140 @@ components:
         functional_description:
           type: string
           description: A functional description of the collection describing how inputs affect the output.
-    GetMultivariateEventCollectionLookupHistoryResponse:
+    GetMultivariateEventCollectionResponse:
       type: object
       required:
-      - lookup_points
+      - multivariate_contract
       properties:
-        lookup_points:
+        multivariate_contract:
+          $ref: '#/components/schemas/MultivariateEventCollection'
+          description: The multivariate event collection.
+    AssociatedEvent:
+      type: object
+      required:
+      - ticker
+      - is_yes_only
+      - active_quoters
+      properties:
+        ticker:
+          type: string
+          description: The event ticker.
+        is_yes_only:
+          type: boolean
+          description: Whether only the 'yes' side can be used for this event.
+        size_max:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Maximum number of markets from this event (inclusive). Null means no limit.
+        size_min:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Minimum number of markets from this event (inclusive). Null means no limit.
+        active_quoters:
           type: array
           items:
-            $ref: '#/components/schemas/LookupPoint'
-          description: List of recent lookup points in the collection.
+            type: string
+          description: List of active quoters for this event.
+    LookupTickersForMarketInMultivariateEventCollectionResponse:
+      type: object
+      required:
+      - event_ticker
+      - market_ticker
+      properties:
+        event_ticker:
+          type: string
+          description: Event ticker for the looked up market.
+        market_ticker:
+          type: string
+          description: Market ticker for the looked up market.
+    TickerPair:
+      type: object
+      required:
+      - market_ticker
+      - event_ticker
+      - side
+      properties:
+        market_ticker:
+          type: string
+          description: Market ticker identifier.
+        event_ticker:
+          type: string
+          description: Event ticker identifier.
+        side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          description: Side of the market (yes or no).
+    CreateMarketInMultivariateEventCollectionResponse:
+      type: object
+      required:
+      - event_ticker
+      - market_ticker
+      properties:
+        event_ticker:
+          type: string
+          description: Event ticker for the created market.
+        market_ticker:
+          type: string
+          description: Market ticker for the created market.
+        market:
+          $ref: '#/components/schemas/Market'
+          description: Market payload of the created market.
+    FixedPointDollars:
+      type: string
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+    CreateMarketInMultivariateEventCollectionRequest:
+      type: object
+      required:
+      - selected_markets
+      properties:
+        selected_markets:
+          type: array
+          items:
+            $ref: '#/components/schemas/TickerPair'
+          description: List of selected markets that act as parameters to determine which market is created.
+        with_market_payload:
+          type: boolean
+          description: Whether to include the market payload in the response.
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
+    GetMultivariateEventCollectionsResponse:
+      type: object
+      required:
+      - multivariate_contracts
+      properties:
+        multivariate_contracts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MultivariateEventCollection'
+          description: List of multivariate event collections.
+        cursor:
+          type: string
+          description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned here in the cursor query parameter for this end-point to get the next page containing limit records. An empty value of this field indicates there is no next page.
+          x-go-type-skip-optional-pointer: true
     MveSelectedLeg:
       type: object
       properties:
@@ -804,15 +774,39 @@ components:
           $ref: '#/components/schemas/FixedPointDollars'
           x-omitempty: true
           description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
+    PriceRange:
+      type: object
+      required:
+      - start
+      - end
+      - step
+      properties:
+        start:
+          type: string
+          description: Starting price for this range in dollars
+        end:
+          type: string
+          description: Ending price for this range in dollars
+        step:
+          type: string
+          description: Price step/tick size for this range in dollars
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
+    LookupTickersForMarketInMultivariateEventCollectionRequest:
+      type: object
+      required:
+      - selected_markets
+      properties:
+        selected_markets:
+          type: array
+          items:
+            $ref: '#/components/schemas/TickerPair'
+          description: List of selected markets that act as parameters to determine which market is produced.
   responses:
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequestError:
-      description: Bad request - invalid input
+    UnauthorizedError:
+      description: Unauthorized - authentication required
       content:
         application/json:
           schema:
@@ -823,14 +817,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
     NotFoundError:
       description: Resource not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    UnauthorizedError:
-      description: Unauthorized - authentication required
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:

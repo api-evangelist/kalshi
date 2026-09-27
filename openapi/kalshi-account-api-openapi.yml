@@ -55,20 +55,6 @@ paths:
           description: Internal server error
 components:
   schemas:
-    GetAccountApiLimitsResponse:
-      type: object
-      required:
-      - usage_tier
-      - read
-      - write
-      properties:
-        usage_tier:
-          type: string
-          description: User's API usage tier.
-        read:
-          $ref: '#/components/schemas/BucketLimit'
-        write:
-          $ref: '#/components/schemas/BucketLimit'
     EndpointTokenCost:
       type: object
       required:
@@ -85,6 +71,34 @@ components:
         cost:
           type: integer
           description: Configured token cost for an endpoint whose cost differs from the default cost.
+    GetAccountApiLimitsResponse:
+      type: object
+      required:
+      - usage_tier
+      - read
+      - write
+      properties:
+        usage_tier:
+          type: string
+          description: User's API usage tier.
+        read:
+          $ref: '#/components/schemas/BucketLimit'
+        write:
+          $ref: '#/components/schemas/BucketLimit'
+    GetAccountEndpointCostsResponse:
+      type: object
+      required:
+      - default_cost
+      - endpoint_costs
+      properties:
+        default_cost:
+          type: integer
+          description: Default token cost applied to endpoints that are not listed in `endpoint_costs`. This is currently 10.
+        endpoint_costs:
+          type: array
+          description: API v2 endpoints whose configured token cost differs from `default_cost`. Endpoints that use the default cost are omitted.
+          items:
+            $ref: '#/components/schemas/EndpointTokenCost'
     BucketLimit:
       type: object
       description: 'Token-bucket budget for one rate-limit bucket. Each request deducts
@@ -118,20 +132,6 @@ components:
             budget).
 
             '
-    GetAccountEndpointCostsResponse:
-      type: object
-      required:
-      - default_cost
-      - endpoint_costs
-      properties:
-        default_cost:
-          type: integer
-          description: Default token cost applied to endpoints that are not listed in `endpoint_costs`. This is currently 10.
-        endpoint_costs:
-          type: array
-          description: API v2 endpoints whose configured token cost differs from `default_cost`. Endpoints that use the default cost are omitted.
-          items:
-            $ref: '#/components/schemas/EndpointTokenCost'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

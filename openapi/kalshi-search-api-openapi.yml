@@ -92,16 +92,6 @@ components:
           description: Mapping of competitions to their scope lists
           additionalProperties:
             $ref: '#/components/schemas/ScopeList'
-    ScopeList:
-      type: object
-      required:
-      - scopes
-      properties:
-        scopes:
-          type: array
-          description: List of scopes
-          items:
-            type: string
     GetTagsForSeriesCategoriesResponse:
       type: object
       required:
@@ -114,6 +104,16 @@ components:
             type: array
             items:
               type: string
+    ScopeList:
+      type: object
+      required:
+      - scopes
+      properties:
+        scopes:
+          type: array
+          description: List of scopes
+          items:
+            type: string
   securitySchemes:
     kalshiAccessKey:
       type: apiKey
