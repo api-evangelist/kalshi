@@ -129,6 +129,13 @@ paths:
           description: Internal server error
 components:
   schemas:
+    GetExchangeScheduleResponse:
+      type: object
+      required:
+      - schedule
+      properties:
+        schedule:
+          $ref: '#/components/schemas/Schedule'
     MaintenanceWindow:
       type: object
       required:
@@ -143,24 +150,43 @@ components:
           type: string
           format: date-time
           description: End date and time of the maintenance window.
-    ExchangeStatus:
+    Announcement:
       type: object
       required:
-      - exchange_active
-      - trading_active
+      - type
+      - message
+      - delivery_time
+      - status
       properties:
-        exchange_active:
-          type: boolean
-          description: False if the core Kalshi exchange is no longer taking any state changes at all. This includes but is not limited to trading, new users, and transfers. True unless we are under maintenance.
-        trading_active:
-          type: boolean
-          description: True if we are currently permitting trading on the exchange. This is true during trading hours and false outside exchange hours. Kalshi reserves the right to pause at any time in case issues are detected.
-        exchange_estimated_resume_time:
-          type:
-          - string
-          - 'null'
+        type:
+          type: string
+          enum:
+          - info
+          - warning
+          - error
+          description: The type of the announcement.
+        message:
+          type: string
+          description: The message contained within the announcement.
+        delivery_time:
+          type: string
           format: date-time
-          description: Estimated downtime for the current exchange maintenance window. However, this is not guaranteed and can be extended.
+          description: The time the announcement was delivered.
+        status:
+          type: string
+          enum:
+          - active
+          - inactive
+          description: The current status of this announcement.
+    GetUserDataTimestampResponse:
+      type: object
+      required:
+      - as_of_time
+      properties:
+        as_of_time:
+          type: string
+          format: date-time
+          description: Timestamp when user data was last updated.
     WeeklySchedule:
       type: object
       required:
@@ -217,13 +243,32 @@ components:
           description: Trading hours for Sunday. May contain multiple sessions.
           items:
             $ref: '#/components/schemas/DailySchedule'
-    GetExchangeScheduleResponse:
+    Schedule:
       type: object
       required:
-      - schedule
+      - standard_hours
+      - maintenance_windows
       properties:
-        schedule:
-          $ref: '#/components/schemas/Schedule'
+        standard_hours:
+          type: array
+          description: The standard operating hours of the exchange. All times are expressed in ET. Outside of these times trading will be unavailable.
+          items:
+            $ref: '#/components/schemas/WeeklySchedule'
+        maintenance_windows:
+          type: array
+          description: Scheduled maintenance windows, during which the exchange may be unavailable.
+          items:
+            $ref: '#/components/schemas/MaintenanceWindow'
+    GetExchangeAnnouncementsResponse:
+      type: object
+      required:
+      - announcements
+      properties:
+        announcements:
+          type: array
+          description: A list of exchange-wide announcements.
+          items:
+            $ref: '#/components/schemas/Announcement'
     GetSeriesFeeChangesResponse:
       type: object
       required:
@@ -233,34 +278,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SeriesFeeChange'
-    Announcement:
-      type: object
-      required:
-      - type
-      - message
-      - delivery_time
-      - status
-      properties:
-        type:
-          type: string
-          enum:
-          - info
-          - warning
-          - error
-          description: The type of the announcement.
-        message:
-          type: string
-          description: The message contained within the announcement.
-        delivery_time:
-          type: string
-          format: date-time
-          description: The time the announcement was delivered.
-        status:
-          type: string
-          enum:
-          - active
-          - inactive
-          description: The current status of this announcement.
     SeriesFeeChange:
       type: object
       required:
@@ -291,53 +308,6 @@ components:
           type: string
           format: date-time
           description: Timestamp when this fee change is scheduled to take effect
-    GetExchangeAnnouncementsResponse:
-      type: object
-      required:
-      - announcements
-      properties:
-        announcements:
-          type: array
-          description: A list of exchange-wide announcements.
-          items:
-            $ref: '#/components/schemas/Announcement'
-    DailySchedule:
-      type: object
-      required:
-      - open_time
-      - close_time
-      properties:
-        open_time:
-          type: string
-          description: Opening time in ET (Eastern Time) format HH:MM.
-        close_time:
-          type: string
-          description: Closing time in ET (Eastern Time) format HH:MM.
-    GetUserDataTimestampResponse:
-      type: object
-      required:
-      - as_of_time
-      properties:
-        as_of_time:
-          type: string
-          format: date-time
-          description: Timestamp when user data was last updated.
-    Schedule:
-      type: object
-      required:
-      - standard_hours
-      - maintenance_windows
-      properties:
-        standard_hours:
-          type: array
-          description: The standard operating hours of the exchange. All times are expressed in ET. Outside of these times trading will be unavailable.
-          items:
-            $ref: '#/components/schemas/WeeklySchedule'
-        maintenance_windows:
-          type: array
-          description: Scheduled maintenance windows, during which the exchange may be unavailable.
-          items:
-            $ref: '#/components/schemas/MaintenanceWindow'
     ErrorResponse:
       type: object
       properties:
@@ -353,15 +323,45 @@ components:
         service:
           type: string
           description: The name of the service that generated the error
+    ExchangeStatus:
+      type: object
+      required:
+      - exchange_active
+      - trading_active
+      properties:
+        exchange_active:
+          type: boolean
+          description: False if the core Kalshi exchange is no longer taking any state changes at all. This includes but is not limited to trading, new users, and transfers. True unless we are under maintenance.
+        trading_active:
+          type: boolean
+          description: True if we are currently permitting trading on the exchange. This is true during trading hours and false outside exchange hours. Kalshi reserves the right to pause at any time in case issues are detected.
+        exchange_estimated_resume_time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Estimated downtime for the current exchange maintenance window. However, this is not guaranteed and can be extended.
+    DailySchedule:
+      type: object
+      required:
+      - open_time
+      - close_time
+      properties:
+        open_time:
+          type: string
+          description: Opening time in ET (Eastern Time) format HH:MM.
+        close_time:
+          type: string
+          description: Closing time in ET (Eastern Time) format HH:MM.
   responses:
-    InternalServerError:
-      description: Internal server error
+    BadRequestError:
+      description: Bad request - invalid input
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequestError:
-      description: Bad request - invalid input
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:

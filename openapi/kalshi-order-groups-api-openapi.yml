@@ -230,30 +230,70 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
+  parameters:
+    ExchangeIndexQuery:
+      name: exchange_index
+      in: query
+      schema:
+        $ref: '#/components/schemas/ExchangeIndex'
+      x-go-type-skip-optional-pointer: true
+    SubaccountQuery:
+      name: subaccount
+      in: query
+      description: Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts.
+      schema:
+        type: integer
+    OrderGroupIdPath:
+      name: order_group_id
+      in: path
+      required: true
+      description: Order group ID
+      schema:
+        type: string
+    SubaccountQueryDefaultPrimary:
+      name: subaccount
+      in: query
+      description: Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0.
+      schema:
+        type: integer
+  responses:
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnauthorizedError:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    GetOrderGroupResponse:
+    GetOrderGroupsResponse:
       type: object
-      required:
-      - is_auto_cancel_enabled
-      - orders
       properties:
-        is_auto_cancel_enabled:
-          type: boolean
-          description: Whether auto-cancel is enabled for this order group
-        contracts_limit_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the current maximum contracts allowed over a rolling 15-second window.
-          x-go-type-skip-optional-pointer: true
-        orders:
+        order_groups:
           type: array
           items:
-            type: string
-          description: List of order IDs that belong to this order group
+            $ref: '#/components/schemas/OrderGroup'
           x-go-type-skip-optional-pointer: true
-        exchange_index:
-          allOf:
-          - $ref: '#/components/schemas/ExchangeIndex'
-          x-go-type-skip-optional-pointer: true
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
     ExchangeIndex:
       type: integer
       description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
@@ -280,6 +320,38 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
+    CreateOrderGroupResponse:
+      type: object
+      required:
+      - order_group_id
+      - subaccount
+      properties:
+        order_group_id:
+          type: string
+          description: The unique identifier for the created order group
+        subaccount:
+          type: integer
+          minimum: 0
+          description: Subaccount number that owns the created order group (0 for primary, 1-32 for subaccounts).
+          x-go-type-skip-optional-pointer: true
+        exchange_index:
+          allOf:
+          - $ref: '#/components/schemas/ExchangeIndex'
+          x-go-type-skip-optional-pointer: true
+    UpdateOrderGroupLimitRequest:
+      type: object
+      properties:
+        contracts_limit:
+          type: integer
+          format: int64
+          minimum: 1
+          description: New maximum number of contracts that can be matched within this group over a rolling 15-second window. Whole contracts only. Provide contracts_limit or contracts_limit_fp; if both provided they must match.
+          x-go-type-skip-optional-pointer: true
+          x-oapi-codegen-extra-tags:
+            validate: omitempty,gte=1
+        contracts_limit_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the new maximum number of contracts that can be matched within this group over a rolling 15-second window. Provide contracts_limit or contracts_limit_fp; if both provided they must match.
     CreateOrderGroupRequest:
       type: object
       properties:
@@ -305,27 +377,29 @@ components:
           - $ref: '#/components/schemas/ExchangeIndex'
           default: 0
           x-go-type-skip-optional-pointer: true
-    CreateOrderGroupResponse:
+    GetOrderGroupResponse:
       type: object
       required:
-      - order_group_id
-      - subaccount
+      - is_auto_cancel_enabled
+      - orders
       properties:
-        order_group_id:
-          type: string
-          description: The unique identifier for the created order group
-        subaccount:
-          type: integer
-          minimum: 0
-          description: Subaccount number that owns the created order group (0 for primary, 1-32 for subaccounts).
+        is_auto_cancel_enabled:
+          type: boolean
+          description: Whether auto-cancel is enabled for this order group
+        contracts_limit_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the current maximum contracts allowed over a rolling 15-second window.
+          x-go-type-skip-optional-pointer: true
+        orders:
+          type: array
+          items:
+            type: string
+          description: List of order IDs that belong to this order group
           x-go-type-skip-optional-pointer: true
         exchange_index:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
-    EmptyResponse:
-      type: object
-      description: An empty response body
     ErrorResponse:
       type: object
       properties:
@@ -341,83 +415,9 @@ components:
         service:
           type: string
           description: The name of the service that generated the error
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
-    GetOrderGroupsResponse:
+    EmptyResponse:
       type: object
-      properties:
-        order_groups:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderGroup'
-          x-go-type-skip-optional-pointer: true
-    UpdateOrderGroupLimitRequest:
-      type: object
-      properties:
-        contracts_limit:
-          type: integer
-          format: int64
-          minimum: 1
-          description: New maximum number of contracts that can be matched within this group over a rolling 15-second window. Whole contracts only. Provide contracts_limit or contracts_limit_fp; if both provided they must match.
-          x-go-type-skip-optional-pointer: true
-          x-oapi-codegen-extra-tags:
-            validate: omitempty,gte=1
-        contracts_limit_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the new maximum number of contracts that can be matched within this group over a rolling 15-second window. Provide contracts_limit or contracts_limit_fp; if both provided they must match.
-  responses:
-    NotFoundError:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    UnauthorizedError:
-      description: Unauthorized - authentication required
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequestError:
-      description: Bad request - invalid input
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-  parameters:
-    SubaccountQueryDefaultPrimary:
-      name: subaccount
-      in: query
-      description: Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0.
-      schema:
-        type: integer
-    OrderGroupIdPath:
-      name: order_group_id
-      in: path
-      required: true
-      description: Order group ID
-      schema:
-        type: string
-    ExchangeIndexQuery:
-      name: exchange_index
-      in: query
-      schema:
-        $ref: '#/components/schemas/ExchangeIndex'
-      x-go-type-skip-optional-pointer: true
-    SubaccountQuery:
-      name: subaccount
-      in: query
-      description: Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts.
-      schema:
-        type: integer
+      description: An empty response body
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

@@ -130,6 +130,56 @@ paths:
           description: Internal server error
 components:
   schemas:
+    GenerateApiKeyResponse:
+      type: object
+      required:
+      - api_key_id
+      - private_key
+      properties:
+        api_key_id:
+          type: string
+          description: Unique identifier for the newly generated API key
+        private_key:
+          type: string
+          description: RSA private key in PEM format. This must be stored securely and cannot be retrieved again after this response
+    CreateApiKeyRequest:
+      type: object
+      required:
+      - name
+      - public_key
+      properties:
+        name:
+          type: string
+          description: Name for the API key. This helps identify the key's purpose
+        public_key:
+          type: string
+          description: RSA public key in PEM format. This will be used to verify signatures on API requests
+        scopes:
+          type: array
+          description: List of scopes to grant to the API key. Valid values are 'read' and 'write'. If 'write' is included, 'read' must also be included. Defaults to full access (['read', 'write']) if not provided.
+          items:
+            type: string
+    GenerateApiKeyRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: Name for the API key. This helps identify the key's purpose
+        scopes:
+          type: array
+          description: List of scopes to grant to the API key. Valid values are 'read' and 'write'. If 'write' is included, 'read' must also be included. Defaults to full access (['read', 'write']) if not provided.
+          items:
+            type: string
+    CreateApiKeyResponse:
+      type: object
+      required:
+      - api_key_id
+      properties:
+        api_key_id:
+          type: string
+          description: Unique identifier for the newly created API key
     GetApiKeysResponse:
       type: object
       required:
@@ -158,56 +208,6 @@ components:
           description: List of scopes granted to this API key. Valid values are 'read' and 'write'.
           items:
             type: string
-    GenerateApiKeyRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: Name for the API key. This helps identify the key's purpose
-        scopes:
-          type: array
-          description: List of scopes to grant to the API key. Valid values are 'read' and 'write'. If 'write' is included, 'read' must also be included. Defaults to full access (['read', 'write']) if not provided.
-          items:
-            type: string
-    CreateApiKeyResponse:
-      type: object
-      required:
-      - api_key_id
-      properties:
-        api_key_id:
-          type: string
-          description: Unique identifier for the newly created API key
-    CreateApiKeyRequest:
-      type: object
-      required:
-      - name
-      - public_key
-      properties:
-        name:
-          type: string
-          description: Name for the API key. This helps identify the key's purpose
-        public_key:
-          type: string
-          description: RSA public key in PEM format. This will be used to verify signatures on API requests
-        scopes:
-          type: array
-          description: List of scopes to grant to the API key. Valid values are 'read' and 'write'. If 'write' is included, 'read' must also be included. Defaults to full access (['read', 'write']) if not provided.
-          items:
-            type: string
-    GenerateApiKeyResponse:
-      type: object
-      required:
-      - api_key_id
-      - private_key
-      properties:
-        api_key_id:
-          type: string
-          description: Unique identifier for the newly generated API key
-        private_key:
-          type: string
-          description: RSA private key in PEM format. This must be stored securely and cannot be retrieved again after this response
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

@@ -148,6 +148,15 @@ paths:
           description: Internal server error
 components:
   schemas:
+    GetLiveDatasResponse:
+      type: object
+      required:
+      - live_datas
+      properties:
+        live_datas:
+          type: array
+          items:
+            $ref: '#/components/schemas/LiveData'
     GetLiveDataResponse:
       type: object
       required:
@@ -177,15 +186,6 @@ components:
       properties:
         pbp:
           $ref: '#/components/schemas/PlayByPlay'
-    GetLiveDatasResponse:
-      type: object
-      required:
-      - live_datas
-      properties:
-        live_datas:
-          type: array
-          items:
-            $ref: '#/components/schemas/LiveData'
     PlayByPlay:
       type: object
       description: Play-by-play data organized by period.

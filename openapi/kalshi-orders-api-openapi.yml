@@ -575,7 +575,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    BatchCreateOrdersV2Request:
+    BatchCancelOrdersV2Request:
       type: object
       required:
       - orders
@@ -584,66 +584,26 @@ components:
           type: array
           x-oapi-codegen-extra-tags:
             validate: required,dive
+          description: An array of orders to cancel, each optionally specifying a subaccount.
           items:
-            $ref: '#/components/schemas/CreateOrderV2Request'
-    BatchCancelOrdersIndividualResponse:
-      type: object
-      required:
-      - order_id
-      - reduced_by_fp
-      properties:
-        order_id:
-          type: string
-          description: The order ID to identify which order had an error during batch cancellation
-        order:
-          allOf:
-          - $ref: '#/components/schemas/Order'
-        reduced_by_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts that were successfully canceled from this order
-        error:
-          allOf:
-          - $ref: '#/components/schemas/ErrorResponse'
-    GetOrdersResponse:
-      type: object
-      required:
-      - orders
-      - cursor
-      properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/Order'
-        cursor:
-          type: string
-    DecreaseOrderRequest:
-      type: object
-      properties:
-        subaccount:
-          type: integer
-          minimum: 0
-          description: Optional subaccount number to use for this decrease (0 for primary, 1-32 for subaccounts)
-          default: 0
-          x-go-type-skip-optional-pointer: true
-        reduce_by:
-          type: integer
-          minimum: 1
-          description: Number of contracts to reduce by (whole contracts only). Reduce-by may be provided via reduce_by or reduce_by_fp; if both provided they must match. Exactly one of reduce_by(/reduce_by_fp) or reduce_to(/reduce_to_fp) must be provided.
-        reduce_by_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts to reduce by. Reduce-by may be provided via reduce_by or reduce_by_fp; if both provided they must match. Exactly one of reduce_by(/reduce_by_fp) or reduce_to(/reduce_to_fp) must be provided.
-        reduce_to:
-          type: integer
-          minimum: 0
-          description: Number of contracts to reduce to (whole contracts only). Reduce-to may be provided via reduce_to or reduce_to_fp; if both provided they must match. Exactly one of reduce_by(/reduce_by_fp) or reduce_to(/reduce_to_fp) must be provided.
-        reduce_to_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts to reduce to. Reduce-to may be provided via reduce_to or reduce_to_fp; if both provided they must match. Exactly one of reduce_by(/reduce_by_fp) or reduce_to(/reduce_to_fp) must be provided.
-        exchange_index:
-          allOf:
-          - $ref: '#/components/schemas/ExchangeIndex'
-          default: 0
-          x-go-type-skip-optional-pointer: true
+            type: object
+            required:
+            - order_id
+            properties:
+              order_id:
+                type: string
+                description: Order ID to cancel.
+              subaccount:
+                type: integer
+                minimum: 0
+                default: 0
+                description: Optional subaccount number to use for this cancellation (0 for primary, 1-32 for subaccounts).
+                x-go-type-skip-optional-pointer: true
+              exchange_index:
+                allOf:
+                - $ref: '#/components/schemas/ExchangeIndex'
+                default: 0
+                x-go-type-skip-optional-pointer: true
     DecreaseOrderV2Response:
       type: object
       required:
@@ -662,14 +622,103 @@ components:
           type: integer
           format: int64
           description: Matching engine timestamp at which the decrease was processed, as Unix epoch milliseconds.
-    SelfTradePreventionType:
+    AmendOrderV2Request:
+      type: object
+      required:
+      - ticker
+      - side
+      - price
+      - count
+      properties:
+        ticker:
+          type: string
+          description: Market ticker
+          x-oapi-codegen-extra-tags:
+            validate: required,min=1
+        side:
+          $ref: '#/components/schemas/BookSide'
+          description: Side of the order
+          x-oapi-codegen-extra-tags:
+            validate: required,oneof=bid ask
+        price:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Updated price for the order in fixed-point dollars.
+          x-go-type-skip-optional-pointer: true
+        count:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: Updated total/max fillable count for the order. Set this to the order's already filled count plus the desired resting remaining count after the amend.
+          x-go-type-skip-optional-pointer: true
+        client_order_id:
+          type: string
+          description: The original client-specified order ID to be amended
+          x-go-type-skip-optional-pointer: true
+        updated_client_order_id:
+          type: string
+          description: The new client-specified order ID after amendment
+          x-go-type-skip-optional-pointer: true
+        exchange_index:
+          allOf:
+          - $ref: '#/components/schemas/ExchangeIndex'
+          default: 0
+          x-go-type-skip-optional-pointer: true
+    GetOrderQueuePositionResponse:
+      type: object
+      required:
+      - queue_position_fp
+      properties:
+        queue_position_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: The number of preceding shares before the order in the queue.
+    AmendOrderResponse:
+      type: object
+      required:
+      - old_order
+      - order
+      properties:
+        old_order:
+          $ref: '#/components/schemas/Order'
+          description: The order before amendment
+        order:
+          $ref: '#/components/schemas/Order'
+          description: The order after amendment
+    BatchCreateOrdersRequest:
+      type: object
+      required:
+      - orders
+      properties:
+        orders:
+          type: array
+          x-oapi-codegen-extra-tags:
+            validate: required,dive
+          items:
+            $ref: '#/components/schemas/CreateOrderRequest'
+    FixedPointDollars:
       type: string
-      enum:
-      - taker_at_cross
-      - maker
-      description: 'The self-trade prevention type for orders. `taker_at_cross` cancels the taker order when it would trade against another order from the same user; execution stops and any partial fills already matched are executed. `maker` cancels the resting maker order and continues matching.
-
-        '
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+    DecreaseOrderV2Request:
+      type: object
+      properties:
+        reduce_by:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts to reduce by. Exactly one of `reduce_by` or `reduce_to` must be provided.
+        reduce_to:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts to reduce to. Exactly one of `reduce_by` or `reduce_to` must be provided.
+        exchange_index:
+          allOf:
+          - $ref: '#/components/schemas/ExchangeIndex'
+          default: 0
+          x-go-type-skip-optional-pointer: true
+    BatchCreateOrdersResponse:
+      type: object
+      required:
+      - orders
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchCreateOrdersIndividualResponse'
     CancelOrderResponse:
       type: object
       required:
@@ -681,22 +730,41 @@ components:
         reduced_by_fp:
           $ref: '#/components/schemas/FixedPointCount'
           description: String representation of the number of contracts that were successfully canceled from this order
-    OrderQueuePosition:
+    BatchCancelOrdersRequestOrder:
       type: object
       required:
       - order_id
-      - market_ticker
-      - queue_position_fp
       properties:
         order_id:
           type: string
-          description: The order ID
-        market_ticker:
-          type: string
-          description: The market ticker
-        queue_position_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: The number of preceding shares before the order in the queue.
+          description: Order ID to cancel
+        subaccount:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Optional subaccount number to use for this cancellation (0 for primary, 1-32 for subaccounts)
+          x-go-type-skip-optional-pointer: true
+        exchange_index:
+          allOf:
+          - $ref: '#/components/schemas/ExchangeIndex'
+          default: 0
+          x-go-type-skip-optional-pointer: true
+    CreateOrderResponse:
+      type: object
+      required:
+      - order
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+    BatchCancelOrdersResponse:
+      type: object
+      required:
+      - orders
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchCancelOrdersIndividualResponse'
     BatchCancelOrdersV2Response:
       type: object
       required:
@@ -730,116 +798,80 @@ components:
               error:
                 allOf:
                 - $ref: '#/components/schemas/ErrorResponse'
-    CreateOrderV2Request:
+    OrderQueuePosition:
       type: object
       required:
-      - ticker
-      - client_order_id
-      - side
-      - count
-      - price
-      - time_in_force
-      - self_trade_prevention_type
+      - order_id
+      - market_ticker
+      - queue_position_fp
       properties:
-        ticker:
+        order_id:
           type: string
-          x-oapi-codegen-extra-tags:
-            validate: required,min=1
+          description: The order ID
+        market_ticker:
+          type: string
+          description: The market ticker
+        queue_position_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: The number of preceding shares before the order in the queue.
+    CreateOrderV2Response:
+      type: object
+      required:
+      - order_id
+      - fill_count
+      - remaining_count
+      - ts_ms
+      properties:
+        order_id:
+          type: string
         client_order_id:
           type: string
-          x-go-type-skip-optional-pointer: true
-        side:
-          $ref: '#/components/schemas/BookSide'
-          x-oapi-codegen-extra-tags:
-            validate: required,oneof=bid ask
-        count:
+        fill_count:
           $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the order quantity in contracts.
-        price:
+          description: Number of contracts filled immediately upon placement.
+        remaining_count:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: Number of contracts remaining after placement. For IOC orders, this reflects the final state after unfilled contracts are canceled.
+        average_fill_price:
           $ref: '#/components/schemas/FixedPointDollars'
-          description: Price for the order in fixed-point dollars.
-          x-go-type-skip-optional-pointer: true
-        expiration_time:
+          description: Volume-weighted average fill price. Only present when fill_count > 0.
+        average_fee_paid:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Volume-weighted average fee paid per contract for fills resulting from this request. Only present when fill_count > 0.
+        ts_ms:
           type: integer
           format: int64
-          description: 'Optional Unix timestamp in seconds for when the order expires. To place
-
-            an expiring order, set `time_in_force` to `good_till_canceled` and
-
-            provide this `expiration_time`. `GTT` is an internal execution type and
-
-            is not a valid API value for `time_in_force`. The
-
-            `immediate_or_cancel` time-in-force value cannot be combined with
-
-            `expiration_time`.
-
-            '
-        time_in_force:
+          description: Matching engine timestamp at which the order was processed, as Unix epoch milliseconds.
+    AmendOrderV2Response:
+      type: object
+      required:
+      - order_id
+      - ts_ms
+      properties:
+        order_id:
           type: string
-          description: 'Specifies how long the order remains active. Use `good_till_canceled`
-
-            with `expiration_time` for an order that should rest until a specific
-
-            expiration time; without `expiration_time`, `good_till_canceled` is a
-
-            true good-till-canceled order. `GTT` is not a valid API value.
-
-            '
-          enum:
-          - fill_or_kill
-          - good_till_canceled
-          - immediate_or_cancel
-          x-oapi-codegen-extra-tags:
-            validate: required,oneof=fill_or_kill good_till_canceled immediate_or_cancel
-          x-go-type-skip-optional-pointer: true
-        post_only:
-          type: boolean
-        self_trade_prevention_type:
-          allOf:
-          - $ref: '#/components/schemas/SelfTradePreventionType'
-          x-oapi-codegen-extra-tags:
-            validate: required,oneof=taker_at_cross maker
-          x-go-type-skip-optional-pointer: true
-        cancel_order_on_pause:
-          type: boolean
-          description: If this flag is set to true, the order will be canceled if the order is open and trading on the exchange is paused for any reason.
-        reduce_only:
-          type: boolean
-          description: Specifies whether the order place count should be capped by the member's current position.
-        subaccount:
+        client_order_id:
+          type: string
+        remaining_count:
+          $ref: '#/components/schemas/FixedPointCount'
+          x-omitempty: false
+          description: Number of resting contracts remaining after the amend. This is the actual post-amend resting quantity, not the request's total/max fillable count. Only present when the amend caused a fill or changed the resting size.
+        fill_count:
+          $ref: '#/components/schemas/FixedPointCount'
+          x-omitempty: false
+          description: Number of contracts filled as a result of the amend crossing the book. Only present when fills occurred or remaining size changed.
+        average_fill_price:
+          $ref: '#/components/schemas/FixedPointDollars'
+          x-omitempty: false
+          description: Volume-weighted average fill price for fills resulting from the amend. Only present when fills occurred.
+        average_fee_paid:
+          $ref: '#/components/schemas/FixedPointDollars'
+          x-omitempty: false
+          description: Volume-weighted average fee paid per contract for fills resulting from the amend. Only present when fills occurred.
+        ts_ms:
           type: integer
-          minimum: 0
-          default: 0
-          description: The subaccount number to use for this order. 0 is the primary subaccount.
-          x-go-type-skip-optional-pointer: true
-        order_group_id:
-          type: string
-          description: The order group this order is part of
-          x-go-type-skip-optional-pointer: true
-        exchange_index:
-          allOf:
-          - $ref: '#/components/schemas/ExchangeIndex'
-          default: 0
-          x-go-type-skip-optional-pointer: true
-    DecreaseOrderResponse:
-      type: object
-      required:
-      - order
-      properties:
-        order:
-          $ref: '#/components/schemas/Order'
-    BatchCreateOrdersRequest:
-      type: object
-      required:
-      - orders
-      properties:
-        orders:
-          type: array
-          x-oapi-codegen-extra-tags:
-            validate: required,dive
-          items:
-            $ref: '#/components/schemas/CreateOrderRequest'
+          format: int64
+          description: Matching engine timestamp at which the amend was processed, as Unix epoch milliseconds.
     BatchCreateOrdersV2Response:
       type: object
       required:
@@ -882,201 +914,6 @@ components:
               error:
                 allOf:
                 - $ref: '#/components/schemas/ErrorResponse'
-    OrderStatus:
-      type: string
-      enum:
-      - resting
-      - canceled
-      - executed
-      description: The status of an order
-    BatchCancelOrdersRequestOrder:
-      type: object
-      required:
-      - order_id
-      properties:
-        order_id:
-          type: string
-          description: Order ID to cancel
-        subaccount:
-          type: integer
-          minimum: 0
-          default: 0
-          description: Optional subaccount number to use for this cancellation (0 for primary, 1-32 for subaccounts)
-          x-go-type-skip-optional-pointer: true
-        exchange_index:
-          allOf:
-          - $ref: '#/components/schemas/ExchangeIndex'
-          default: 0
-          x-go-type-skip-optional-pointer: true
-    FixedPointDollars:
-      type: string
-      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
-      example: '0.5600'
-    AmendOrderRequest:
-      type: object
-      required:
-      - ticker
-      - side
-      - action
-      properties:
-        subaccount:
-          type: integer
-          minimum: 0
-          description: Optional subaccount number to use for this amendment (0 for primary, 1-32 for subaccounts)
-          default: 0
-          x-go-type-skip-optional-pointer: true
-        ticker:
-          type: string
-          description: Market ticker
-        side:
-          type: string
-          enum:
-          - 'yes'
-          - 'no'
-          description: Side of the order
-        action:
-          type: string
-          enum:
-          - buy
-          - sell
-          description: Action of the order
-        client_order_id:
-          type: string
-          description: The original client-specified order ID to be amended
-          x-go-type-skip-optional-pointer: true
-        updated_client_order_id:
-          type: string
-          description: The new client-specified order ID after amendment
-          x-go-type-skip-optional-pointer: true
-        yes_price:
-          type: integer
-          minimum: 1
-          maximum: 99
-          description: Updated yes price for the order in cents
-        no_price:
-          type: integer
-          minimum: 1
-          maximum: 99
-          description: Updated no price for the order in cents
-        yes_price_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Updated yes price for the order in fixed-point dollars. Exactly one of yes_price, no_price, yes_price_dollars, and no_price_dollars must be passed.
-        no_price_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Updated no price for the order in fixed-point dollars. Exactly one of yes_price, no_price, yes_price_dollars, and no_price_dollars must be passed.
-        count:
-          type: integer
-          minimum: 1
-          description: Updated quantity for the order (whole contracts only). If updating quantity, provide count or count_fp; if both provided they must match.
-        count_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the updated quantity for the order. If updating quantity, provide count or count_fp; if both provided they must match.
-        exchange_index:
-          allOf:
-          - $ref: '#/components/schemas/ExchangeIndex'
-          default: 0
-          x-go-type-skip-optional-pointer: true
-    BatchCancelOrdersV2Request:
-      type: object
-      required:
-      - orders
-      properties:
-        orders:
-          type: array
-          x-oapi-codegen-extra-tags:
-            validate: required,dive
-          description: An array of orders to cancel, each optionally specifying a subaccount.
-          items:
-            type: object
-            required:
-            - order_id
-            properties:
-              order_id:
-                type: string
-                description: Order ID to cancel.
-              subaccount:
-                type: integer
-                minimum: 0
-                default: 0
-                description: Optional subaccount number to use for this cancellation (0 for primary, 1-32 for subaccounts).
-                x-go-type-skip-optional-pointer: true
-              exchange_index:
-                allOf:
-                - $ref: '#/components/schemas/ExchangeIndex'
-                default: 0
-                x-go-type-skip-optional-pointer: true
-    BatchCancelOrdersRequest:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-          description: An array of order IDs to cancel
-          deprecated: true
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchCancelOrdersRequestOrder'
-          description: An array of orders to cancel, each optionally specifying a subaccount
-    AmendOrderV2Response:
-      type: object
-      required:
-      - order_id
-      - ts_ms
-      properties:
-        order_id:
-          type: string
-        client_order_id:
-          type: string
-        remaining_count:
-          $ref: '#/components/schemas/FixedPointCount'
-          x-omitempty: false
-          description: Number of resting contracts remaining after the amend. This is the actual post-amend resting quantity, not the request's total/max fillable count. Only present when the amend caused a fill or changed the resting size.
-        fill_count:
-          $ref: '#/components/schemas/FixedPointCount'
-          x-omitempty: false
-          description: Number of contracts filled as a result of the amend crossing the book. Only present when fills occurred or remaining size changed.
-        average_fill_price:
-          $ref: '#/components/schemas/FixedPointDollars'
-          x-omitempty: false
-          description: Volume-weighted average fill price for fills resulting from the amend. Only present when fills occurred.
-        average_fee_paid:
-          $ref: '#/components/schemas/FixedPointDollars'
-          x-omitempty: false
-          description: Volume-weighted average fee paid per contract for fills resulting from the amend. Only present when fills occurred.
-        ts_ms:
-          type: integer
-          format: int64
-          description: Matching engine timestamp at which the amend was processed, as Unix epoch milliseconds.
-    CreateOrderV2Response:
-      type: object
-      required:
-      - order_id
-      - fill_count
-      - remaining_count
-      - ts_ms
-      properties:
-        order_id:
-          type: string
-        client_order_id:
-          type: string
-        fill_count:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: Number of contracts filled immediately upon placement.
-        remaining_count:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: Number of contracts remaining after placement. For IOC orders, this reflects the final state after unfilled contracts are canceled.
-        average_fill_price:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Volume-weighted average fill price. Only present when fill_count > 0.
-        average_fee_paid:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Volume-weighted average fee paid per contract for fills resulting from this request. Only present when fill_count > 0.
-        ts_ms:
-          type: integer
-          format: int64
-          description: Matching engine timestamp at which the order was processed, as Unix epoch milliseconds.
     Order:
       type: object
       required:
@@ -1222,12 +1059,28 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
-    BookSide:
+    BatchCancelOrdersRequest:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+          description: An array of order IDs to cancel
+          deprecated: true
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/BatchCancelOrdersRequestOrder'
+          description: An array of orders to cancel, each optionally specifying a subaccount
+    FixedPointCount:
       type: string
-      enum:
-      - bid
-      - ask
-      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
     GetOrderQueuePositionsResponse:
       type: object
       required:
@@ -1238,39 +1091,6 @@ components:
           description: Queue positions for all matching orders
           items:
             $ref: '#/components/schemas/OrderQueuePosition'
-    DecreaseOrderV2Request:
-      type: object
-      properties:
-        reduce_by:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts to reduce by. Exactly one of `reduce_by` or `reduce_to` must be provided.
-        reduce_to:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts to reduce to. Exactly one of `reduce_by` or `reduce_to` must be provided.
-        exchange_index:
-          allOf:
-          - $ref: '#/components/schemas/ExchangeIndex'
-          default: 0
-          x-go-type-skip-optional-pointer: true
-    ErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: string
-          description: Additional details about the error, if available
-        service:
-          type: string
-          description: The name of the service that generated the error
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
     GetOrderResponse:
       type: object
       required:
@@ -1278,58 +1098,180 @@ components:
       properties:
         order:
           $ref: '#/components/schemas/Order'
-    AmendOrderResponse:
+    BatchCreateOrdersV2Request:
       type: object
       required:
-      - old_order
-      - order
+      - orders
       properties:
-        old_order:
-          $ref: '#/components/schemas/Order'
-          description: The order before amendment
+        orders:
+          type: array
+          x-oapi-codegen-extra-tags:
+            validate: required,dive
+          items:
+            $ref: '#/components/schemas/CreateOrderV2Request'
+    BatchCancelOrdersIndividualResponse:
+      type: object
+      required:
+      - order_id
+      - reduced_by_fp
+      properties:
+        order_id:
+          type: string
+          description: The order ID to identify which order had an error during batch cancellation
         order:
-          $ref: '#/components/schemas/Order'
-          description: The order after amendment
-    CreateOrderResponse:
+          allOf:
+          - $ref: '#/components/schemas/Order'
+        reduced_by_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts that were successfully canceled from this order
+        error:
+          allOf:
+          - $ref: '#/components/schemas/ErrorResponse'
+    BookSide:
+      type: string
+      enum:
+      - bid
+      - ask
+      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
+    DecreaseOrderResponse:
       type: object
       required:
       - order
       properties:
         order:
           $ref: '#/components/schemas/Order'
-    AmendOrderV2Request:
+    CancelOrderV2Response:
+      type: object
+      required:
+      - order_id
+      - reduced_by
+      - ts_ms
+      properties:
+        order_id:
+          type: string
+        client_order_id:
+          type: string
+        reduced_by:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: Number of contracts that were canceled (i.e. the remaining count at time of cancellation).
+        ts_ms:
+          type: integer
+          format: int64
+          description: Matching engine timestamp at which the cancellation was processed, as Unix epoch milliseconds.
+    BatchCreateOrdersIndividualResponse:
+      type: object
+      properties:
+        client_order_id:
+          type:
+          - string
+          - 'null'
+        order:
+          allOf:
+          - $ref: '#/components/schemas/Order'
+        error:
+          allOf:
+          - $ref: '#/components/schemas/ErrorResponse'
+    OrderStatus:
+      type: string
+      enum:
+      - resting
+      - canceled
+      - executed
+      description: The status of an order
+    SelfTradePreventionType:
+      type: string
+      enum:
+      - taker_at_cross
+      - maker
+      description: 'The self-trade prevention type for orders. `taker_at_cross` cancels the taker order when it would trade against another order from the same user; execution stops and any partial fills already matched are executed. `maker` cancels the resting maker order and continues matching.
+
+        '
+    CreateOrderV2Request:
       type: object
       required:
       - ticker
+      - client_order_id
       - side
-      - price
       - count
+      - price
+      - time_in_force
+      - self_trade_prevention_type
       properties:
         ticker:
           type: string
-          description: Market ticker
           x-oapi-codegen-extra-tags:
             validate: required,min=1
-        side:
-          $ref: '#/components/schemas/BookSide'
-          description: Side of the order
-          x-oapi-codegen-extra-tags:
-            validate: required,oneof=bid ask
-        price:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Updated price for the order in fixed-point dollars.
-          x-go-type-skip-optional-pointer: true
-        count:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: Updated total/max fillable count for the order. Set this to the order's already filled count plus the desired resting remaining count after the amend.
-          x-go-type-skip-optional-pointer: true
         client_order_id:
           type: string
-          description: The original client-specified order ID to be amended
           x-go-type-skip-optional-pointer: true
-        updated_client_order_id:
+        side:
+          $ref: '#/components/schemas/BookSide'
+          x-oapi-codegen-extra-tags:
+            validate: required,oneof=bid ask
+        count:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the order quantity in contracts.
+        price:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Price for the order in fixed-point dollars.
+          x-go-type-skip-optional-pointer: true
+        expiration_time:
+          type: integer
+          format: int64
+          description: 'Optional Unix timestamp in seconds for when the order expires. To place
+
+            an expiring order, set `time_in_force` to `good_till_canceled` and
+
+            provide this `expiration_time`. `GTT` is an internal execution type and
+
+            is not a valid API value for `time_in_force`. The
+
+            `immediate_or_cancel` time-in-force value cannot be combined with
+
+            `expiration_time`.
+
+            '
+        time_in_force:
           type: string
-          description: The new client-specified order ID after amendment
+          description: 'Specifies how long the order remains active. Use `good_till_canceled`
+
+            with `expiration_time` for an order that should rest until a specific
+
+            expiration time; without `expiration_time`, `good_till_canceled` is a
+
+            true good-till-canceled order. `GTT` is not a valid API value.
+
+            '
+          enum:
+          - fill_or_kill
+          - good_till_canceled
+          - immediate_or_cancel
+          x-oapi-codegen-extra-tags:
+            validate: required,oneof=fill_or_kill good_till_canceled immediate_or_cancel
+          x-go-type-skip-optional-pointer: true
+        post_only:
+          type: boolean
+        self_trade_prevention_type:
+          allOf:
+          - $ref: '#/components/schemas/SelfTradePreventionType'
+          x-oapi-codegen-extra-tags:
+            validate: required,oneof=taker_at_cross maker
+          x-go-type-skip-optional-pointer: true
+        cancel_order_on_pause:
+          type: boolean
+          description: If this flag is set to true, the order will be canceled if the order is open and trading on the exchange is paused for any reason.
+        reduce_only:
+          type: boolean
+          description: Specifies whether the order place count should be capped by the member's current position.
+        subaccount:
+          type: integer
+          minimum: 0
+          default: 0
+          description: The subaccount number to use for this order. 0 is the primary subaccount.
+          x-go-type-skip-optional-pointer: true
+        order_group_id:
+          type: string
+          description: The order group this order is part of
           x-go-type-skip-optional-pointer: true
         exchange_index:
           allOf:
@@ -1456,131 +1398,132 @@ components:
           - $ref: '#/components/schemas/ExchangeIndex'
           default: 0
           x-go-type-skip-optional-pointer: true
-    BatchCreateOrdersResponse:
+    AmendOrderRequest:
       type: object
       required:
-      - orders
+      - ticker
+      - side
+      - action
       properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchCreateOrdersIndividualResponse'
-    BatchCancelOrdersResponse:
-      type: object
-      required:
-      - orders
-      properties:
-        orders:
-          type: array
-          items:
-            $ref: '#/components/schemas/BatchCancelOrdersIndividualResponse'
-    BatchCreateOrdersIndividualResponse:
-      type: object
-      properties:
-        client_order_id:
-          type:
-          - string
-          - 'null'
-        order:
-          allOf:
-          - $ref: '#/components/schemas/Order'
-        error:
-          allOf:
-          - $ref: '#/components/schemas/ErrorResponse'
-    ExchangeIndex:
-      type: integer
-      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
-      example: 0
-    GetOrderQueuePositionResponse:
-      type: object
-      required:
-      - queue_position_fp
-      properties:
-        queue_position_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: The number of preceding shares before the order in the queue.
-    CancelOrderV2Response:
-      type: object
-      required:
-      - order_id
-      - reduced_by
-      - ts_ms
-      properties:
-        order_id:
-          type: string
-        client_order_id:
-          type: string
-        reduced_by:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: Number of contracts that were canceled (i.e. the remaining count at time of cancellation).
-        ts_ms:
+        subaccount:
           type: integer
-          format: int64
-          description: Matching engine timestamp at which the cancellation was processed, as Unix epoch milliseconds.
-  responses:
-    UnauthorizedError:
-      description: Unauthorized - authentication required
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    RateLimitError:
-      description: Rate limit exceeded. The default cost is 10 tokens per request; endpoints that deviate show a **Rate limit** callout at the top of their own page. See [Rate Limits and Tiers](/getting_started/rate_limits).
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    BadRequestError:
-      description: Bad request - invalid input
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    ForbiddenError:
-      description: Forbidden - insufficient permissions
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFoundError:
-      description: Resource not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    ConflictError:
-      description: Conflict - resource already exists or cannot be modified
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+          minimum: 0
+          description: Optional subaccount number to use for this amendment (0 for primary, 1-32 for subaccounts)
+          default: 0
+          x-go-type-skip-optional-pointer: true
+        ticker:
+          type: string
+          description: Market ticker
+        side:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          description: Side of the order
+        action:
+          type: string
+          enum:
+          - buy
+          - sell
+          description: Action of the order
+        client_order_id:
+          type: string
+          description: The original client-specified order ID to be amended
+          x-go-type-skip-optional-pointer: true
+        updated_client_order_id:
+          type: string
+          description: The new client-specified order ID after amendment
+          x-go-type-skip-optional-pointer: true
+        yes_price:
+          type: integer
+          minimum: 1
+          maximum: 99
+          description: Updated yes price for the order in cents
+        no_price:
+          type: integer
+          minimum: 1
+          maximum: 99
+          description: Updated no price for the order in cents
+        yes_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Updated yes price for the order in fixed-point dollars. Exactly one of yes_price, no_price, yes_price_dollars, and no_price_dollars must be passed.
+        no_price_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Updated no price for the order in fixed-point dollars. Exactly one of yes_price, no_price, yes_price_dollars, and no_price_dollars must be passed.
+        count:
+          type: integer
+          minimum: 1
+          description: Updated quantity for the order (whole contracts only). If updating quantity, provide count or count_fp; if both provided they must match.
+        count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the updated quantity for the order. If updating quantity, provide count or count_fp; if both provided they must match.
+        exchange_index:
+          allOf:
+          - $ref: '#/components/schemas/ExchangeIndex'
+          default: 0
+          x-go-type-skip-optional-pointer: true
+    DecreaseOrderRequest:
+      type: object
+      properties:
+        subaccount:
+          type: integer
+          minimum: 0
+          description: Optional subaccount number to use for this decrease (0 for primary, 1-32 for subaccounts)
+          default: 0
+          x-go-type-skip-optional-pointer: true
+        reduce_by:
+          type: integer
+          minimum: 1
+          description: Number of contracts to reduce by (whole contracts only). Reduce-by may be provided via reduce_by or reduce_by_fp; if both provided they must match. Exactly one of reduce_by(/reduce_by_fp) or reduce_to(/reduce_to_fp) must be provided.
+        reduce_by_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts to reduce by. Reduce-by may be provided via reduce_by or reduce_by_fp; if both provided they must match. Exactly one of reduce_by(/reduce_by_fp) or reduce_to(/reduce_to_fp) must be provided.
+        reduce_to:
+          type: integer
+          minimum: 0
+          description: Number of contracts to reduce to (whole contracts only). Reduce-to may be provided via reduce_to or reduce_to_fp; if both provided they must match. Exactly one of reduce_by(/reduce_by_fp) or reduce_to(/reduce_to_fp) must be provided.
+        reduce_to_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts to reduce to. Reduce-to may be provided via reduce_to or reduce_to_fp; if both provided they must match. Exactly one of reduce_by(/reduce_by_fp) or reduce_to(/reduce_to_fp) must be provided.
+        exchange_index:
+          allOf:
+          - $ref: '#/components/schemas/ExchangeIndex'
+          default: 0
+          x-go-type-skip-optional-pointer: true
+    GetOrdersResponse:
+      type: object
+      required:
+      - orders
+      - cursor
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        cursor:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
   parameters:
-    ExchangeIndexQuery:
-      name: exchange_index
+    SubaccountQuery:
+      name: subaccount
       in: query
-      schema:
-        $ref: '#/components/schemas/ExchangeIndex'
-      x-go-type-skip-optional-pointer: true
-    MaxTsQuery:
-      name: max_ts
-      in: query
-      description: Filter items before this Unix timestamp
+      description: Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts.
       schema:
         type: integer
-        format: int64
-    OrderIdPath:
-      name: order_id
-      in: path
-      required: true
-      description: Order ID
-      schema:
-        type: string
     MultipleEventTickerQuery:
       name: event_ticker
       in: query
@@ -1588,6 +1531,52 @@ components:
       schema:
         type: string
         x-go-type-skip-optional-pointer: true
+    StatusQuery:
+      name: status
+      in: query
+      description: Filter by status. Possible values depend on the endpoint.
+      schema:
+        type: string
+    TickerQuery:
+      name: ticker
+      in: query
+      description: Filter by market ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    OrderIdPath:
+      name: order_id
+      in: path
+      required: true
+      description: Order ID
+      schema:
+        type: string
+    MaxTsQuery:
+      name: max_ts
+      in: query
+      description: Filter items before this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    ExchangeIndexQuery:
+      name: exchange_index
+      in: query
+      schema:
+        $ref: '#/components/schemas/ExchangeIndex'
+      x-go-type-skip-optional-pointer: true
+    MinTsQuery:
+      name: min_ts
+      in: query
+      description: Filter items after this Unix timestamp
+      schema:
+        type: integer
+        format: int64
+    SubaccountQueryDefaultPrimary:
+      name: subaccount
+      in: query
+      description: Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0.
+      schema:
+        type: integer
     CursorQuery:
       name: cursor
       in: query
@@ -1607,38 +1596,49 @@ components:
         default: 100
         x-oapi-codegen-extra-tags:
           validate: omitempty,min=1,max=1000
-    TickerQuery:
-      name: ticker
-      in: query
-      description: Filter by market ticker
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
-    SubaccountQueryDefaultPrimary:
-      name: subaccount
-      in: query
-      description: Subaccount number (0 for primary, 1-32 for subaccounts). Defaults to 0.
-      schema:
-        type: integer
-    StatusQuery:
-      name: status
-      in: query
-      description: Filter by status. Possible values depend on the endpoint.
-      schema:
-        type: string
-    SubaccountQuery:
-      name: subaccount
-      in: query
-      description: Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts.
-      schema:
-        type: integer
-    MinTsQuery:
-      name: min_ts
-      in: query
-      description: Filter items after this Unix timestamp
-      schema:
-        type: integer
-        format: int64
+  responses:
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ForbiddenError:
+      description: Forbidden - insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    RateLimitError:
+      description: Rate limit exceeded. The default cost is 10 tokens per request; endpoints that deviate show a **Rate limit** callout at the top of their own page. See [Rate Limits and Tiers](/getting_started/rate_limits).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequestError:
+      description: Bad request - invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ConflictError:
+      description: Conflict - resource already exists or cannot be modified
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    UnauthorizedError:
+      description: Unauthorized - authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

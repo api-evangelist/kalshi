@@ -156,60 +156,47 @@ paths:
         '500':
           description: Internal server error
 components:
-  parameters:
-    CursorQuery:
-      name: cursor
-      in: query
-      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
-    TickerQuery:
-      name: ticker
-      in: query
-      description: Filter by market ticker
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
-    SingleEventTickerQuery:
-      name: event_ticker
-      in: query
-      description: Event ticker to filter by. Only a single event ticker is supported.
-      schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
   schemas:
-    SelfTradePreventionType:
-      type: string
-      enum:
-      - taker_at_cross
-      - maker
-      description: 'The self-trade prevention type for orders. `taker_at_cross` cancels the taker order when it would trade against another order from the same user; execution stops and any partial fills already matched are executed. `maker` cancels the resting maker order and continues matching.
-
-        '
-    ExchangeIndex:
-      type: integer
-      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
-      example: 0
-    GetPositionsResponse:
+    MarketPosition:
       type: object
       required:
-      - market_positions
-      - event_positions
+      - ticker
+      - total_traded_dollars
+      - position_fp
+      - market_exposure_dollars
+      - realized_pnl_dollars
+      - resting_orders_count
+      - fees_paid_dollars
+      - last_updated_ts
       properties:
-        cursor:
+        ticker:
           type: string
-          description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned here in the cursor query parameter for this end-point to get the next page containing limit records. An empty value of this field indicates there is no next page.
-        market_positions:
-          type: array
-          items:
-            $ref: '#/components/schemas/MarketPosition'
-          description: List of market positions
-        event_positions:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventPosition'
-          description: List of event positions
+          description: Unique identifier for the market
+          x-go-type-skip-optional-pointer: true
+        total_traded_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Total spent on this market in dollars
+        position_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought in this market. Negative means NO contracts and positive means YES contracts
+        market_exposure_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Cost of the aggregate market position in dollars
+        realized_pnl_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Locked in profit and loss, in dollars
+        resting_orders_count:
+          type: integer
+          format: int32
+          description: '[DEPRECATED] Aggregate size of resting orders in contract units'
+          deprecated: true
+        fees_paid_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fees paid on fill orders, in dollars
+        last_updated_ts:
+          type: string
+          format: date-time
+          description: Last time the position is updated
     Order:
       type: object
       required:
@@ -355,12 +342,48 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
-    BookSide:
+    OrderStatus:
       type: string
       enum:
-      - bid
-      - ask
-      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
+      - resting
+      - canceled
+      - executed
+      description: The status of an order
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
+    SelfTradePreventionType:
+      type: string
+      enum:
+      - taker_at_cross
+      - maker
+      description: 'The self-trade prevention type for orders. `taker_at_cross` cancels the taker order when it would trade against another order from the same user; execution stops and any partial fills already matched are executed. `maker` cancels the resting maker order and continues matching.
+
+        '
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
+    GetPositionsResponse:
+      type: object
+      required:
+      - market_positions
+      - event_positions
+      properties:
+        cursor:
+          type: string
+          description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned here in the cursor query parameter for this end-point to get the next page containing limit records. An empty value of this field indicates there is no next page.
+        market_positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketPosition'
+          description: List of market positions
+        event_positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventPosition'
+          description: List of event positions
     GetOrdersResponse:
       type: object
       required:
@@ -373,57 +396,12 @@ components:
             $ref: '#/components/schemas/Order'
         cursor:
           type: string
-    MarketPosition:
-      type: object
-      required:
-      - ticker
-      - total_traded_dollars
-      - position_fp
-      - market_exposure_dollars
-      - realized_pnl_dollars
-      - resting_orders_count
-      - fees_paid_dollars
-      - last_updated_ts
-      properties:
-        ticker:
-          type: string
-          description: Unique identifier for the market
-          x-go-type-skip-optional-pointer: true
-        total_traded_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Total spent on this market in dollars
-        position_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts bought in this market. Negative means NO contracts and positive means YES contracts
-        market_exposure_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Cost of the aggregate market position in dollars
-        realized_pnl_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Locked in profit and loss, in dollars
-        resting_orders_count:
-          type: integer
-          format: int32
-          description: '[DEPRECATED] Aggregate size of resting orders in contract units'
-          deprecated: true
-        fees_paid_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Fees paid on fill orders, in dollars
-        last_updated_ts:
-          type: string
-          format: date-time
-          description: Last time the position is updated
-    OrderStatus:
+    BookSide:
       type: string
       enum:
-      - resting
-      - canceled
-      - executed
-      description: The status of an order
-    FixedPointDollars:
-      type: string
-      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
-      example: '0.5600'
+      - bid
+      - ask
+      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
     EventPosition:
       type: object
       required:
@@ -452,10 +430,32 @@ components:
         fees_paid_dollars:
           $ref: '#/components/schemas/FixedPointDollars'
           description: Fees paid on fill orders, in dollars
-    FixedPointCount:
+    FixedPointDollars:
       type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+  parameters:
+    CursorQuery:
+      name: cursor
+      in: query
+      description: Pagination cursor. Use the cursor value returned from the previous response to get the next page of results. Leave empty for the first page.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    TickerQuery:
+      name: ticker
+      in: query
+      description: Filter by market ticker
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    SingleEventTickerQuery:
+      name: event_ticker
+      in: query
+      description: Event ticker to filter by. Only a single event ticker is supported.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
   securitySchemes:
     kalshiAccessKey:
       type: apiKey
