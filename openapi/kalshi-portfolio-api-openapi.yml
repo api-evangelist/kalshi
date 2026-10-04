@@ -363,6 +363,18 @@ paths:
           description: Internal server error
 components:
   parameters:
+    SubaccountQuery:
+      name: subaccount
+      in: query
+      description: Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts.
+      schema:
+        type: integer
+    PositionsCursorQuery:
+      name: cursor
+      in: query
+      description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned from the previous response to get the next page.
+      schema:
+        type: string
     OrderIdQuery:
       name: order_id
       in: query
@@ -370,12 +382,36 @@ components:
       schema:
         type: string
         x-go-type-skip-optional-pointer: true
-    SubaccountQuery:
-      name: subaccount
+    PositionsLimitQuery:
+      name: limit
       in: query
-      description: Subaccount number (0 for primary, 1-32 for subaccounts). If omitted, defaults to all subaccounts.
+      description: Parameter to specify the number of results per page. Defaults to 100.
       schema:
         type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 100
+    CountFilterQuery:
+      name: count_filter
+      in: query
+      description: Restricts the positions to those with any of following fields with non-zero values, as a comma separated list. The following values are accepted - position, total_traded
+      schema:
+        type: string
+    SingleEventTickerQuery:
+      name: event_ticker
+      in: query
+      description: Event ticker to filter by. Only a single event ticker is supported.
+      schema:
+        type: string
+        x-go-type-skip-optional-pointer: true
+    MaxTsQuery:
+      name: max_ts
+      in: query
+      description: Filter items before this Unix timestamp
+      schema:
+        type: integer
+        format: int64
     WithdrawalLimitQuery:
       name: limit
       in: query
@@ -388,28 +424,6 @@ components:
         default: 100
         x-oapi-codegen-extra-tags:
           validate: omitempty,min=1,max=500
-    PositionsLimitQuery:
-      name: limit
-      in: query
-      description: Parameter to specify the number of results per page. Defaults to 100.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 100
-    PositionsCursorQuery:
-      name: cursor
-      in: query
-      description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned from the previous response to get the next page.
-      schema:
-        type: string
-    CountFilterQuery:
-      name: count_filter
-      in: query
-      description: Restricts the positions to those with any of following fields with non-zero values, as a comma separated list. The following values are accepted - position, total_traded
-      schema:
-        type: string
     TickerQuery:
       name: ticker
       in: query
@@ -417,20 +431,6 @@ components:
       schema:
         type: string
         x-go-type-skip-optional-pointer: true
-    MaxTsQuery:
-      name: max_ts
-      in: query
-      description: Filter items before this Unix timestamp
-      schema:
-        type: integer
-        format: int64
-    MinTsQuery:
-      name: min_ts
-      in: query
-      description: Filter items after this Unix timestamp
-      schema:
-        type: integer
-        format: int64
     SubaccountQueryDefaultPrimary:
       name: subaccount
       in: query
@@ -444,13 +444,13 @@ components:
       schema:
         type: string
         x-go-type-skip-optional-pointer: true
-    SingleEventTickerQuery:
-      name: event_ticker
+    MinTsQuery:
+      name: min_ts
       in: query
-      description: Event ticker to filter by. Only a single event ticker is supported.
+      description: Filter items after this Unix timestamp
       schema:
-        type: string
-        x-go-type-skip-optional-pointer: true
+        type: integer
+        format: int64
     LimitQuery:
       name: limit
       in: query
@@ -464,6 +464,288 @@ components:
         x-oapi-codegen-extra-tags:
           validate: omitempty,min=1,max=1000
   schemas:
+    BookSide:
+      type: string
+      enum:
+      - bid
+      - ask
+      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
+    GetSubaccountBalancesResponse:
+      type: object
+      required:
+      - subaccount_balances
+      properties:
+        subaccount_balances:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubaccountBalance'
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
+    CreateSubaccountResponse:
+      type: object
+      required:
+      - subaccount_number
+      properties:
+        subaccount_number:
+          type: integer
+          description: The sequential number assigned to this subaccount (1-32).
+    GetPortfolioRestingOrderTotalValueResponse:
+      type: object
+      required:
+      - total_resting_order_value
+      properties:
+        total_resting_order_value:
+          type: integer
+          description: Total value of resting orders in cents
+    GetFillsResponse:
+      type: object
+      required:
+      - fills
+      - cursor
+      properties:
+        fills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fill'
+        cursor:
+          type: string
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
+    SubaccountBalance:
+      type: object
+      required:
+      - subaccount_number
+      - balance
+      - updated_ts
+      properties:
+        subaccount_number:
+          type: integer
+          description: Subaccount number (0 for primary, 1-32 for subaccounts).
+        balance:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Balance in dollars.
+        updated_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp of last balance update.
+    Deposit:
+      type: object
+      required:
+      - id
+      - status
+      - type
+      - amount_cents
+      - fee_cents
+      - created_ts
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the deposit.
+        status:
+          type: string
+          enum:
+          - pending
+          - applied
+          - failed
+          - returned
+          description: Current status of the deposit. 'applied' means funds are reflected in balance.
+        type:
+          type: string
+          enum:
+          - ach
+          - wire
+          - crypto
+          - debit
+          - apm
+          description: Payment method used for the deposit.
+        amount_cents:
+          type: integer
+          format: int64
+          description: Deposit amount in cents.
+        fee_cents:
+          type: integer
+          format: int64
+          description: Fee charged for the deposit in cents.
+        created_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp of when the deposit was created.
+        finalized_ts:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Unix timestamp of when the deposit was finalized (applied, failed, or returned).
+    EventPosition:
+      type: object
+      required:
+      - event_ticker
+      - total_cost_dollars
+      - total_cost_shares_fp
+      - event_exposure_dollars
+      - realized_pnl_dollars
+      - fees_paid_dollars
+      properties:
+        event_ticker:
+          type: string
+          description: Unique identifier for events
+        total_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Total spent on this event in dollars
+        total_cost_shares_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the total number of shares traded on this event (including both YES and NO contracts)
+        event_exposure_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Cost of the aggregate event position in dollars
+        realized_pnl_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Locked in profit and loss, in dollars
+        fees_paid_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Fees paid on fill orders, in dollars
+    SubaccountNettingConfig:
+      type: object
+      required:
+      - subaccount_number
+      - enabled
+      properties:
+        subaccount_number:
+          type: integer
+          description: Subaccount number (0 for primary, 1-32 for subaccounts).
+        enabled:
+          type: boolean
+          description: Whether netting is enabled for this subaccount.
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Human-readable error message
+        details:
+          type: string
+          description: Additional details about the error, if available
+        service:
+          type: string
+          description: The name of the service that generated the error
+    FixedPointDollars:
+      type: string
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+    GetBalanceResponse:
+      type: object
+      required:
+      - balance
+      - balance_dollars
+      - portfolio_value
+      - updated_ts
+      properties:
+        balance:
+          type: integer
+          format: int64
+          description: Member's available balance in cents. This represents the amount available for trading.
+        balance_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Member's available balance as a fixed-point dollar string. This represents the amount available for trading.
+        portfolio_value:
+          type: integer
+          format: int64
+          description: Member's portfolio value in cents. This is the current value of all positions held.
+        updated_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp of the last update to the balance.
+        balance_breakdown:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexedBalance'
+          description: Balance broken down per exchange index.
+    Withdrawal:
+      type: object
+      required:
+      - id
+      - status
+      - type
+      - amount_cents
+      - fee_cents
+      - created_ts
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the withdrawal.
+        status:
+          type: string
+          enum:
+          - pending
+          - applied
+          - failed
+          - returned
+          description: Current status of the withdrawal. 'applied' means funds have been deducted from balance.
+        type:
+          type: string
+          enum:
+          - ach
+          - wire
+          - crypto
+          - debit
+          - apm
+          description: Payment type used for the withdrawal.
+        amount_cents:
+          type: integer
+          format: int64
+          description: Withdrawal amount in cents.
+        fee_cents:
+          type: integer
+          format: int64
+          description: Fee charged for the withdrawal in cents.
+        created_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp of when the withdrawal was created.
+        finalized_ts:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: Unix timestamp of when the withdrawal was finalized (applied, failed, or returned).
+    GetSubaccountNettingResponse:
+      type: object
+      required:
+      - netting_configs
+      properties:
+        netting_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubaccountNettingConfig'
+    GetPositionsResponse:
+      type: object
+      required:
+      - market_positions
+      - event_positions
+      properties:
+        cursor:
+          type: string
+          description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned here in the cursor query parameter for this end-point to get the next page containing limit records. An empty value of this field indicates there is no next page.
+        market_positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketPosition'
+          description: List of market positions
+        event_positions:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventPosition'
+          description: List of event positions
+    ApplySubaccountTransferResponse:
+      type: object
+      description: Empty response indicating successful transfer.
     UpdateSubaccountNettingRequest:
       type: object
       required:
@@ -476,6 +758,112 @@ components:
         enabled:
           type: boolean
           description: Whether netting is enabled for this subaccount.
+    Settlement:
+      type: object
+      required:
+      - ticker
+      - event_ticker
+      - market_result
+      - yes_count_fp
+      - yes_total_cost_dollars
+      - no_count_fp
+      - no_total_cost_dollars
+      - revenue
+      - settled_time
+      - fee_cost
+      properties:
+        ticker:
+          type: string
+          description: The ticker symbol of the market that was settled.
+        event_ticker:
+          type: string
+          description: The event ticker symbol of the market that was settled.
+        market_result:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          - scalar
+          - void
+          description: The outcome of the market settlement. 'yes' = market resolved to YES, 'no' = market resolved to NO, 'scalar' = scalar market settled at a specific value, 'void' = market was voided/cancelled and all positions returned at original cost.
+        yes_count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of YES contracts owned at the time of settlement.
+        yes_total_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Total cost basis of all YES contracts in fixed-point dollars.
+        no_count_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of NO contracts owned at the time of settlement.
+        no_total_cost_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Total cost basis of all NO contracts in fixed-point dollars.
+        revenue:
+          type: integer
+          description: Total revenue earned from this settlement in cents (winning contracts pay out 100 cents each).
+        settled_time:
+          type: string
+          format: date-time
+          description: Timestamp when the market was settled and payouts were processed.
+        fee_cost:
+          $ref: '#/components/schemas/FixedPointDollars'
+          example: '0.3400'
+          description: Total fees paid in fixed point dollars.
+        value:
+          type:
+          - integer
+          - 'null'
+          description: Payout of a single yes contract in cents.
+    SubaccountTransfer:
+      type: object
+      required:
+      - transfer_id
+      - from_subaccount
+      - to_subaccount
+      - amount_cents
+      - created_ts
+      properties:
+        transfer_id:
+          type: string
+          description: Unique identifier for this transfer.
+        from_subaccount:
+          type: integer
+          description: Source subaccount number (0 for primary, 1-32 for subaccounts).
+        to_subaccount:
+          type: integer
+          description: Destination subaccount number (0 for primary, 1-32 for subaccounts).
+        amount_cents:
+          type: integer
+          format: int64
+          description: Transfer amount in cents.
+        created_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp when the transfer was created.
+    ApplySubaccountTransferRequest:
+      type: object
+      required:
+      - client_transfer_id
+      - from_subaccount
+      - to_subaccount
+      - amount_cents
+      properties:
+        client_transfer_id:
+          type: string
+          format: uuid
+          description: Unique client-provided transfer ID for idempotency.
+          x-oapi-codegen-extra-tags:
+            validate: required
+        from_subaccount:
+          type: integer
+          description: Source subaccount number (0 for primary, 1-32 for numbered subaccounts).
+        to_subaccount:
+          type: integer
+          description: Destination subaccount number (0 for primary, 1-32 for numbered subaccounts).
+        amount_cents:
+          type: integer
+          format: int64
+          description: Amount to transfer in cents.
     MarketPosition:
       type: object
       required:
@@ -516,68 +904,16 @@ components:
           type: string
           format: date-time
           description: Last time the position is updated
-    GetDepositsResponse:
+    IndexedBalance:
       type: object
       required:
-      - deposits
+      - exchange_index
+      - balance
       properties:
-        deposits:
-          type: array
-          items:
-            $ref: '#/components/schemas/Deposit'
-        cursor:
-          type: string
-    ApplySubaccountTransferResponse:
-      type: object
-      description: Empty response indicating successful transfer.
-    SubaccountNettingConfig:
-      type: object
-      required:
-      - subaccount_number
-      - enabled
-      properties:
-        subaccount_number:
-          type: integer
-          description: Subaccount number (0 for primary, 1-32 for subaccounts).
-        enabled:
-          type: boolean
-          description: Whether netting is enabled for this subaccount.
-    CreateSubaccountResponse:
-      type: object
-      required:
-      - subaccount_number
-      properties:
-        subaccount_number:
-          type: integer
-          description: The sequential number assigned to this subaccount (1-32).
-    ApplySubaccountTransferRequest:
-      type: object
-      required:
-      - client_transfer_id
-      - from_subaccount
-      - to_subaccount
-      - amount_cents
-      properties:
-        client_transfer_id:
-          type: string
-          format: uuid
-          description: Unique client-provided transfer ID for idempotency.
-          x-oapi-codegen-extra-tags:
-            validate: required
-        from_subaccount:
-          type: integer
-          description: Source subaccount number (0 for primary, 1-32 for numbered subaccounts).
-        to_subaccount:
-          type: integer
-          description: Destination subaccount number (0 for primary, 1-32 for numbered subaccounts).
-        amount_cents:
-          type: integer
-          format: int64
-          description: Amount to transfer in cents.
-    FixedPointDollars:
-      type: string
-      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
-      example: '0.5600'
+        exchange_index:
+          $ref: '#/components/schemas/ExchangeIndex'
+        balance:
+          $ref: '#/components/schemas/FixedPointDollars'
     Fill:
       type: object
       required:
@@ -680,6 +1016,17 @@ components:
           type: integer
           format: int64
           description: Unix timestamp when this fill was executed (legacy field name)
+    GetWithdrawalsResponse:
+      type: object
+      required:
+      - withdrawals
+      properties:
+        withdrawals:
+          type: array
+          items:
+            $ref: '#/components/schemas/Withdrawal'
+        cursor:
+          type: string
     GetSubaccountTransfersResponse:
       type: object
       required:
@@ -692,349 +1039,6 @@ components:
         cursor:
           type: string
           description: Cursor for the next page of results.
-    GetSubaccountBalancesResponse:
-      type: object
-      required:
-      - subaccount_balances
-      properties:
-        subaccount_balances:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubaccountBalance'
-    GetBalanceResponse:
-      type: object
-      required:
-      - balance
-      - balance_dollars
-      - portfolio_value
-      - updated_ts
-      properties:
-        balance:
-          type: integer
-          format: int64
-          description: Member's available balance in cents. This represents the amount available for trading.
-        balance_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Member's available balance as a fixed-point dollar string. This represents the amount available for trading.
-        portfolio_value:
-          type: integer
-          format: int64
-          description: Member's portfolio value in cents. This is the current value of all positions held.
-        updated_ts:
-          type: integer
-          format: int64
-          description: Unix timestamp of the last update to the balance.
-        balance_breakdown:
-          type: array
-          items:
-            $ref: '#/components/schemas/IndexedBalance'
-          description: Balance broken down per exchange index.
-    Deposit:
-      type: object
-      required:
-      - id
-      - status
-      - type
-      - amount_cents
-      - fee_cents
-      - created_ts
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the deposit.
-        status:
-          type: string
-          enum:
-          - pending
-          - applied
-          - failed
-          - returned
-          description: Current status of the deposit. 'applied' means funds are reflected in balance.
-        type:
-          type: string
-          enum:
-          - ach
-          - wire
-          - crypto
-          - debit
-          - apm
-          description: Payment method used for the deposit.
-        amount_cents:
-          type: integer
-          format: int64
-          description: Deposit amount in cents.
-        fee_cents:
-          type: integer
-          format: int64
-          description: Fee charged for the deposit in cents.
-        created_ts:
-          type: integer
-          format: int64
-          description: Unix timestamp of when the deposit was created.
-        finalized_ts:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Unix timestamp of when the deposit was finalized (applied, failed, or returned).
-    SubaccountBalance:
-      type: object
-      required:
-      - subaccount_number
-      - balance
-      - updated_ts
-      properties:
-        subaccount_number:
-          type: integer
-          description: Subaccount number (0 for primary, 1-32 for subaccounts).
-        balance:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Balance in dollars.
-        updated_ts:
-          type: integer
-          format: int64
-          description: Unix timestamp of last balance update.
-    GetSubaccountNettingResponse:
-      type: object
-      required:
-      - netting_configs
-      properties:
-        netting_configs:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubaccountNettingConfig'
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
-    GetWithdrawalsResponse:
-      type: object
-      required:
-      - withdrawals
-      properties:
-        withdrawals:
-          type: array
-          items:
-            $ref: '#/components/schemas/Withdrawal'
-        cursor:
-          type: string
-    ExchangeIndex:
-      type: integer
-      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
-      example: 0
-    Withdrawal:
-      type: object
-      required:
-      - id
-      - status
-      - type
-      - amount_cents
-      - fee_cents
-      - created_ts
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the withdrawal.
-        status:
-          type: string
-          enum:
-          - pending
-          - applied
-          - failed
-          - returned
-          description: Current status of the withdrawal. 'applied' means funds have been deducted from balance.
-        type:
-          type: string
-          enum:
-          - ach
-          - wire
-          - crypto
-          - debit
-          - apm
-          description: Payment type used for the withdrawal.
-        amount_cents:
-          type: integer
-          format: int64
-          description: Withdrawal amount in cents.
-        fee_cents:
-          type: integer
-          format: int64
-          description: Fee charged for the withdrawal in cents.
-        created_ts:
-          type: integer
-          format: int64
-          description: Unix timestamp of when the withdrawal was created.
-        finalized_ts:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: Unix timestamp of when the withdrawal was finalized (applied, failed, or returned).
-    BookSide:
-      type: string
-      enum:
-      - bid
-      - ask
-      description: 'Side of the book for an order or trade. For event markets, this refers to the YES leg only: `bid` means buy YES, `ask` means sell YES. (Selling YES is economically equivalent to buying NO at `1 - price`, but this endpoint quotes everything from the YES side.)'
-    Settlement:
-      type: object
-      required:
-      - ticker
-      - event_ticker
-      - market_result
-      - yes_count_fp
-      - yes_total_cost_dollars
-      - no_count_fp
-      - no_total_cost_dollars
-      - revenue
-      - settled_time
-      - fee_cost
-      properties:
-        ticker:
-          type: string
-          description: The ticker symbol of the market that was settled.
-        event_ticker:
-          type: string
-          description: The event ticker symbol of the market that was settled.
-        market_result:
-          type: string
-          enum:
-          - 'yes'
-          - 'no'
-          - scalar
-          - void
-          description: The outcome of the market settlement. 'yes' = market resolved to YES, 'no' = market resolved to NO, 'scalar' = scalar market settled at a specific value, 'void' = market was voided/cancelled and all positions returned at original cost.
-        yes_count_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of YES contracts owned at the time of settlement.
-        yes_total_cost_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Total cost basis of all YES contracts in fixed-point dollars.
-        no_count_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of NO contracts owned at the time of settlement.
-        no_total_cost_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Total cost basis of all NO contracts in fixed-point dollars.
-        revenue:
-          type: integer
-          description: Total revenue earned from this settlement in cents (winning contracts pay out 100 cents each).
-        settled_time:
-          type: string
-          format: date-time
-          description: Timestamp when the market was settled and payouts were processed.
-        fee_cost:
-          $ref: '#/components/schemas/FixedPointDollars'
-          example: '0.3400'
-          description: Total fees paid in fixed point dollars.
-        value:
-          type:
-          - integer
-          - 'null'
-          description: Payout of a single yes contract in cents.
-    EventPosition:
-      type: object
-      required:
-      - event_ticker
-      - total_cost_dollars
-      - total_cost_shares_fp
-      - event_exposure_dollars
-      - realized_pnl_dollars
-      - fees_paid_dollars
-      properties:
-        event_ticker:
-          type: string
-          description: Unique identifier for events
-        total_cost_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Total spent on this event in dollars
-        total_cost_shares_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the total number of shares traded on this event (including both YES and NO contracts)
-        event_exposure_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Cost of the aggregate event position in dollars
-        realized_pnl_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Locked in profit and loss, in dollars
-        fees_paid_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Fees paid on fill orders, in dollars
-    SubaccountTransfer:
-      type: object
-      required:
-      - transfer_id
-      - from_subaccount
-      - to_subaccount
-      - amount_cents
-      - created_ts
-      properties:
-        transfer_id:
-          type: string
-          description: Unique identifier for this transfer.
-        from_subaccount:
-          type: integer
-          description: Source subaccount number (0 for primary, 1-32 for subaccounts).
-        to_subaccount:
-          type: integer
-          description: Destination subaccount number (0 for primary, 1-32 for subaccounts).
-        amount_cents:
-          type: integer
-          format: int64
-          description: Transfer amount in cents.
-        created_ts:
-          type: integer
-          format: int64
-          description: Unix timestamp when the transfer was created.
-    IndexedBalance:
-      type: object
-      required:
-      - exchange_index
-      - balance
-      properties:
-        exchange_index:
-          $ref: '#/components/schemas/ExchangeIndex'
-        balance:
-          $ref: '#/components/schemas/FixedPointDollars'
-    GetPortfolioRestingOrderTotalValueResponse:
-      type: object
-      required:
-      - total_resting_order_value
-      properties:
-        total_resting_order_value:
-          type: integer
-          description: Total value of resting orders in cents
-    GetFillsResponse:
-      type: object
-      required:
-      - fills
-      - cursor
-      properties:
-        fills:
-          type: array
-          items:
-            $ref: '#/components/schemas/Fill'
-        cursor:
-          type: string
-    GetPositionsResponse:
-      type: object
-      required:
-      - market_positions
-      - event_positions
-      properties:
-        cursor:
-          type: string
-          description: The Cursor represents a pointer to the next page of records in the pagination. Use the value returned here in the cursor query parameter for this end-point to get the next page containing limit records. An empty value of this field indicates there is no next page.
-        market_positions:
-          type: array
-          items:
-            $ref: '#/components/schemas/MarketPosition'
-          description: List of market positions
-        event_positions:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventPosition'
-          description: List of event positions
     GetSettlementsResponse:
       type: object
       required:
@@ -1046,30 +1050,26 @@ components:
             $ref: '#/components/schemas/Settlement'
         cursor:
           type: string
-    ErrorResponse:
+    GetDepositsResponse:
       type: object
+      required:
+      - deposits
       properties:
-        code:
+        deposits:
+          type: array
+          items:
+            $ref: '#/components/schemas/Deposit'
+        cursor:
           type: string
-          description: Error code
-        message:
-          type: string
-          description: Human-readable error message
-        details:
-          type: string
-          description: Additional details about the error, if available
-        service:
-          type: string
-          description: The name of the service that generated the error
   responses:
-    InternalServerError:
-      description: Internal server error
+    BadRequestError:
+      description: Bad request - invalid input
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    BadRequestError:
-      description: Bad request - invalid input
+    InternalServerError:
+      description: Internal server error
       content:
         application/json:
           schema:

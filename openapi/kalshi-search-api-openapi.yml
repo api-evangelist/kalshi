@@ -60,44 +60,6 @@ paths:
           description: Internal server error
 components:
   schemas:
-    SportFilterDetails:
-      type: object
-      required:
-      - scopes
-      - competitions
-      properties:
-        scopes:
-          type: array
-          description: List of scopes available for this sport
-          items:
-            type: string
-        competitions:
-          type: object
-          description: Mapping of competitions to their scope lists
-          additionalProperties:
-            $ref: '#/components/schemas/ScopeList'
-    ScopeList:
-      type: object
-      required:
-      - scopes
-      properties:
-        scopes:
-          type: array
-          description: List of scopes
-          items:
-            type: string
-    GetTagsForSeriesCategoriesResponse:
-      type: object
-      required:
-      - tags_by_categories
-      properties:
-        tags_by_categories:
-          type: object
-          description: Mapping of series categories to their associated tags
-          additionalProperties:
-            type: array
-            items:
-              type: string
     GetFiltersBySportsResponse:
       type: object
       required:
@@ -114,6 +76,44 @@ components:
           description: Ordered list of sports for display
           items:
             type: string
+    GetTagsForSeriesCategoriesResponse:
+      type: object
+      required:
+      - tags_by_categories
+      properties:
+        tags_by_categories:
+          type: object
+          description: Mapping of series categories to their associated tags
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    ScopeList:
+      type: object
+      required:
+      - scopes
+      properties:
+        scopes:
+          type: array
+          description: List of scopes
+          items:
+            type: string
+    SportFilterDetails:
+      type: object
+      required:
+      - scopes
+      - competitions
+      properties:
+        scopes:
+          type: array
+          description: List of scopes available for this sport
+          items:
+            type: string
+        competitions:
+          type: object
+          description: Mapping of competitions to their scope lists
+          additionalProperties:
+            $ref: '#/components/schemas/ScopeList'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

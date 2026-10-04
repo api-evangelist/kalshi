@@ -148,39 +148,6 @@ paths:
           description: Internal server error
 components:
   schemas:
-    GetLiveDatasResponse:
-      type: object
-      required:
-      - live_datas
-      properties:
-        live_datas:
-          type: array
-          items:
-            $ref: '#/components/schemas/LiveData'
-    GetLiveDataResponse:
-      type: object
-      required:
-      - live_data
-      properties:
-        live_data:
-          $ref: '#/components/schemas/LiveData'
-    LiveData:
-      type: object
-      required:
-      - type
-      - details
-      - milestone_id
-      properties:
-        type:
-          type: string
-          description: Type of live data
-        details:
-          type: object
-          additionalProperties: true
-          description: Live data details as a flexible object
-        milestone_id:
-          type: string
-          description: Milestone ID
     GetGameStatsResponse:
       type: object
       properties:
@@ -200,6 +167,39 @@ components:
                 items:
                   type: object
                   additionalProperties: true
+    GetLiveDatasResponse:
+      type: object
+      required:
+      - live_datas
+      properties:
+        live_datas:
+          type: array
+          items:
+            $ref: '#/components/schemas/LiveData'
+    LiveData:
+      type: object
+      required:
+      - type
+      - details
+      - milestone_id
+      properties:
+        type:
+          type: string
+          description: Type of live data
+        details:
+          type: object
+          additionalProperties: true
+          description: Live data details as a flexible object
+        milestone_id:
+          type: string
+          description: Milestone ID
+    GetLiveDataResponse:
+      type: object
+      required:
+      - live_data
+      properties:
+        live_data:
+          $ref: '#/components/schemas/LiveData'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

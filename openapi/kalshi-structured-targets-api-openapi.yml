@@ -115,11 +115,6 @@ components:
         cursor:
           type: string
           description: Pagination cursor for the next page. Empty if there are no more results.
-    GetStructuredTargetResponse:
-      type: object
-      properties:
-        structured_target:
-          $ref: '#/components/schemas/StructuredTarget'
     StructuredTarget:
       type: object
       properties:
@@ -147,6 +142,11 @@ components:
           type: string
           format: date-time
           description: Timestamp when this structured target was last updated.
+    GetStructuredTargetResponse:
+      type: object
+      properties:
+        structured_target:
+          $ref: '#/components/schemas/StructuredTarget'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

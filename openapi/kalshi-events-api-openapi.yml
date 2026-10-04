@@ -361,6 +361,61 @@ paths:
           description: Internal server error
 components:
   schemas:
+    PriceDistribution:
+      type: object
+      properties:
+        open_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: First traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        low_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Lowest traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        high_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Highest traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        close_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Last traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        mean_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Mean traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
+        previous_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Last traded YES contract price on the market before the candlestick period (in dollars). May be null if there were no trades before the period.
+        min_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Minimum close price of any market during the candlestick period (in dollars).
+        max_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Maximum close price of any market during the candlestick period (in dollars).
+    BidAskDistribution:
+      type: object
+      required:
+      - open_dollars
+      - low_dollars
+      - high_dollars
+      - close_dollars
+      properties:
+        open_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Offer price on the market at the start of the candlestick period (in dollars).
+        low_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Lowest offer price on the market during the candlestick period (in dollars).
+        high_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Highest offer price on the market during the candlestick period (in dollars).
+        close_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          description: Offer price on the market at the end of the candlestick period (in dollars).
+    ExchangeIndex:
+      type: integer
+      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
+      example: 0
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
     GetEventResponse:
       type: object
       required:
@@ -375,6 +430,332 @@ components:
           description: Data for the markets in this event. This field is deprecated in favour of the "markets" field inside the event. Which will be filled with the same value if you use the query parameter "with_nested_markets=true".
           items:
             $ref: '#/components/schemas/Market'
+    EventData:
+      type: object
+      required:
+      - event_ticker
+      - series_ticker
+      - sub_title
+      - title
+      - collateral_return_type
+      - mutually_exclusive
+      - available_on_brokers
+      - product_metadata
+      properties:
+        event_ticker:
+          type: string
+          description: Unique identifier for this event.
+        series_ticker:
+          type: string
+          description: Unique identifier for the series this event belongs to.
+        sub_title:
+          type: string
+          description: Shortened descriptive title for the event.
+        title:
+          type: string
+          description: Full title of the event.
+        collateral_return_type:
+          type: string
+          description: Specifies how collateral is returned when markets settle (e.g., 'binary' for standard yes/no markets).
+        mutually_exclusive:
+          type: boolean
+          description: If true, only one market in this event can resolve to 'yes'. If false, multiple markets can resolve to 'yes'.
+        category:
+          type: string
+          description: Event category (deprecated, use series-level category instead).
+          deprecated: true
+          x-go-type-skip-optional-pointer: true
+        strike_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          x-omitempty: true
+          description: The specific date this event is based on. Only filled when the event uses a date strike (mutually exclusive with strike_period).
+        strike_period:
+          type:
+          - string
+          - 'null'
+          x-omitempty: true
+          description: The time period this event covers (e.g., 'week', 'month'). Only filled when the event uses a period strike (mutually exclusive with strike_date).
+        markets:
+          type: array
+          x-omitempty: true
+          description: Array of markets associated with this event. Only populated when 'with_nested_markets=true' is specified in the request.
+          items:
+            $ref: '#/components/schemas/Market'
+          x-go-type-skip-optional-pointer: true
+        available_on_brokers:
+          type: boolean
+          description: Whether this event is available to trade on brokers.
+        product_metadata:
+          type:
+          - object
+          - 'null'
+          x-omitempty: true
+          description: Additional metadata for the event.
+          x-go-type-skip-optional-pointer: true
+        last_updated_ts:
+          type: string
+          format: date-time
+          description: Timestamp of when this event's metadata was last updated.
+        fee_type_override:
+          type:
+          - string
+          - 'null'
+          x-omitempty: true
+          description: Fee type override for this event. When present, takes precedence over the series-level fee for this event's markets.
+        fee_multiplier_override:
+          type:
+          - number
+          - 'null'
+          format: double
+          x-omitempty: true
+          description: Fee multiplier override for this event. Paired with fee_type_override.
+        exchange_index:
+          allOf:
+          - $ref: '#/components/schemas/ExchangeIndex'
+          x-go-type-skip-optional-pointer: true
+    FixedPointDollars:
+      type: string
+      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
+      example: '0.5600'
+    Milestone:
+      type: object
+      required:
+      - id
+      - category
+      - type
+      - start_date
+      - related_event_tickers
+      - title
+      - notification_message
+      - details
+      - primary_event_tickers
+      - last_updated_ts
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the milestone.
+        category:
+          type: string
+          description: Category of the milestone. E.g. Sports, Elections, Esports, Crypto.
+          example: Sports
+        type:
+          type: string
+          description: Type of the milestone. E.g. football_game, basketball_game, soccer_tournament_multi_leg, baseball_game, hockey_match, golf_tournament, political_race.
+          example: football_game
+        start_date:
+          type: string
+          format: date-time
+          description: Start date of the milestone.
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: End date of the milestone, if any.
+        related_event_tickers:
+          type: array
+          items:
+            type: string
+          description: List of event tickers related to this milestone.
+        title:
+          type: string
+          description: Title of the milestone.
+        notification_message:
+          type: string
+          description: Notification message for the milestone.
+        source_id:
+          type:
+          - string
+          - 'null'
+          description: Source id of milestone if available.
+        source_ids:
+          type: object
+          additionalProperties:
+            type: string
+          description: Source ids of milestone if available.
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional details about the milestone.
+        primary_event_tickers:
+          type: array
+          items:
+            type: string
+          description: List of event tickers directly related to the outcome of this milestone.
+        last_updated_ts:
+          type: string
+          format: date-time
+          description: Last time this structured target was updated.
+    MarketCandlestick:
+      type: object
+      required:
+      - end_period_ts
+      - yes_bid
+      - yes_ask
+      - price
+      - volume_fp
+      - open_interest_fp
+      properties:
+        end_period_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp for the inclusive end of the candlestick period.
+        yes_bid:
+          $ref: '#/components/schemas/BidAskDistribution'
+          description: Open, high, low, close (OHLC) data for YES buy offers on the market during the candlestick period.
+        yes_ask:
+          $ref: '#/components/schemas/BidAskDistribution'
+          description: Open, high, low, close (OHLC) data for YES sell offers on the market during the candlestick period.
+        price:
+          $ref: '#/components/schemas/PriceDistribution'
+          description: Open, high, low, close (OHLC) and more data for trade YES contract prices on the market during the candlestick period.
+        volume_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought on the market during the candlestick period.
+        open_interest_fp:
+          $ref: '#/components/schemas/FixedPointCount'
+          description: String representation of the number of contracts bought on the market by end of the candlestick period (end_period_ts).
+    ForecastPercentilesPoint:
+      type: object
+      required:
+      - event_ticker
+      - end_period_ts
+      - period_interval
+      - percentile_points
+      properties:
+        event_ticker:
+          type: string
+          description: The event ticker this forecast is for.
+        end_period_ts:
+          type: integer
+          format: int64
+          description: Unix timestamp for the inclusive end of the forecast period.
+        period_interval:
+          type: integer
+          format: int32
+          description: Length of the forecast period in minutes.
+        percentile_points:
+          type: array
+          description: Array of forecast values at different percentiles.
+          items:
+            $ref: '#/components/schemas/PercentilePoint'
+    GetEventCandlesticksResponse:
+      type: object
+      required:
+      - market_tickers
+      - market_candlesticks
+      - adjusted_end_ts
+      properties:
+        market_tickers:
+          type: array
+          description: Array of market tickers in the event.
+          items:
+            type: string
+        market_candlesticks:
+          type: array
+          description: Array of market candlestick arrays, one for each market in the event.
+          items:
+            type: array
+            items:
+              $ref: '#/components/schemas/MarketCandlestick'
+        adjusted_end_ts:
+          type: integer
+          format: int64
+          description: Adjusted end timestamp if the requested candlesticks would be larger than maxAggregateCandidates.
+    SettlementSource:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the settlement source
+          x-go-type-skip-optional-pointer: true
+        url:
+          type: string
+          description: URL to the settlement source
+          x-go-type-skip-optional-pointer: true
+    PriceRange:
+      type: object
+      required:
+      - start
+      - end
+      - step
+      properties:
+        start:
+          type: string
+          description: Starting price for this range in dollars
+        end:
+          type: string
+          description: Ending price for this range in dollars
+        step:
+          type: string
+          description: Price step/tick size for this range in dollars
+    PercentilePoint:
+      type: object
+      required:
+      - percentile
+      - raw_numerical_forecast
+      - numerical_forecast
+      - formatted_forecast
+      properties:
+        percentile:
+          type: integer
+          format: int32
+          description: The percentile value (0-9999).
+        raw_numerical_forecast:
+          type: number
+          description: The raw numerical forecast value.
+        numerical_forecast:
+          type: number
+          description: The processed numerical forecast value.
+        formatted_forecast:
+          type: string
+          description: The human-readable formatted forecast value.
+    GetEventForecastPercentilesHistoryResponse:
+      type: object
+      required:
+      - forecast_history
+      properties:
+        forecast_history:
+          type: array
+          description: Array of forecast percentile data points over time.
+          items:
+            $ref: '#/components/schemas/ForecastPercentilesPoint'
+    GetMultivariateEventsResponse:
+      type: object
+      required:
+      - events
+      - cursor
+      properties:
+        events:
+          type: array
+          description: Array of multivariate events matching the query criteria.
+          items:
+            $ref: '#/components/schemas/EventData'
+        cursor:
+          type: string
+          description: Pagination cursor for the next page. Empty if there are no more results.
+    MveSelectedLeg:
+      type: object
+      properties:
+        event_ticker:
+          type: string
+          description: Unique identifier for the selected event
+          x-go-type-skip-optional-pointer: true
+        market_ticker:
+          type: string
+          description: Unique identifier for the selected market
+          x-go-type-skip-optional-pointer: true
+        side:
+          type: string
+          description: The side of the selected market
+          x-go-type-skip-optional-pointer: true
+        yes_settlement_value_dollars:
+          $ref: '#/components/schemas/FixedPointDollars'
+          x-omitempty: true
+          description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
     MarketMetadata:
       type: object
       required:
@@ -391,20 +772,6 @@ components:
         color_code:
           type: string
           description: The color code for the market.
-    GetMultivariateEventsResponse:
-      type: object
-      required:
-      - events
-      - cursor
-      properties:
-        events:
-          type: array
-          description: Array of multivariate events matching the query criteria.
-          items:
-            $ref: '#/components/schemas/EventData'
-        cursor:
-          type: string
-          description: Pagination cursor for the next page. Empty if there are no more results.
     Market:
       type: object
       required:
@@ -691,10 +1058,25 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExchangeIndex'
           x-go-type-skip-optional-pointer: true
-    FixedPointDollars:
-      type: string
-      description: US dollar amount as a fixed-point decimal string with up to 6 decimal places of precision. This is the maximum supported precision; valid quote intervals for a given market are constrained by that market's price level structure.
-      example: '0.5600'
+    GetEventsResponse:
+      type: object
+      required:
+      - events
+      - cursor
+      properties:
+        events:
+          type: array
+          description: Array of events matching the query criteria.
+          items:
+            $ref: '#/components/schemas/EventData'
+        milestones:
+          type: array
+          description: Array of milestones related to the events.
+          items:
+            $ref: '#/components/schemas/Milestone'
+        cursor:
+          type: string
+          description: Pagination cursor for the next page. Empty if there are no more results.
     GetEventMetadataResponse:
       type: object
       required:
@@ -732,388 +1114,6 @@ components:
           x-omitempty: true
           description: Event scope, based on the competition.
           x-go-type-skip-optional-pointer: true
-    SettlementSource:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the settlement source
-          x-go-type-skip-optional-pointer: true
-        url:
-          type: string
-          description: URL to the settlement source
-          x-go-type-skip-optional-pointer: true
-    PriceRange:
-      type: object
-      required:
-      - start
-      - end
-      - step
-      properties:
-        start:
-          type: string
-          description: Starting price for this range in dollars
-        end:
-          type: string
-          description: Ending price for this range in dollars
-        step:
-          type: string
-          description: Price step/tick size for this range in dollars
-    PriceDistribution:
-      type: object
-      properties:
-        open_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: First traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        low_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Lowest traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        high_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Highest traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        close_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Last traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        mean_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Mean traded YES contract price on the market during the candlestick period (in dollars). May be null if there was no trade during the period.
-        previous_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Last traded YES contract price on the market before the candlestick period (in dollars). May be null if there were no trades before the period.
-        min_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Minimum close price of any market during the candlestick period (in dollars).
-        max_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Maximum close price of any market during the candlestick period (in dollars).
-    GetEventsResponse:
-      type: object
-      required:
-      - events
-      - cursor
-      properties:
-        events:
-          type: array
-          description: Array of events matching the query criteria.
-          items:
-            $ref: '#/components/schemas/EventData'
-        milestones:
-          type: array
-          description: Array of milestones related to the events.
-          items:
-            $ref: '#/components/schemas/Milestone'
-        cursor:
-          type: string
-          description: Pagination cursor for the next page. Empty if there are no more results.
-    ExchangeIndex:
-      type: integer
-      description: 'Identifier for an exchange shard. Defaults to 0 if unspecified. Note: currently only 0 supported.'
-      example: 0
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
-    Milestone:
-      type: object
-      required:
-      - id
-      - category
-      - type
-      - start_date
-      - related_event_tickers
-      - title
-      - notification_message
-      - details
-      - primary_event_tickers
-      - last_updated_ts
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the milestone.
-        category:
-          type: string
-          description: Category of the milestone. E.g. Sports, Elections, Esports, Crypto.
-          example: Sports
-        type:
-          type: string
-          description: Type of the milestone. E.g. football_game, basketball_game, soccer_tournament_multi_leg, baseball_game, hockey_match, golf_tournament, political_race.
-          example: football_game
-        start_date:
-          type: string
-          format: date-time
-          description: Start date of the milestone.
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: End date of the milestone, if any.
-        related_event_tickers:
-          type: array
-          items:
-            type: string
-          description: List of event tickers related to this milestone.
-        title:
-          type: string
-          description: Title of the milestone.
-        notification_message:
-          type: string
-          description: Notification message for the milestone.
-        source_id:
-          type:
-          - string
-          - 'null'
-          description: Source id of milestone if available.
-        source_ids:
-          type: object
-          additionalProperties:
-            type: string
-          description: Source ids of milestone if available.
-        details:
-          type: object
-          additionalProperties: true
-          description: Additional details about the milestone.
-        primary_event_tickers:
-          type: array
-          items:
-            type: string
-          description: List of event tickers directly related to the outcome of this milestone.
-        last_updated_ts:
-          type: string
-          format: date-time
-          description: Last time this structured target was updated.
-    ForecastPercentilesPoint:
-      type: object
-      required:
-      - event_ticker
-      - end_period_ts
-      - period_interval
-      - percentile_points
-      properties:
-        event_ticker:
-          type: string
-          description: The event ticker this forecast is for.
-        end_period_ts:
-          type: integer
-          format: int64
-          description: Unix timestamp for the inclusive end of the forecast period.
-        period_interval:
-          type: integer
-          format: int32
-          description: Length of the forecast period in minutes.
-        percentile_points:
-          type: array
-          description: Array of forecast values at different percentiles.
-          items:
-            $ref: '#/components/schemas/PercentilePoint'
-    GetEventForecastPercentilesHistoryResponse:
-      type: object
-      required:
-      - forecast_history
-      properties:
-        forecast_history:
-          type: array
-          description: Array of forecast percentile data points over time.
-          items:
-            $ref: '#/components/schemas/ForecastPercentilesPoint'
-    MarketCandlestick:
-      type: object
-      required:
-      - end_period_ts
-      - yes_bid
-      - yes_ask
-      - price
-      - volume_fp
-      - open_interest_fp
-      properties:
-        end_period_ts:
-          type: integer
-          format: int64
-          description: Unix timestamp for the inclusive end of the candlestick period.
-        yes_bid:
-          $ref: '#/components/schemas/BidAskDistribution'
-          description: Open, high, low, close (OHLC) data for YES buy offers on the market during the candlestick period.
-        yes_ask:
-          $ref: '#/components/schemas/BidAskDistribution'
-          description: Open, high, low, close (OHLC) data for YES sell offers on the market during the candlestick period.
-        price:
-          $ref: '#/components/schemas/PriceDistribution'
-          description: Open, high, low, close (OHLC) and more data for trade YES contract prices on the market during the candlestick period.
-        volume_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts bought on the market during the candlestick period.
-        open_interest_fp:
-          $ref: '#/components/schemas/FixedPointCount'
-          description: String representation of the number of contracts bought on the market by end of the candlestick period (end_period_ts).
-    MveSelectedLeg:
-      type: object
-      properties:
-        event_ticker:
-          type: string
-          description: Unique identifier for the selected event
-          x-go-type-skip-optional-pointer: true
-        market_ticker:
-          type: string
-          description: Unique identifier for the selected market
-          x-go-type-skip-optional-pointer: true
-        side:
-          type: string
-          description: The side of the selected market
-          x-go-type-skip-optional-pointer: true
-        yes_settlement_value_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          x-omitempty: true
-          description: The settlement value of the YES/LONG side of the contract in dollars. Only filled after determination
-    EventData:
-      type: object
-      required:
-      - event_ticker
-      - series_ticker
-      - sub_title
-      - title
-      - collateral_return_type
-      - mutually_exclusive
-      - available_on_brokers
-      - product_metadata
-      properties:
-        event_ticker:
-          type: string
-          description: Unique identifier for this event.
-        series_ticker:
-          type: string
-          description: Unique identifier for the series this event belongs to.
-        sub_title:
-          type: string
-          description: Shortened descriptive title for the event.
-        title:
-          type: string
-          description: Full title of the event.
-        collateral_return_type:
-          type: string
-          description: Specifies how collateral is returned when markets settle (e.g., 'binary' for standard yes/no markets).
-        mutually_exclusive:
-          type: boolean
-          description: If true, only one market in this event can resolve to 'yes'. If false, multiple markets can resolve to 'yes'.
-        category:
-          type: string
-          description: Event category (deprecated, use series-level category instead).
-          deprecated: true
-          x-go-type-skip-optional-pointer: true
-        strike_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          x-omitempty: true
-          description: The specific date this event is based on. Only filled when the event uses a date strike (mutually exclusive with strike_period).
-        strike_period:
-          type:
-          - string
-          - 'null'
-          x-omitempty: true
-          description: The time period this event covers (e.g., 'week', 'month'). Only filled when the event uses a period strike (mutually exclusive with strike_date).
-        markets:
-          type: array
-          x-omitempty: true
-          description: Array of markets associated with this event. Only populated when 'with_nested_markets=true' is specified in the request.
-          items:
-            $ref: '#/components/schemas/Market'
-          x-go-type-skip-optional-pointer: true
-        available_on_brokers:
-          type: boolean
-          description: Whether this event is available to trade on brokers.
-        product_metadata:
-          type:
-          - object
-          - 'null'
-          x-omitempty: true
-          description: Additional metadata for the event.
-          x-go-type-skip-optional-pointer: true
-        last_updated_ts:
-          type: string
-          format: date-time
-          description: Timestamp of when this event's metadata was last updated.
-        fee_type_override:
-          type:
-          - string
-          - 'null'
-          x-omitempty: true
-          description: Fee type override for this event. When present, takes precedence over the series-level fee for this event's markets.
-        fee_multiplier_override:
-          type:
-          - number
-          - 'null'
-          format: double
-          x-omitempty: true
-          description: Fee multiplier override for this event. Paired with fee_type_override.
-        exchange_index:
-          allOf:
-          - $ref: '#/components/schemas/ExchangeIndex'
-          x-go-type-skip-optional-pointer: true
-    GetEventCandlesticksResponse:
-      type: object
-      required:
-      - market_tickers
-      - market_candlesticks
-      - adjusted_end_ts
-      properties:
-        market_tickers:
-          type: array
-          description: Array of market tickers in the event.
-          items:
-            type: string
-        market_candlesticks:
-          type: array
-          description: Array of market candlestick arrays, one for each market in the event.
-          items:
-            type: array
-            items:
-              $ref: '#/components/schemas/MarketCandlestick'
-        adjusted_end_ts:
-          type: integer
-          format: int64
-          description: Adjusted end timestamp if the requested candlesticks would be larger than maxAggregateCandidates.
-    BidAskDistribution:
-      type: object
-      required:
-      - open_dollars
-      - low_dollars
-      - high_dollars
-      - close_dollars
-      properties:
-        open_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Offer price on the market at the start of the candlestick period (in dollars).
-        low_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Lowest offer price on the market during the candlestick period (in dollars).
-        high_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Highest offer price on the market during the candlestick period (in dollars).
-        close_dollars:
-          $ref: '#/components/schemas/FixedPointDollars'
-          description: Offer price on the market at the end of the candlestick period (in dollars).
-    PercentilePoint:
-      type: object
-      required:
-      - percentile
-      - raw_numerical_forecast
-      - numerical_forecast
-      - formatted_forecast
-      properties:
-        percentile:
-          type: integer
-          format: int32
-          description: The percentile value (0-9999).
-        raw_numerical_forecast:
-          type: number
-          description: The raw numerical forecast value.
-        numerical_forecast:
-          type: number
-          description: The processed numerical forecast value.
-        formatted_forecast:
-          type: string
-          description: The human-readable formatted forecast value.
   parameters:
     SeriesTickerQuery:
       name: series_ticker
