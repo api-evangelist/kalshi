@@ -40,6 +40,10 @@ accessModel:
   generated: '2026-09-03'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/kalshi.png
+x-docs-platform: mintlify
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-10-03
+x-docs-hosting: vercel
 tags:
   - Prediction Markets
   - Event Contracts
@@ -349,6 +353,9 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 common:
+  - type: CapabilityMap
+    url: capabilities/kalshi-capability-edges.yml
+    name: Kalshi Business Capability Map
   - type: AgenticAccess
     url: agentic-access/kalshi-agentic-access.yml
   - type: DomainSecurity
