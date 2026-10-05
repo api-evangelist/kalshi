@@ -1,0 +1,26 @@
+slug: kalshi
+provider: Kalshi
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Account
+  spec_file: kalshi-account-api-openapi.yml
+  capability_id: BC-4270.50
+  capability_id_l1: BC-4270
+  capability_name: API Consumption Governance
+  confidence: 0.72
+  evidence: 'GET /account/limits  GetAccountApiLimits  Get Account API Limits; GET /account/endpoint_costs  GetAccountEndpointCosts  List
+    Non-Default Endpoint Costs; schemas: BucketLimit, EndpointTokenCost'
+  reason: Despite the business-sounding tag 'Account', the operations expose per-account API rate-limit
+    buckets and per-endpoint token costs — quota and rate-limit disclosure for API consumers, which is
+    API Consumption Governance. No account opening, balances, or customer master data appear.
