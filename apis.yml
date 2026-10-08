@@ -353,6 +353,12 @@ apis:
   - type: Documentation
     url: https://docs.kalshi.com/api-reference
 common:
+  - type: Plans
+    url: plans/kalshi-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/kalshi-rate-limits.yml
+  - type: FinOps
+    url: finops/kalshi-finops.yml
   - type: CapabilityMap
     url: capabilities/kalshi-capability-edges.yml
     name: Kalshi Business Capability Map
