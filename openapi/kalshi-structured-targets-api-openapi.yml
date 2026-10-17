@@ -105,16 +105,6 @@ paths:
           description: Internal server error
 components:
   schemas:
-    GetStructuredTargetsResponse:
-      type: object
-      properties:
-        structured_targets:
-          type: array
-          items:
-            $ref: '#/components/schemas/StructuredTarget'
-        cursor:
-          type: string
-          description: Pagination cursor for the next page. Empty if there are no more results.
     StructuredTarget:
       type: object
       properties:
@@ -142,6 +132,16 @@ components:
           type: string
           format: date-time
           description: Timestamp when this structured target was last updated.
+    GetStructuredTargetsResponse:
+      type: object
+      properties:
+        structured_targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/StructuredTarget'
+        cursor:
+          type: string
+          description: Pagination cursor for the next page. Empty if there are no more results.
     GetStructuredTargetResponse:
       type: object
       properties:

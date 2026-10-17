@@ -157,6 +157,10 @@ components:
         service:
           type: string
           description: The name of the service that generated the error
+    FixedPointCount:
+      type: string
+      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
+      example: '10.00'
     GetIncentiveProgramsResponse:
       type: object
       required:
@@ -169,10 +173,6 @@ components:
         next_cursor:
           type: string
           description: Cursor for pagination to get the next page of results
-    FixedPointCount:
-      type: string
-      description: Fixed-point contract count string (2 decimals, e.g., "10.00"; referred to as "fp" in field names). Requests accept 0–2 decimal places (e.g., "10", "10.0", "10.00"); responses always emit 2 decimals. Fractional contract values (e.g., "2.50") are supported on markets with fractional trading enabled; the minimum granularity is 0.01 contracts. Integer contract count fields are legacy and will be deprecated; when both integer and fp fields are provided, they must match.
-      example: '10.00'
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

@@ -60,22 +60,6 @@ paths:
           description: Internal server error
 components:
   schemas:
-    GetFiltersBySportsResponse:
-      type: object
-      required:
-      - filters_by_sports
-      - sport_ordering
-      properties:
-        filters_by_sports:
-          type: object
-          description: Mapping of sports to their filter details
-          additionalProperties:
-            $ref: '#/components/schemas/SportFilterDetails'
-        sport_ordering:
-          type: array
-          description: Ordered list of sports for display
-          items:
-            type: string
     GetTagsForSeriesCategoriesResponse:
       type: object
       required:
@@ -88,16 +72,6 @@ components:
             type: array
             items:
               type: string
-    ScopeList:
-      type: object
-      required:
-      - scopes
-      properties:
-        scopes:
-          type: array
-          description: List of scopes
-          items:
-            type: string
     SportFilterDetails:
       type: object
       required:
@@ -114,6 +88,32 @@ components:
           description: Mapping of competitions to their scope lists
           additionalProperties:
             $ref: '#/components/schemas/ScopeList'
+    GetFiltersBySportsResponse:
+      type: object
+      required:
+      - filters_by_sports
+      - sport_ordering
+      properties:
+        filters_by_sports:
+          type: object
+          description: Mapping of sports to their filter details
+          additionalProperties:
+            $ref: '#/components/schemas/SportFilterDetails'
+        sport_ordering:
+          type: array
+          description: Ordered list of sports for display
+          items:
+            type: string
+    ScopeList:
+      type: object
+      required:
+      - scopes
+      properties:
+        scopes:
+          type: array
+          description: List of scopes
+          items:
+            type: string
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

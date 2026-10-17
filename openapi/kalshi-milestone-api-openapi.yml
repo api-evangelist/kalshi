@@ -129,6 +129,14 @@ paths:
           description: Internal Server Error
 components:
   schemas:
+    GetMilestoneResponse:
+      type: object
+      required:
+      - milestone
+      properties:
+        milestone:
+          $ref: '#/components/schemas/Milestone'
+          description: The milestone data.
     Milestone:
       type: object
       required:
@@ -211,14 +219,6 @@ components:
         cursor:
           type: string
           description: Cursor for pagination.
-    GetMilestoneResponse:
-      type: object
-      required:
-      - milestone
-      properties:
-        milestone:
-          $ref: '#/components/schemas/Milestone'
-          description: The milestone data.
   securitySchemes:
     kalshiAccessKey:
       type: apiKey

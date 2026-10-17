@@ -55,6 +55,20 @@ paths:
           description: Internal server error
 components:
   schemas:
+    GetAccountApiLimitsResponse:
+      type: object
+      required:
+      - usage_tier
+      - read
+      - write
+      properties:
+        usage_tier:
+          type: string
+          description: User's API usage tier.
+        read:
+          $ref: '#/components/schemas/BucketLimit'
+        write:
+          $ref: '#/components/schemas/BucketLimit'
     EndpointTokenCost:
       type: object
       required:
@@ -71,20 +85,6 @@ components:
         cost:
           type: integer
           description: Configured token cost for an endpoint whose cost differs from the default cost.
-    GetAccountApiLimitsResponse:
-      type: object
-      required:
-      - usage_tier
-      - read
-      - write
-      properties:
-        usage_tier:
-          type: string
-          description: User's API usage tier.
-        read:
-          $ref: '#/components/schemas/BucketLimit'
-        write:
-          $ref: '#/components/schemas/BucketLimit'
     GetAccountEndpointCostsResponse:
       type: object
       required:
