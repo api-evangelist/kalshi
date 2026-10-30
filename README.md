@@ -1,4 +1,4 @@
-# Kalshi (kalshi)
+# Kalshi
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,174 +66,169 @@
 
 Kalshi is a CFTC-regulated US exchange for binary event contracts on real-world outcomes - elections, economics, weather, sports, and more. The platform exposes a public REST trading API and WebSocket streams for market data, orders, positions, and portfolio actions, with a published OpenAPI 3 specification and AsyncAPI definition for the streaming surface. A demo environment mirrors production for safe development. Official Python and community SDKs are provided.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/kalshi/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/kalshi/refs/heads/main/apis.yml)
+**Areas:** Prediction Markets · Event Contracts · Exchange · CFTC · Trading · Markets · Real-Time
 
-## Tags
+## Kalshi on APIs.io
 
-- Prediction Markets
-- Event Contracts
-- Exchange
-- CFTC
-- Trading
-- Markets
+Everything profiled for Kalshi is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/kalshi/](https://apis.io/providers/kalshi/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (21)
 
-- **Created:** 2026-05-23
-- **Modified:** 2026-05-29
+- [Kalshi Trade API (Demo)](https://apis.io/apis/kalshi/trade-api-demo/) — Demo / sandbox environment for the Kalshi Trade API - mirrors production semantics with simulated balances and markets for safe development and automated…
+- [Kalshi WebSocket Streaming API](https://apis.io/apis/kalshi/websocket/) — Real-time streaming feed for market data, order book updates, fills, and portfolio events on Kalshi. Documented as an AsyncAPI spec alongside the OpenAPI…
+- [Kalshi AsyncAPI Specification](https://apis.io/apis/kalshi/asyncapi/) — Machine-readable AsyncAPI description of the Kalshi WebSocket streaming API. Suitable for generating async clients and documenting message schemas.
+- [Kalshi Python Starter Kit](https://apis.io/apis/kalshi/python-starter/) — Official Python starter / SDK published by Kalshi for connecting to the Trade REST API and WebSocket streams. Includes request signing, authentication…
+- [Kalshi Account API](https://apis.io/apis/kalshi/kalshi-account-api/) — The account API from Kalshi — 2 operation(s) for account.
+- [Kalshi API Keys API](https://apis.io/apis/kalshi/kalshi-api-keys-api/) — API key management endpoints
+- [Kalshi Communications API](https://apis.io/apis/kalshi/kalshi-communications-api/) — Request-for-quote (RFQ) endpoints
+- [Kalshi Events API](https://apis.io/apis/kalshi/kalshi-events-api/) — Event endpoints
+- [Kalshi Exchange API](https://apis.io/apis/kalshi/kalshi-exchange-api/) — Exchange status and information endpoints
+- [Kalshi Fcm API](https://apis.io/apis/kalshi/kalshi-fcm-api/) — FCM member specific endpoints
+- [Kalshi Historical API](https://apis.io/apis/kalshi/kalshi-historical-api/) — The historical API from Kalshi — 7 operation(s) for historical.
+- [Kalshi Incentive Programs API](https://apis.io/apis/kalshi/kalshi-incentive-programs-api/) — Incentive program endpoints
+- [Kalshi Live Data API](https://apis.io/apis/kalshi/kalshi-live-data-api/) — Live data endpoints
+- [Kalshi Market API](https://apis.io/apis/kalshi/kalshi-market-api/) — The market API from Kalshi — 9 operation(s) for market.
+- [Kalshi Milestone API](https://apis.io/apis/kalshi/kalshi-milestone-api/) — Milestone endpoints
+- [Kalshi Multivariate API](https://apis.io/apis/kalshi/kalshi-multivariate-api/) — Multivariate event collection endpoints
+- [Kalshi Order Groups API](https://apis.io/apis/kalshi/kalshi-order-groups-api/) — Order group management endpoints
+- [Kalshi Orders API](https://apis.io/apis/kalshi/kalshi-orders-api/) — Order management endpoints
+- [Kalshi Portfolio API](https://apis.io/apis/kalshi/kalshi-portfolio-api/) — Portfolio and balance information endpoints
+- [Kalshi Search API](https://apis.io/apis/kalshi/kalshi-search-api/) — Search and filtering endpoints
+- [Kalshi Structured Targets API](https://apis.io/apis/kalshi/kalshi-structured-targets-api/) — Structured targets endpoints
 
-## APIs
+### Published properties
 
-### Kalshi Trade API (REST)
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Public REST API for trading on Kalshi - browse markets, events, and series, place and cancel orders, manage portfolio and positions, fund and withdraw, and pull historical trades. Authenticated with API keys and Ed25519 request signatures.
+#### AsyncAPI (1)
 
-- **Human URL:** [https://docs.kalshi.com/api-reference](https://docs.kalshi.com/api-reference)
-- **Base URL:** `https://api.elections.kalshi.com/trade-api/v2`
+Event-driven and webhook contracts.
 
-#### Tags
+- [Kalshi WebSocket Streaming API](https://apis.io/asyncapis/kalshi/kalshi-asyncapi/)
 
-- REST
-- Trading
-- Markets
-- Orders
+#### Event channels (1)
 
-#### Properties
+Individual events and webhooks the provider emits.
 
-- [Documentation](https://docs.kalshi.com/api-reference)
-- [OpenAPI](https://docs.kalshi.com/openapi.yaml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/kalshi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/kalshi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [/](https://apis.io/channels/kalshi/untitled/)
 
-### Kalshi Trade API (external-api host)
+#### Agentic access (1)
 
-Alternate production host for the Kalshi Trade API, used by external integrators. Same API surface and authentication as the primary host.
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- **Human URL:** [https://docs.kalshi.com/api-reference](https://docs.kalshi.com/api-reference)
-- **Base URL:** `https://external-api.kalshi.com/trade-api/v2`
+- [Kalshi Agentic Access](https://apis.io/agentic-access/kalshi/kalshi-agentic-access/)
 
-#### Tags
+#### Collections (18)
 
-- REST
-- Trading
-- External
+Postman and Open Collection request collections.
 
-#### Properties
+- [Kalshi Trade API Manual Endpoints](https://apis.io/collections/kalshi/open-kalshi/)
+- [Kalshi Trade API Manual Endpoints account API](https://apis.io/collections/kalshi/open-kalshi-account-api/)
+- [Kalshi Trade API Manual Endpoints account api-keys API](https://apis.io/collections/kalshi/open-kalshi-api-keys-api/)
+- [Kalshi Trade API Manual Endpoints account communications API](https://apis.io/collections/kalshi/open-kalshi-communications-api/)
+- [Kalshi Trade API Manual Endpoints account events API](https://apis.io/collections/kalshi/open-kalshi-events-api/)
+- [Kalshi Trade API Manual Endpoints account exchange API](https://apis.io/collections/kalshi/open-kalshi-exchange-api/)
+- [Kalshi Trade API Manual Endpoints account fcm API](https://apis.io/collections/kalshi/open-kalshi-fcm-api/)
+- [Kalshi Trade API Manual Endpoints account historical API](https://apis.io/collections/kalshi/open-kalshi-historical-api/)
+- [Kalshi Trade API Manual Endpoints account incentive-programs API](https://apis.io/collections/kalshi/open-kalshi-incentive-programs-api/)
+- [Kalshi Trade API Manual Endpoints account live-data API](https://apis.io/collections/kalshi/open-kalshi-live-data-api/)
+- [Kalshi Trade API Manual Endpoints account market API](https://apis.io/collections/kalshi/open-kalshi-market-api/)
+- [Kalshi Trade API Manual Endpoints account milestone API](https://apis.io/collections/kalshi/open-kalshi-milestone-api/)
+- [Kalshi Trade API Manual Endpoints account multivariate API](https://apis.io/collections/kalshi/open-kalshi-multivariate-api/)
+- [Kalshi Trade API Manual Endpoints account order-groups API](https://apis.io/collections/kalshi/open-kalshi-order-groups-api/)
+- [Kalshi Trade API Manual Endpoints account orders API](https://apis.io/collections/kalshi/open-kalshi-orders-api/)
+- [Kalshi Trade API Manual Endpoints account portfolio API](https://apis.io/collections/kalshi/open-kalshi-portfolio-api/)
+- [Kalshi Trade API Manual Endpoints account search API](https://apis.io/collections/kalshi/open-kalshi-search-api/)
+- [Kalshi Trade API Manual Endpoints account structured-targets API](https://apis.io/collections/kalshi/open-kalshi-structured-targets-api/)
 
-- [Documentation](https://docs.kalshi.com/api-reference)
-- [OpenAPI](https://docs.kalshi.com/openapi.yaml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/kalshi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/kalshi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Governance rules (1)
 
-### Kalshi Trade API (Demo)
+Spectral rulesets for the provider's contracts.
 
-Demo / sandbox environment for the Kalshi Trade API - mirrors production semantics with simulated balances and markets for safe development and automated testing.
+- [Kalshi — asyncapi rules](https://apis.io/rules/kalshi/kalshi-asyncapi-spectral-rules/)
 
-- **Human URL:** [https://docs.kalshi.com/api-reference](https://docs.kalshi.com/api-reference)
-- **Base URL:** `https://demo-api.kalshi.co/trade-api/v2`
+#### Security (2)
 
-#### Tags
+Authentication, trust centre, and vulnerability disclosure.
 
-- REST
-- Demo
-- Sandbox
-- Testing
+- [Kalshi Authentication](https://apis.io/security/kalshi/kalshi-authentication/)
+- [Kalshi Domain Security](https://apis.io/security/kalshi/kalshi-domain-security/)
 
-#### Properties
+#### Plans and pricing (1)
 
-- [Documentation](https://docs.kalshi.com/api-reference)
-- [Postman Collection](collections/kalshi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/kalshi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Published plans, tiers and prices.
 
-### Kalshi WebSocket Streaming API
+- [Kalshi Plans Pricing](https://apis.io/plans/kalshi/kalshi-plans-pricing/)
 
-Real-time streaming feed for market data, order book updates, fills, and portfolio events on Kalshi. Documented as an AsyncAPI spec alongside the OpenAPI REST surface.
+#### Rate limits (1)
 
-- **Human URL:** [https://docs.kalshi.com/api-reference](https://docs.kalshi.com/api-reference)
-- **Base URL:** `wss://api.elections.kalshi.com/trade-api/ws/v2`
+Published request limits.
 
-#### Tags
+- [Kalshi Rate Limits](https://apis.io/rate-limits/kalshi/kalshi-rate-limits/)
 
-- WebSocket
-- Streaming
-- Market Data
+#### FinOps (1)
 
-#### Properties
+What the API costs to run, by operation.
 
-- [Documentation](https://docs.kalshi.com/api-reference)
-- [AsyncAPI](https://docs.kalshi.com/asyncapi.yaml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [AsyncAPI](https://raw.githubusercontent.com/api-evangelist/kalshi/refs/heads/main/asyncapi/kalshi-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [Postman Collection](collections/kalshi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/kalshi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Kalshi Finops](https://apis.io/finops/kalshi/kalshi-finops/)
 
-### Kalshi OpenAPI Specification
+## Where to find this API
 
-Machine-readable OpenAPI 3 description of the Kalshi Trade REST API. Suitable for generating clients, mocks, and contract tests.
-
-- **Human URL:** [https://docs.kalshi.com/](https://docs.kalshi.com/)
-- **Base URL:** `https://docs.kalshi.com/openapi.yaml`
-
-#### Tags
-
-- OpenAPI
-- Specification
-
-#### Properties
-
-- [OpenAPI](https://docs.kalshi.com/openapi.yaml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/kalshi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/kalshi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Kalshi AsyncAPI Specification
-
-Machine-readable AsyncAPI description of the Kalshi WebSocket streaming API. Suitable for generating async clients and documenting message schemas.
-
-- **Human URL:** [https://docs.kalshi.com/](https://docs.kalshi.com/)
-- **Base URL:** `https://docs.kalshi.com/asyncapi.yaml`
-
-#### Tags
-
-- AsyncAPI
-- Specification
-- WebSocket
-
-#### Properties
-
-- [AsyncAPI](https://docs.kalshi.com/asyncapi.yaml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [Postman Collection](collections/kalshi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/kalshi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Kalshi Python Starter Kit
-
-Official Python starter / SDK published by Kalshi for connecting to the Trade REST API and WebSocket streams. Includes request signing, authentication helpers, and example trading flows.
-
-- **Human URL:** [https://github.com/Kalshi/kalshi-starter-code-python](https://github.com/Kalshi/kalshi-starter-code-python)
-- **Base URL:** `https://github.com/Kalshi/kalshi-starter-code-python`
-
-#### Tags
-
-- SDK
-- Python
-- Starter
-
-#### Properties
-
-- [Repository](https://github.com/Kalshi/kalshi-starter-code-python)
-- [Postman Collection](collections/kalshi.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/kalshi.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://kalshi.com/)
 - [Documentation](https://docs.kalshi.com/)
-- [A P I  Reference](https://docs.kalshi.com/api-reference)
-- [Help](https://help.kalshi.com/)
-- [Git Hub](https://github.com/Kalshi)
-- [Developer  Agreement](https://kalshi.com/developer-agreement)
-- [LinkedIn](https://www.linkedin.com/company/kalshi/)
-- [L L Ms Txt](https://docs.kalshi.com/llms.txt)
+- [API reference](https://docs.kalshi.com/api-reference)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 29.5** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 55.7 |
+| Contract governance | 11.4 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 28.6 |
+| Access clarity | 5.3 |
+
+**Agent readiness 26.5** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 16.7** — Securities & Market Data
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/kalshi/](https://apis.io/providers/kalshi/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Kalshi: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/kalshi/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
